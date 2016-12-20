@@ -10,8 +10,15 @@ quickNBLAST <- function(skid){
   results = nblast_fafb(skid)
 }
 
-catmaidPlot <- function(skid){
-  neuron = nread.neurons.catmaid(skid)[1]
+catmaidPlot <- function(skid, volumes){
+  neuron = read.neurons.catmaid(skid)[1] #read.neuron.catmaid(skid) returns same, but with branches/endpoints highlighted by default
   plot3d(neuron)
+  if (!is.null(volumes)){
+    #plotVolumes(volumes)
+  }
 }
 
+#TODO
+plotVolumes <- function(volumes){#plot multiple neuropil volumes at once in same space as CATMAID neurons - get volumes from catmaid sever?
+  
+}
