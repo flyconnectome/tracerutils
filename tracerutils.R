@@ -23,6 +23,38 @@ plotVolumes <- function(volumes){#plot multiple neuropil volumes at once in same
   vols.df = catmaidVolsAsDF()
   volumes.ids = vols.df[vols.df$name %in% volumes, 'id']
   
+ 
+  for (id in 1:length(volumes.ids)){
+    urlstr = paste("/1/volumes/", as.character(volumes.ids[id]), sep="")
+    details = catmaid_fetch(urlstr)
+    #horrible string parsing
+    v1 = details$mesh
+    v2 = strsplit(v1, "<")
+    v3 = strsplit(v2[[1]][3], "Coordinate point='", fixed=TRUE)
+    v4 = strsplit(v3[[1]][2], " ")
+    v5 = as.numeric(v4[[1]])#coercing to integers?
+    #split into groups of 3
+    seq = seq_along(v5)
+    points = split(v5, ceiling(seq/3))
+    
+    len = length(points)
+    x = numeric(len)
+    y = numeric(len)
+    z = numeric(len)
+    for (i in 1:len){
+      x[i] = points[[i]][1]
+      y[i] = points[[i]][2]
+      z[i] = points[[i]][3]
+    }
+    points.df = data.frame(x,y,z)
+    points.matrix = data.matrix(points.df)#go straight from vectors instead?
+    plot3d(points.matrix, add=TRUE)
+
+    
+  }
+  
+  plot3d(toplot)
+  
 }
 
 catmaidVolsAsDF <- function(){
@@ -39,7 +71,7 @@ catmaidVolsAsDF <- function(){
   id = integer(l)
   editor = integer(l)
   
-  for (i in 1:l){
+  for (i in 1:l){#there has got to be a better way of doing this...
     row = vols[[i]]
     comment[i] = if (!is.null(row$comment)) row$comment else ""
     name[i] = if (!is.null(row$name)) row$name else ""
