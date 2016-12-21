@@ -10,15 +10,16 @@ quickNBLAST <- function(skid){
   results = nblast_fafb(skid)
 }
 
+#TODO - multiple skids, pass through neuron plot parameters, named parameters?
 catmaidPlot <- function(skid, volumes){
   neuron = read.neurons.catmaid(skid)[1] #read.neuron.catmaid(skid) returns same, but with branches/endpoints highlighted by default
-  plot3d(neuron)
+  plot3d(neuron, WithConnectors = F, soma = 2000)
   if (!is.null(volumes)){
     plotVolumes(volumes)
   }
 }
 
-#TODO - plot surfaces instead of points, add colour specification
+#TODO - PERFORMANCE, add colour/alpha specification
 plotVolumes <- function(volumes){#plot multiple neuropil volumes at once in same space as CATMAID neurons - get volumes from catmaid sever?
   vols.df = catmaidVolsAsDF()
   volumes.ids = vols.df[vols.df$name %in% volumes, 'id']
@@ -48,7 +49,12 @@ plotVolumes <- function(volumes){#plot multiple neuropil volumes at once in same
     }
     points.df = data.frame(x,y,z)
     points.matrix = data.matrix(points.df)#go straight from vectors instead?
-    plot3d(points.matrix, add=TRUE)
+    #plot3d(points.matrix, add=TRUE)
+    
+   
+    for (r in seq(1, nrow(points.df), 3)){
+      triangles3d(x = points.df[r:(r+2), 'x'], y = points.df[r:(r+2), 'y'], z = points.df[r:(r+2), 'z'], col = 'gray', alpha = 0.5)
+    }
 
     
   }
