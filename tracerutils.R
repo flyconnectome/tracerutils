@@ -14,7 +14,7 @@ catmaidPlot <- function(skid, volumes){
   neuron = read.neurons.catmaid(skid)[1] #read.neuron.catmaid(skid) returns same, but with branches/endpoints highlighted by default
   plot3d(neuron)
   if (!is.null(volumes)){
-    #plotVolumes(volumes)
+    plotVolumes(volumes)
   }
 }
 
@@ -53,8 +53,7 @@ plotVolumes <- function(volumes){#plot multiple neuropil volumes at once in same
     
   }
   
-  plot3d(toplot)
-  
+
 }
 
 catmaidVolsAsDF <- function(){
