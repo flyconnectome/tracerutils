@@ -18,7 +18,7 @@ catmaidPlot <- function(skid, volumes){
   }
 }
 
-#TODO
+#TODO - plot surfaces instead of points, add colour specification
 plotVolumes <- function(volumes){#plot multiple neuropil volumes at once in same space as CATMAID neurons - get volumes from catmaid sever?
   vols.df = catmaidVolsAsDF()
   volumes.ids = vols.df[vols.df$name %in% volumes, 'id']
@@ -32,7 +32,7 @@ plotVolumes <- function(volumes){#plot multiple neuropil volumes at once in same
     v2 = strsplit(v1, "<")
     v3 = strsplit(v2[[1]][3], "Coordinate point='", fixed=TRUE)
     v4 = strsplit(v3[[1]][2], " ")
-    v5 = as.numeric(v4[[1]])#coercing to integers?
+    v5 = as.numeric(v4[[1]])
     #split into groups of 3
     seq = seq_along(v5)
     points = split(v5, ceiling(seq/3))

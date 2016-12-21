@@ -1,11 +1,34 @@
 checkMine <- function(dateSince, user){#date format as YYYMMDD string, user as login name
   mySkeletons = getSince(dateSince, user = user)
   
-  #check for duplicate soma tags
+  for (i in 1:length(mySkeletons)){
+    neuron = read.neuron.catmaid(mySkeletons[i])
+
+    #check for duplicate soma tags
+    if (!is.null(neuron$tags$soma) && length(neuron$tags$soma > 1)){
+      print(paste("Duplicate soma in neuron ", mySkeletons[i], "!", sep = ""))#or, you know, actually do something useful like generate a URL
+    }
+    
+    #check for radius without a soma tag
+    radpoints = neuron$d[neuron$d$W > -2, 'PointNo']
+    if (length(radpoints) > 0){
+      notsoma = numeric(0)
+      if (!is.null(neuron$tags$soma)){
+        for (i in 1:length(radpoints)){
+          if (radpoints[i] %in% neuron$tags$soma) next
+          notsoma = c(notsoma, radpoints[i])
+        }
+      }
+      else{
+        notsoma = radpoints
+      }
+      print(paste("Point(s) ", notsoma, " on neuron ", mySkeletons[i], " have a radius but no soma tag", sep = ""))
+    }
+    
+    #check skeleton analytics
+    
+  }
   
-  #check for large radius without a soma tag
-  
-  #check skeleton analytics
   
   
 }
