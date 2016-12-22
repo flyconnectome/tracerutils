@@ -1,8 +1,23 @@
+#-----SETUP-----
 packages <- function(){
   if(!require("elmr")) install.packages("elmr")
   if(!require("catmaid")) install.packages("catmaid")
 }
+catmaidURLs <- function(){
+  URLs = character(0)
+  names(URLs) = character(0)
+  
+  URLs["volumes"] = "/1/volumes/"
+  URLs["skeletons"] = "/1/skeletons/"
+  
+  return(URLs)
+}
+getEndpoint <- function(name){
+  return(catmaidURLs()[name])
+  
+}
 
+#-----UTILITIES-----
 quickNBLAST <- function(skid){
   packages()
   if(!require("doMC")) install.packages("doMC")
@@ -13,23 +28,46 @@ quickNBLAST <- function(skid){
 }
 
 #TODO - pass through neuron plot parameters, named parameters?
-catmaidPlot <- function(skid, volumes = NULL){#single skid as numeric, multiples in character vector
+catmaidPlot <- function(skid, volumes = NULL, ncol = NULL, vcol = NULL, valpha = NULL){#single skid as numeric, multiples in character vector
+  packages()
   neurons = read.neurons.catmaid(skid)
-  plot3d(neurons, WithConnectors = F, soma = 2000)
+  plot3d(neurons, WithConnectors = F, soma = 2000, col = ncol)
   if (!is.null(volumes)){
-    plotVolumes(volumes)
+    plotVolumes(volumes, vcol, valpha)
   }
   
-  return(neurons)#in case you want to do anything else with them
+  invisible(neurons)#returned in case you want to do anything else with them, but not printed to console
 }
 
+
+
+#-----INTERNAL METHODS-----
 #TODO - add colour/alpha specification
-plotVolumes <- function(volumes){#plot multiple neuropil volumes at once in same space as CATMAID neurons - get volumes from catmaid sever?
+plotVolumes <- function(volumes, vcol, valpha){#plot multiple neuropil volumes at once in same space as CATMAID neurons - get volumes from catmaid sever?
   vols.df = catmaidVolsAsDF()
-  volumes.ids = vols.df[vols.df$name %in% volumes, 'id']
+  volumes.ids = vols.df[match(volumes, vols.df$name), 'id']#preserves order, c.f. vols.df$name %in% volumes
   
- 
+  #fil out colour and alpha specifications
+  if (!is.null(vcol)){
+    if (length(vcol) < length(volumes)) vcol = rep(vcol, length.out = length(volumes))
+  }
+  else{
+    vcol = rep("gray", length(volumes))
+  }
+  
+  if (!is.null(valpha)){
+    if (length(valpha) < length(volumes)) valpha = rep(valpha, length.out = length(volumes))
+  }
+  else{
+    valpha = rep(0.5, length(volumes))
+  }
+  
+  
   for (id in 1:length(volumes.ids)){
+    if (is.na(volumes.ids[id])){
+      warning(paste("Volume \"", volumes[id], "\" was not found.", sep = ""))
+      next
+    }
     urlstr = paste("/1/volumes/", as.character(volumes.ids[id]), sep="")
     details = catmaid_fetch(urlstr)
     #horrible string parsing
@@ -54,7 +92,8 @@ plotVolumes <- function(volumes){#plot multiple neuropil volumes at once in same
     points.df = data.frame(x,y,z)
     points.matrix = data.matrix(points.df)#go straight from vectors instead?
     
-    triangles3d(x = points.df[,'x'], y = points.df[, 'y'], z = points.df[, 'z'], col = 'gray', alpha = 0.5)
+    
+    triangles3d(x = points.df[,'x'], y = points.df[, 'y'], z = points.df[, 'z'], col = vcol[id], alpha = valpha[id])
     
   }
   
@@ -63,7 +102,7 @@ plotVolumes <- function(volumes){#plot multiple neuropil volumes at once in same
 
 catmaidVolsAsDF <- function(){
   
-  vols = catmaid_fetch("/1/volumes")
+  vols = catmaid_fetch(getEndpoint("volumes"))
   l = length(vols)
   
   comment = character(l)
