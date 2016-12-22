@@ -10,13 +10,15 @@ quickNBLAST <- function(skid){
   results = nblast_fafb(skid)
 }
 
-#TODO - multiple skids, pass through neuron plot parameters, named parameters?
-catmaidPlot <- function(skid, volumes){
-  neuron = read.neurons.catmaid(skid)[1] #read.neuron.catmaid(skid) returns same, but with branches/endpoints highlighted by default
-  plot3d(neuron, WithConnectors = F, soma = 2000)
+#TODO - pass through neuron plot parameters, named parameters?
+catmaidPlot <- function(skid, volumes = NULL){#single skid as numeric, multiples in character vector
+  neurons = read.neurons.catmaid(skid)
+  plot3d(neurons, WithConnectors = F, soma = 2000)
   if (!is.null(volumes)){
     plotVolumes(volumes)
   }
+  
+  return(neurons)#in case you want to do anything else with them
 }
 
 #TODO - PERFORMANCE, add colour/alpha specification
