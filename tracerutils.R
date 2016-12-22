@@ -1,9 +1,11 @@
-libraries <- function(){
-  library(elmr); library(catmaid)
+packages <- function(){
+  if(!require("elmr")) install.packages("elmr")
+  if(!require("catmaid")) install.packages("catmaid")
 }
 
 quickNBLAST <- function(skid){
-  libraries(); library(doMC)
+  packages()
+  if(!require("doMC")) install.packages("doMC")
   registerDoMC(4)
   dps = read.neuronlistfh("http://flybrain.mrc-lmb.cam.ac.uk/si/nblast/flycircuit/dpscanon.rds", localdir = getOption('flycircuit.datadir'))
   
@@ -21,7 +23,7 @@ catmaidPlot <- function(skid, volumes = NULL){#single skid as numeric, multiples
   return(neurons)#in case you want to do anything else with them
 }
 
-#TODO - PERFORMANCE, add colour/alpha specification
+#TODO - add colour/alpha specification
 plotVolumes <- function(volumes){#plot multiple neuropil volumes at once in same space as CATMAID neurons - get volumes from catmaid sever?
   vols.df = catmaidVolsAsDF()
   volumes.ids = vols.df[vols.df$name %in% volumes, 'id']
@@ -51,13 +53,8 @@ plotVolumes <- function(volumes){#plot multiple neuropil volumes at once in same
     }
     points.df = data.frame(x,y,z)
     points.matrix = data.matrix(points.df)#go straight from vectors instead?
-    #plot3d(points.matrix, add=TRUE)
     
-   
-    for (r in seq(1, nrow(points.df), 3)){
-      triangles3d(x = points.df[r:(r+2), 'x'], y = points.df[r:(r+2), 'y'], z = points.df[r:(r+2), 'z'], col = 'gray', alpha = 0.5)
-    }
-
+    triangles3d(x = points.df[,'x'], y = points.df[, 'y'], z = points.df[, 'z'], col = 'gray', alpha = 0.5)
     
   }
   
