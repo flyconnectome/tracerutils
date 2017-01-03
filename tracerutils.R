@@ -1,7 +1,8 @@
 #-----SETUP-----
 packages <- function(){
-  if(!require("elmr")) install.packages("elmr")
-  if(!require("catmaid")) install.packages("catmaid")
+  if (!require("devtools")) install.packages("devtools")
+  if(!require("elmr")) devtools::install_github("jefferis/elmr", dependencies=TRUE)
+  if(!require("catmaid")) devtools::install_github("jefferis/rcatmaid")
 }
 catmaidURLs <- function(){
   URLs = character(0)
@@ -28,7 +29,7 @@ quickNBLAST <- function(skid){
   results = nblast_fafb(skid)
 }
 
-#TODO - pass through neuron plot parameters, named parameters?
+#TODO - connectors option?
 catmaidPlot <- function(skid, volumes = NULL, ncol = NULL, vcol = NULL, valpha = NULL){#single skid as numeric, multiples in character vector
   packages()
   neurons = read.neurons.catmaid(skid)
