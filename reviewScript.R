@@ -1,14 +1,22 @@
 checkMine <- function(dateSince, user){#date format as YYYMMDD string, user as login name
+  
+  
+  htmlStrings = c(toHeader(paste0("Checking neurons for user ", user, " since ", dateSince), 2), "<br>")
+  
+    
   mySkeletons = getSince(dateSince, user = user)
   neurons = read.neurons.catmaid(mySkeletons)
   
+  
+  
   for (i in 1:length(neurons)){
-    print(paste("Neuron ", names(neurons)[i], sep  = ""))
+    #print(paste("Neuron ", names(neurons)[i], sep  = ""))
+    htmlStrings = append(htmlStrings, toHeader(paste0("SKID ", names(neurons)[i]), 4))
     
     neuron = neurons[i]
     issuesfound = FALSE
     #check for duplicate soma tags and radius set on a node without soma tag
-    issuesfound = checkDuplicateSomas(neuron) & checkRadiusWithoutSoma(neuron)
+    issuesfound = checkDuplicateSomas(neuron, htmlStrings) & checkRadiusWithoutSoma(neuron, htmlStrings)
     
     #check skeleton analytics
     #analytics checks for eight possible issues, but we only care about a few of them for now
@@ -47,16 +55,21 @@ checkMine <- function(dateSince, user){#date format as YYYMMDD string, user as l
     
     if (nrow(problems) > 0){
       #print(problems)
-      if(nrow(autapse) > 0) print(paste("Autapse at node(s) ", paste(autapse[,'node'], collapse = ", "), sep = ""))
-      if(nrow(double_post) > 0) print(paste("Two or more nodes postsynaptic to the same connector at node(s) ", paste(double_post[,'node'], collapse = ", "), sep = ""))
-      if(nrow(no_pre) > 0) print(paste("Connector without presynaptic skeleton at node(s) ", paste(no_pre[,'node'], collapse = ", "), sep = ""))
-      if(nrow(dup_syn) > 0) print(paste("Possible duplicate synapse at node(s) ", paste(dup_syn[,'node'], collapse = ", "), sep = ""))
-      if(nrow(end_in_non_end) > 0) print(paste("End tag in non-end node at node(s) ", paste(end_in_non_end[,'node'], collapse = ", "), sep = ""))
+      if(nrow(autapse) > 0) htmlStrings = append(htmlStrings, toParagraph(paste("Autapse at node(s) ", paste(autapse[,'node'], collapse = ", "), sep = "")))
+      if(nrow(double_post) > 0) htmlStrings = append(htmlStrings, toParagraph(paste("Two or more nodes postsynaptic to the same connector at node(s) ", paste(double_post[,'node'], collapse = ", "), sep = "")))
+      if(nrow(no_pre) > 0) htmlStrings = append(htmlStrings, toParagraph(paste("Connector without presynaptic skeleton at node(s) ", paste(no_pre[,'node'], collapse = ", "), sep = "")))
+      if(nrow(dup_syn) > 0) htmlStrings = append(htmlStrings, toParagraph(paste("Possible duplicate synapse at node(s) ", paste(dup_syn[,'node'], collapse = ", "), sep = "")))
+      if(nrow(end_in_non_end) > 0) htmlStrings = append(htmlStrings, toParagraph(paste("End tag in non-end node at node(s) ", paste(end_in_non_end[,'node'], collapse = ", "), sep = "")))
       issuesfound = TRUE
     }
     
-    if (issuesfound == FALSE) print(" looks good!")
+    if (issuesfound == FALSE) htmlStrings = append(htmlStrings, toParagraph("Looks good!"))
   }
+  
+  file.create("output.html")
+  output = file("output.html")
+  writeLines(htmlStrings, output)
+  close(output)
 }
 
 getSince <- function(dateSince, user = 'all'){#date format as YYYMMDD string, user as login name
@@ -71,23 +84,23 @@ getSince <- function(dateSince, user = 'all'){#date format as YYYMMDD string, us
     userparam = ''
   }
   
+  
   skeletons = catmaid_fetch(paste("/1/skeletons/?nodecount_gt=1&from=", dateSince, userparam, sep = ''))
-  
-  
 }
 
 
 #-----INTERNALS-----
-checkDuplicateSomas <- function(neuron){
+checkDuplicateSomas <- function(neuron, file){
   issuesfound = FALSE
   if ((!is.null(neuron$tags$soma)) & length(neuron$tags$soma) > 1){
-    print(paste("Duplicate somas in neuron ", names(neurons)[i], " at nodes ", paste(neuron$tags$soma, collapse = ", "), sep = ""))#or, you know, actually do something useful like generate a URL
+    file = append(file, toParagraph(paste("Duplicate somas at nodes ", paste(neuron$tags$soma, collapse = ", "), sep = "")))#or, you know, actually do something useful like generate a URL
     issuesfound = TRUE
   }
+  file = append(file, "checked for duplicate somas")
   return(issuesfound)
 }
 
-checkRadiusWithoutSoma <- function(neuron){
+checkRadiusWithoutSoma <- function(neuron, file){
   issuesfound = FALSE
   radpoints = neuron$d[neuron$d$W > -2, 'PointNo']
   if (length(radpoints) > 0){
@@ -102,9 +115,10 @@ checkRadiusWithoutSoma <- function(neuron){
       notsoma = radpoints
     }
     if (length(notsoma) > 0){
-      print(paste("Point(s) ", notsoma, " on neuron ", names(neurons)[i], " have a radius but no soma tag", sep = ""))
+      file = append(file, toParagraph(paste("Point(s) ", notsoma, " have a radius but no soma tag", sep = "")))
       issuesfound = TRUE
     } 
   }
+  file = append(file, "checked for missing soma tags")
   return(issuesfound)
 }
