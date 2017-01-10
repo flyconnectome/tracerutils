@@ -34,7 +34,7 @@ names(LHandPNs) = sapply(c(0:(length(LHandPNs) - 1)), function(x) paste0("Skelet
 
 connectivity = catmaid_fetch("1/skeletons/confidence-compartment-subgraph", body = as.list(LHandPNs))
 connectivity.flattened = lapply(connectivity$edges, function(x) unlist(x))
-connectivity.table = do.call(rbind.data.frame, flattened)
+connectivity.table = do.call(rbind.data.frame, connectivity.flattened)
 names(connectivity.table) = c("skid_1", "skid_2", "conn_1", "conn_2", "conn_3", "conn_4", "conn_5")
 
 DA1connections = connectivity.table[(connectivity.table$skid_1 %in% DA1PNs)|(connectivity.table$skid_2 %in% DA1PNs),]
