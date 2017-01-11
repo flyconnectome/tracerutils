@@ -44,3 +44,19 @@ DA1connections.neurons.pns = inLH.withSomas.pns[DA1connections.uniqueSKIDs]
 
 DA1connections.inverse = inLH.withSomas[!names(inLH.withSomas) %in% DA1connections.uniqueSKIDs]
 DA1connections.inverse.pns = inLH.withSomas.pns[!names(inLH.withSomas.pns) %in% DA1connections.uniqueSKIDs]
+
+
+
+#functions for easily visualising data
+viewDA1Connectivity <- function(){
+  nopen3d()
+  plot3d(LH.right, col = 'gray', alpha = 0.5)
+  plot3d(DA1connections.neurons.pns, col = 'red', soma = 1)
+  plot3d(DA1connections.inverse.pns, col = 'blue', soma = 1)
+}
+
+viewAllPrimary <- function(){
+  nopen3d()
+  plot3d(LH.right, col = 'gray', alpha = 0.5)
+  plot3d(inLH.withSomas.pns)
+}
