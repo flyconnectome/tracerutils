@@ -1,0 +1,20 @@
+{
+    "collab_server" : "",
+    "contents" : "#character methods\ntoParagraph <- function(c){\n  paste0(\"<p>\", c, \"</p>\")\n}\n\ntoLink <- function(href, text){\n  paste0(\"<a href=\", href, \">\", text, \"</a>\")\n}\n\ntoHeader <- function(c, level){\n  if (level < 1) level = 1\n  if (level > 6) level = 6\n  paste0(\"<h\", level, \">\", c, \"<h\", level, \">\")\n}\n\n",
+    "created" : 1485528392021.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2438376486",
+    "id" : "53925A34",
+    "lastKnownWriteTime" : 1485526968,
+    "last_content_update" : 1485526968,
+    "path" : "~/projects/tracerutils/R/CharToHTML.R",
+    "project_path" : "R/CharToHTML.R",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
