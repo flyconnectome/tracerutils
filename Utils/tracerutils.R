@@ -10,7 +10,7 @@ catmaidURLs <- function(){
   
   URLs["volumes"] = "/1/volumes/"
   URLs["skeletons"] = "/1/skeletons/"
-  URLs["analytics"] = "/1/skeleton/analytics"
+  URLs["analytics"] = "/1/analytics/skeletons"
   
   return(URLs)
 }
