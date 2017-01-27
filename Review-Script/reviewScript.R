@@ -122,3 +122,16 @@ checkRadiusWithoutSoma <- function(neuron, file){
   file = append(file, "checked for missing soma tags")
   return(issuesfound)
 }
+
+getURLForNode <- function(nodeID, skid = NULL, coord = NULL, project = 1, base = getOption("catmaid.server")){
+  #get coordinates
+  if (is.null(coord)){
+    
+  }
+  #get skid
+  if (is.null(skid)){
+    
+  }
+  #assemble URL
+  
+}
