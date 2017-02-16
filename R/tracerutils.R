@@ -29,13 +29,13 @@ getEndpoint <- function(name){
 #' @param skid The skeleton ID of the neuron in CATMAID
 #' @return The full NBLAST results object
 #'
-quickNBLAST <- function(skid){
+quick_nblast <- function(skid){
   packages()
-  if(!require("doMC")) install.packages("doMC")
-  registerDoMC(4)
-  dps = read.neuronlistfh("http://flybrain.mrc-lmb.cam.ac.uk/si/nblast/flycircuit/dpscanon.rds", localdir = getOption('flycircuit.datadir'))
+  if(!require("doMC")) install.packages("doMC")#TODO - multi-platform; doMC only works on Mac
+  doMC::registerDoMC(4)
+  dps = nat::read.neuronlistfh("http://flybrain.mrc-lmb.cam.ac.uk/si/nblast/flycircuit/dpscanon.rds", localdir = getOption('flycircuit.datadir'))
 
-  results = nblast_fafb(skid)
+  results = elmr::nblast_fafb(skid)
 }
 
 #' Retrieve a neuron from CATMAID and plot it, along with one or more CATMAID volumes if desired
@@ -52,10 +52,10 @@ quickNBLAST <- function(skid){
 #'     Behaves the same way as ncol and vcol.  Defaults to 0.5.
 #'
 #TODO - connectors option?
-catmaidPlot <- function(skid, volumes = NULL, ncol = NULL, vcol = NULL, valpha = NULL){#single skid as numeric, multiples in character vector
-  packages()
-  neurons = read.neurons.catmaid(skid)
-  plot3d(neurons, WithConnectors = F, soma = 2000, col = ncol)
+plot_catmaid <- function(skid, volumes = NULL, ncol = NULL, vcol = NULL, valpha = NULL){#single skid as numeric, multiples in character vector
+  #packages()
+  neurons = catmaid::read.neurons.catmaid(skid)
+  plot3d(neurons, WithConnectors = F, soma = 2000, col = ncol)#ERROR - plotting root node as soma
   if (!is.null(volumes)){
     plotVolumes(volumes, vcol, valpha)
   }
@@ -64,9 +64,9 @@ catmaidPlot <- function(skid, volumes = NULL, ncol = NULL, vcol = NULL, valpha =
 }
 
 split_neuron_local <- function(skid, node, return = "child"){#split local copy of a neuron at a particular node, and return result ('child' by default) as a neuron object
-  neuron = read.neuron.catmaid(skid)
+  neuron = catmaid::read.neuron.catmaid(skid)
   index = match(node, neuron$d$PointNo)#add error handling
-  neuron.distal = distal_to(neuron, index)
+  neuron.distal = elmr::distal_to(neuron, index)
   neuron.distal.points = neuron$d[neuron.distal,]
 
   #child neuron
@@ -74,7 +74,7 @@ split_neuron_local <- function(skid, node, return = "child"){#split local copy o
   segs.old = segs.old = neuron$SegList[segs]
   segs.new = segs.new = sapply(segs.old, function(x) sapply(x, function(y) y = match(neuron$d$PointNo[y], neuron.distal.points$PointNo)))
   #tags = sapply(neuron$tags, function(x) x %in% neuron.distal.points$PointNo)
-  new = neuron(d = neuron.distal.points,
+  new = nat::neuron(d = neuron.distal.points,
                NumPoints = nrow(neuron.distal.points),
                StartPoint = 1,#check this
                BranchPoints = neuron$BranchPoints[neuron$BranchPoints %in% neuron.distal],
@@ -134,7 +134,7 @@ plotVolumes <- function(volumes, vcol, valpha){#plot multiple neuropil volumes a
       next
     }
     urlstr = paste("/1/volumes/", as.character(volumes.ids[id]), sep="")
-    details = catmaid_fetch(urlstr)
+    details = catmaid::catmaid_fetch(urlstr)
     #horrible string parsing
     v1 = details$mesh
     v2 = strsplit(v1, "<")
@@ -158,7 +158,7 @@ plotVolumes <- function(volumes, vcol, valpha){#plot multiple neuropil volumes a
     points.matrix = data.matrix(points.df)#go straight from vectors instead?
 
 
-    triangles3d(x = points.df[,'x'], y = points.df[, 'y'], z = points.df[, 'z'], col = vcol[id], alpha = valpha[id])
+    rgl::triangles3d(x = points.df[,'x'], y = points.df[, 'y'], z = points.df[, 'z'], col = vcol[id], alpha = valpha[id])
 
   }
 
@@ -167,7 +167,7 @@ plotVolumes <- function(volumes, vcol, valpha){#plot multiple neuropil volumes a
 
 catmaidVolsAsDF <- function(){
 
-  vols = catmaid_fetch(getEndpoint("volumes"))
+  vols = catmaid::catmaid_fetch(getEndpoint("volumes"))
   l = length(vols)
 
   comment = character(l)
