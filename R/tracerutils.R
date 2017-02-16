@@ -1,9 +1,11 @@
 #-----SETUP-----
-packages <- function(){
-  if (!require("devtools")) install.packages("devtools")
-  if(!require("elmr")) devtools::install_github("jefferis/elmr", dependencies=TRUE)
-  if(!require("catmaid")) devtools::install_github("jefferis/rcatmaid")
-}
+
+# packages <- function(){
+#   if (!require("devtools")) install.packages("devtools")
+#   if(!require("elmr")) devtools::install_github("jefferis/elmr", dependencies=TRUE)
+#   if(!require("catmaid")) devtools::install_github("jefferis/rcatmaid")
+# }
+
 catmaidURLs <- function(){
   URLs = character(0)
   names(URLs) = character(0)
@@ -14,12 +16,19 @@ catmaidURLs <- function(){
 
   return(URLs)
 }
+
 getEndpoint <- function(name){
   return(catmaidURLs()[name])
 
 }
 
 #-----UTILITIES-----
+
+#' NBLAST a neuron in CATMAID (FAFB) against the full flycircuit neuron list
+#'
+#' @param skid The skeleton ID of the neuron in CATMAID
+#' @return The full NBLAST results object
+#'
 quickNBLAST <- function(skid){
   packages()
   if(!require("doMC")) install.packages("doMC")
@@ -29,6 +38,19 @@ quickNBLAST <- function(skid){
   results = nblast_fafb(skid)
 }
 
+#' Retrieve a neuron from CATMAID and plot it, along with one or more CATMAID volumes if desired
+#'
+#' @param skid Required; the skeleton ID of the neuron in CATMAID. Can accept a vector with multiple SKIDs.
+#' @param volumes The names of the volumes in CATMAId to be plotted.  Defaults to NULL.
+#' @param ncol The colour(s) to use when plotting the specified neuron(s).
+#'     If a vector of colour names is provided, the colours will be applied to the neurons in the order specified,
+#'     repeating from the beginning if there are more neurons than colours.
+#'     Uses default from NAT package if unspecified.
+#' @param vcol The colour(s) to use when plotting the specified volume(s).
+#'     Behaves the same way as ncol.  Defaults to gray.
+#' @param valpha The alpha value(s) to use when plotting volume(s).
+#'     Behaves the same way as ncol and vcol.  Defaults to 0.5.
+#'
 #TODO - connectors option?
 catmaidPlot <- function(skid, volumes = NULL, ncol = NULL, vcol = NULL, valpha = NULL){#single skid as numeric, multiples in character vector
   packages()
