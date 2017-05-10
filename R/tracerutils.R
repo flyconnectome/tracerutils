@@ -29,8 +29,10 @@ getEndpoint <- function(name){
 #' @param skid The skeleton ID of the neuron in CATMAID
 #' @return The full NBLAST results object
 #'
+#'@export
+#'
 quick_nblast <- function(skid){
-  packages()
+  #packages()
   if(!require("doMC")) install.packages("doMC")#TODO - multi-platform; doMC only works on Mac
   doMC::registerDoMC(4)
   dps = nat::read.neuronlistfh("http://flybrain.mrc-lmb.cam.ac.uk/si/nblast/flycircuit/dpscanon.rds", localdir = getOption('flycircuit.datadir'))
@@ -50,6 +52,8 @@ quick_nblast <- function(skid){
 #'     Behaves the same way as ncol.  Defaults to gray.
 #' @param valpha The alpha value(s) to use when plotting volume(s).
 #'     Behaves the same way as ncol and vcol.  Defaults to 0.5.
+#'
+#'@export
 #'
 #TODO - connectors option?
 plot_catmaid <- function(skid, volumes = NULL, ncol = NULL, vcol = NULL, valpha = NULL){#single skid as numeric, multiples in character vector
@@ -161,8 +165,6 @@ plotVolumes <- function(volumes, vcol, valpha){#plot multiple neuropil volumes a
     rgl::triangles3d(x = points.df[,'x'], y = points.df[, 'y'], z = points.df[, 'z'], col = vcol[id], alpha = valpha[id])
 
   }
-
-
 }
 
 catmaidVolsAsDF <- function(){
