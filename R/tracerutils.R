@@ -28,7 +28,9 @@ getEndpoint <- function(name){
 quick_nblast <- function(skid){
   if(!require("doMC")) install.packages("doMC")#TODO - multi-platform; doMC only works on Mac
   doMC::registerDoMC(4)
+  dps <<- nat::read.neuronlistfh(getOption("flycircuit.datadir"))
 
+  library(nat.nblast)# workaround to nat.nblast issue #31
   results = elmr::nblast_fafb(skid)
 }
 
