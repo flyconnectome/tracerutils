@@ -1,2 +1,6 @@
-#ignoring .Rapp history file
 .Rapp.history
+.Rproj.user/
+.Rhistory
+.RData
+.Rproj.user
+
