@@ -1,11 +1,5 @@
 #-----SETUP-----
 
-# packages <- function(){
-#   if (!require("devtools")) install.packages("devtools")
-#   if(!require("elmr")) devtools::install_github("jefferis/elmr", dependencies=TRUE)
-#   if(!require("catmaid")) devtools::install_github("jefferis/rcatmaid")
-# }
-
 catmaidURLs <- function(){
   URLs = character(0)
   names(URLs) = character(0)
@@ -32,10 +26,8 @@ getEndpoint <- function(name){
 #'@export
 #'
 quick_nblast <- function(skid){
-  #packages()
   if(!require("doMC")) install.packages("doMC")#TODO - multi-platform; doMC only works on Mac
   doMC::registerDoMC(4)
-  dps = nat::read.neuronlistfh("http://flybrain.mrc-lmb.cam.ac.uk/si/nblast/flycircuit/dpscanon.rds", localdir = getOption('flycircuit.datadir'))
 
   results = elmr::nblast_fafb(skid)
 }
@@ -94,9 +86,7 @@ split_neuron_local <- function(skid, node, return = "child"){#split local copy o
 
 connector_URL <- function(dfrow){ #work into generic URL generator; specific to DL4 PN for now
   base = getOption('catmaid.server')
-  if(is.null(base)){
-    base = "https://neuropil.janelia.org/tracing/fafb/v13"
-  }
+
   catmaid_url = paste0(base, "?pid=1")
   catmaid_url = paste0(catmaid_url, "&zp=", dfrow["z"])
   catmaid_url = paste0(catmaid_url, "&yp=", dfrow["y"])
