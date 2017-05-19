@@ -38,7 +38,7 @@ quick_nblast <- function(skid){
 plot_catmaid <- function(skid, volumes = NULL, ncol = NULL, vcol = NULL, valpha = NULL){#single skid as numeric, multiples in character vector
   #packages()
   neurons = catmaid::read.neurons.catmaid(skid)
-  rgl::plot3d(neurons, WithConnectors = F, soma = 2000, col = ncol)#ERROR - plotting root node as soma
+  rgl::plot3d(neurons, WithConnectors = F, soma = T, col = ncol)#ERROR - plotting root node as soma
   if (!is.null(volumes)){
     plotVolumes(volumes, vcol, valpha)
   }
