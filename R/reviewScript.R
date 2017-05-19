@@ -1,4 +1,4 @@
-checkMine <- function(dateSince, user){#date format as YYYMMDD string, user as login name
+checkMine <- function(dateSince, user, pid = 1){#date format as YYYMMDD string, user as login name
   packagesAndSetup()
 
   #htmlStrings = c(toHeader(paste0("Checking neurons for user ", user, " since ", dateSince), 2), "<br>")
@@ -37,7 +37,7 @@ checkMine <- function(dateSince, user){#date format as YYYMMDD string, user as l
       #nothing for now - move outside loop and assemble body string to minimise server calls
     }
 
-    analytics = catmaid_fetch("/1/analytics/skeletons", body = list("skeleton_ids[0]"=names(neurons)[i]))
+    analytics = catmaid_fetch(paste0("/", pid, URL.volumes), body = list("skeleton_ids[0]"=names(neurons)[i]))
     issues = analytics$issues[[1]][[2]]#modify to handle for each neuron
 
     issue_code = numeric(length(issues))
@@ -93,7 +93,7 @@ getSince <- function(dateSince, user = 'all'){#date format as YYYMMDD string, us
   }
 
 
-  skeletons = catmaid_fetch(paste("/1/skeletons/?nodecount_gt=1&from=", dateSince, userparam, sep = ''))
+  skeletons = catmaid_fetch(paste0("/", pid, URL.skeletons, "?nodecount_gt=1&from=", dateSince, userparam))
 }
 
 

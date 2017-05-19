@@ -16,6 +16,9 @@ quick_nblast <- function(skid){
   results = elmr::nblast_fafb(skid)
 }
 
+
+
+
 #' Retrieve a neuron from CATMAID and plot it, along with one or more CATMAID volumes if desired
 #'
 #' @param skid Required; the skeleton ID of the neuron in CATMAID. Can accept a vector with multiple SKIDs.
@@ -35,7 +38,7 @@ quick_nblast <- function(skid){
 plot_catmaid <- function(skid, volumes = NULL, ncol = NULL, vcol = NULL, valpha = NULL){#single skid as numeric, multiples in character vector
   #packages()
   neurons = catmaid::read.neurons.catmaid(skid)
-  plot3d(neurons, WithConnectors = F, soma = 2000, col = ncol)#ERROR - plotting root node as soma
+  rgl::plot3d(neurons, WithConnectors = F, soma = 2000, col = ncol)#ERROR - plotting root node as soma
   if (!is.null(volumes)){
     plotVolumes(volumes, vcol, valpha)
   }
@@ -86,7 +89,7 @@ connector_URL <- function(dfrow){ #work into generic URL generator; specific to 
 
 
 #-----INTERNAL METHODS-----
-plotVolumes <- function(volumes, vcol, valpha){#plot multiple neuropil volumes at once in same space as CATMAID neurons - get volumes from catmaid sever?
+plotVolumes <- function(volumes, vcol, valpha, pid = 1){#plot multiple neuropil volumes at once in same space as CATMAID neurons - get volumes from catmaid sever?
   vols.df = catmaidVolsAsDF()
   volumes.ids = vols.df[match(volumes, vols.df$name), 'id']#preserves order, c.f. vols.df$name %in% volumes
 
@@ -111,7 +114,7 @@ plotVolumes <- function(volumes, vcol, valpha){#plot multiple neuropil volumes a
       warning(paste("Volume \"", volumes[id], "\" was not found.", sep = ""))
       next
     }
-    urlstr = paste("/1/volumes/", as.character(volumes.ids[id]), sep="")
+    urlstr = paste0(pid, URL.volumes, as.character(volumes.ids[id]))
     details = catmaid::catmaid_fetch(urlstr)
     #horrible string parsing
     v1 = details$mesh
@@ -141,9 +144,9 @@ plotVolumes <- function(volumes, vcol, valpha){#plot multiple neuropil volumes a
   }
 }
 
-catmaidVolsAsDF <- function(){
+catmaidVolsAsDF <- function(pid = 1){
 
-  vols = catmaid::catmaid_fetch("/1/volumes/")
+  vols = catmaid::catmaid_fetch(paste0(pid, URL.volumes))
   l = length(vols)
 
   comment = character(l)
