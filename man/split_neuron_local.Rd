@@ -2,8 +2,7 @@
 % Please edit documentation in R/tracerutils.R
 \name{split_neuron_local}
 \alias{split_neuron_local}
-\title{Split a neuron at a particular node and return the 'downstream' section as a neuron object
-This does not actually split the neuron in CATMAID; split is only performed on the local neuron object.}
+\title{Split a neuron and return 'downstream' section}
 \usage{
 split_neuron_local(skid, node, return = "child")
 }
@@ -16,7 +15,9 @@ split_neuron_local(skid, node, return = "child")
 A \code{neuron} object representing the 'downstream' portion of the split neuron
 }
 \description{
-Split a neuron at a particular node and return the 'downstream' section as a neuron object
+Split a neuron at a particular node and return the 'downstream' section as a new neuron object
+}
+\details{
 This does not actually split the neuron in CATMAID; split is only performed on the local neuron object.
 }
 

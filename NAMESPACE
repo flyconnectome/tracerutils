@@ -2,4 +2,5 @@
 
 export(plot_catmaid)
 export(quick_nblast)
+export(simple_catmaid_url)
 export(split_neuron_local)

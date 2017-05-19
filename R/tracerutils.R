@@ -1,11 +1,15 @@
 #-----UTILITIES-----
 
+#' NBLAST a CATMAID neuron against the flycircuit data set
+#'
 #' NBLAST a neuron in CATMAID (FAFB) against the full flycircuit neuron list
+#'
+#' Requires the \code{flycircuit.datadir} option to be set and the \code{nat.default.neuronlist} option to be set to "dps" in .Rprofile
 #'
 #' @param skid The skeleton ID of the neuron in CATMAID
 #' @return The full NBLAST results object
 #'
-#'@export
+#' @export
 #'
 quick_nblast <- function(skid){
   if(!require("doMC")) install.packages("doMC")#TODO - multi-platform; doMC only works on Mac
@@ -18,10 +22,12 @@ quick_nblast <- function(skid){
 
 
 
-#' Retrieve a neuron from CATMAID and plot it, along with one or more CATMAID volumes if desired
+#' Quickly plot neurons from CATMAID
+#'
+#' Retrieve one or more neurons from CATMAID and plot them, along with one or more CATMAID volumes if desired
 #'
 #' @param skid Required; the skeleton ID of the neuron in CATMAID. Can accept a vector with multiple SKIDs.
-#' @param volumes The names of the volumes in CATMAId to be plotted.  Defaults to NULL.
+#' @param volumes The names of the volumes in CATMAID to be plotted.  Defaults to NULL.
 #' @param ncol The colour(s) to use when plotting the specified neuron(s).
 #'     If a vector of colour names is provided, the colours will be applied to the neurons in the order specified,
 #'     repeating from the beginning if there are more neurons than colours.
@@ -30,8 +36,9 @@ quick_nblast <- function(skid){
 #'     Behaves the same way as ncol.  Defaults to gray.
 #' @param valpha The alpha value(s) to use when plotting volume(s).
 #'     Behaves the same way as ncol and vcol.  Defaults to 0.5.
+#' @return Returns the neuron(s) retrieved from CATMAID
 #'
-#'@export
+#' @export
 #'
 #TODO - connectors option?
 plot_catmaid <- function(skid, volumes = NULL, ncol = NULL, vcol = NULL, valpha = NULL){#single skid as numeric, multiples in character vector
@@ -46,14 +53,18 @@ plot_catmaid <- function(skid, volumes = NULL, ncol = NULL, vcol = NULL, valpha 
 }
 
 
-#'Split a neuron at a particular node and return the 'downstream' section as a neuron object
-#'This does not actually split the neuron in CATMAID; split is only performed on the local neuron object.
+#' Split a neuron and return 'downstream' section
 #'
-#'@param skid Required; the skeleton ID of the neuron to split
-#'@param node Required; the ID of the node where the neuron should be split
-#'@return A \code{neuron} object representing the 'downstream' portion of the split neuron
+#' Split a neuron at a particular node and return the 'downstream' section as a new neuron object
 #'
-#'@export
+#' This does not actually split the neuron in CATMAID; split is only performed on the local neuron object.
+#'
+#' @param skid Required; the skeleton ID of the neuron to split
+#' @param node Required; the ID of the node where the neuron should be split
+#' @return A \code{neuron} object representing the 'downstream' portion of the split neuron
+#'
+#' @export
+#'
 split_neuron_local <- function(skid, node, return = "child"){#split local copy of a neuron at a particular node, and return result ('child' by default) as a neuron object
   neuron = catmaid::read.neuron.catmaid(skid)
   index = match(node, neuron$d$PointNo)#add error handling
@@ -81,7 +92,21 @@ split_neuron_local <- function(skid, node, return = "child"){#split local copy o
 
 
 
-connector_URL <- function(dfrow, skid, sid0, conn = FALSE){ #takes row of a data frame with columns for x, y, z, and (optionally) connector_id; skid set for neuron and sid0 for stack mirror
+#' Generate a CATMAID URL for a node or connector
+#'
+#' Simple method for generating a CATMAID URL pointing to a particular skeleton node or connector
+#'
+#' Requires the \code{catmaid.server} option to be set in .Rprofile
+#'
+#' @param dfrow Required; a single data frame row containing columns \code{x}, \code{y}, \code{z}, and (optionally) \code{connector_id} with CATMAID coordinates and the connector ID
+#' @param skid Required; the skid of the active skeleton
+#' @param sid0 Required; the ID of the desired stack mirror on your CATMAID server.  Found by generating a URL within CATMAID and picking out the sid0 param.
+#' @param conn Whether or not to specify an active connector ID in the URL.  Defaults to \code{FALSE}.
+#' @return A \code{character} string with the CATMAID URL.
+#'
+#' @export
+#'
+simple_catmaid_url <- function(dfrow, skid, sid0, conn = FALSE){ #takes row of a data frame with columns for x, y, z, and (optionally) connector_id; skid set for neuron and sid0 for stack mirror
   base = getOption('catmaid.server')
 
   catmaid_url = paste0(base, "?pid=1")

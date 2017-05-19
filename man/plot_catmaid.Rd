@@ -2,7 +2,7 @@
 % Please edit documentation in R/tracerutils.R
 \name{plot_catmaid}
 \alias{plot_catmaid}
-\title{Retrieve a neuron from CATMAID and plot it, along with one or more CATMAID volumes if desired}
+\title{Quickly plot neurons from CATMAID}
 \usage{
 plot_catmaid(skid, volumes = NULL, ncol = NULL, vcol = NULL,
   valpha = NULL)
@@ -10,7 +10,7 @@ plot_catmaid(skid, volumes = NULL, ncol = NULL, vcol = NULL,
 \arguments{
 \item{skid}{Required; the skeleton ID of the neuron in CATMAID. Can accept a vector with multiple SKIDs.}
 
-\item{volumes}{The names of the volumes in CATMAId to be plotted.  Defaults to NULL.}
+\item{volumes}{The names of the volumes in CATMAID to be plotted.  Defaults to NULL.}
 
 \item{ncol}{The colour(s) to use when plotting the specified neuron(s).
 If a vector of colour names is provided, the colours will be applied to the neurons in the order specified,
@@ -23,7 +23,10 @@ Behaves the same way as ncol.  Defaults to gray.}
 \item{valpha}{The alpha value(s) to use when plotting volume(s).
 Behaves the same way as ncol and vcol.  Defaults to 0.5.}
 }
+\value{
+Returns the neuron(s) retrieved from CATMAID
+}
 \description{
-Retrieve a neuron from CATMAID and plot it, along with one or more CATMAID volumes if desired
+Retrieve one or more neurons from CATMAID and plot them, along with one or more CATMAID volumes if desired
 }
 

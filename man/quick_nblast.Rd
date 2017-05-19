@@ -2,7 +2,7 @@
 % Please edit documentation in R/tracerutils.R
 \name{quick_nblast}
 \alias{quick_nblast}
-\title{NBLAST a neuron in CATMAID (FAFB) against the full flycircuit neuron list}
+\title{NBLAST a CATMAID neuron against the flycircuit data set}
 \usage{
 quick_nblast(skid)
 }
@@ -14,5 +14,8 @@ The full NBLAST results object
 }
 \description{
 NBLAST a neuron in CATMAID (FAFB) against the full flycircuit neuron list
+}
+\details{
+Requires the \code{flycircuit.datadir} option to be set and the \code{nat.default.neuronlist} option to be set to "dps" in .Rprofile
 }
 
