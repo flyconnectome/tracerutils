@@ -46,7 +46,14 @@ plot_catmaid <- function(skid, volumes = NULL, ncol = NULL, vcol = NULL, valpha 
 }
 
 
-
+#'Split a neuron at a particular node and return the 'downstream' section as a neuron object
+#'This does not actually split the neuron in CATMAID; split is only performed on the local neuron object.
+#'
+#'@param skid Required; the skeleton ID of the neuron to split
+#'@param node Required; the ID of the node where the neuron should be split
+#'@return A \code{neuron} object representing the 'downstream' portion of the split neuron
+#'
+#'@export
 split_neuron_local <- function(skid, node, return = "child"){#split local copy of a neuron at a particular node, and return result ('child' by default) as a neuron object
   neuron = catmaid::read.neuron.catmaid(skid)
   index = match(node, neuron$d$PointNo)#add error handling
@@ -64,7 +71,7 @@ split_neuron_local <- function(skid, node, return = "child"){#split local copy o
                BranchPoints = neuron$BranchPoints[neuron$BranchPoints %in% neuron.distal],
                EndPoints = neuron$EndPoints[neuron$EndPoints %in% neuron.distal],
                SegList = segs.new,
-               NeuronName = paste0("SKID ", skid, " split at node ", node, " - child"),
+               NeuronName = paste0("SKID ", skid, " downstream of node ", node),
                #...
                connectors = neuron$connectors[neuron$connectors$treenode_id %in% neuron.distal.points$PointNo,]
                #tags =
