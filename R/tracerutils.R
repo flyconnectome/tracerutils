@@ -1,21 +1,3 @@
-#-----SETUP-----
-
-catmaidURLs <- function(){
-  URLs = character(0)
-  names(URLs) = character(0)
-
-  URLs["volumes"] = "/1/volumes/"
-  URLs["skeletons"] = "/1/skeletons/"
-  URLs["analytics"] = "/1/analytics/skeletons"
-
-  return(URLs)
-}
-
-getEndpoint <- function(name){
-  return(catmaidURLs()[name])
-
-}
-
 #-----UTILITIES-----
 
 #' NBLAST a neuron in CATMAID (FAFB) against the full flycircuit neuron list
@@ -161,7 +143,7 @@ plotVolumes <- function(volumes, vcol, valpha){#plot multiple neuropil volumes a
 
 catmaidVolsAsDF <- function(){
 
-  vols = catmaid::catmaid_fetch(getEndpoint("volumes"))
+  vols = catmaid::catmaid_fetch("/1/volumes/")
   l = length(vols)
 
   comment = character(l)
