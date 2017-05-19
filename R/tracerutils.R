@@ -18,7 +18,6 @@ quick_nblast <- function(skid){
 
 
 
-
 #' Retrieve a neuron from CATMAID and plot it, along with one or more CATMAID volumes if desired
 #'
 #' @param skid Required; the skeleton ID of the neuron in CATMAID. Can accept a vector with multiple SKIDs.
@@ -46,6 +45,8 @@ plot_catmaid <- function(skid, volumes = NULL, ncol = NULL, vcol = NULL, valpha 
   invisible(neurons)#returned in case you want to do anything else with them, but not printed to console
 }
 
+
+
 split_neuron_local <- function(skid, node, return = "child"){#split local copy of a neuron at a particular node, and return result ('child' by default) as a neuron object
   neuron = catmaid::read.neuron.catmaid(skid)
   index = match(node, neuron$d$PointNo)#add error handling
@@ -71,7 +72,9 @@ split_neuron_local <- function(skid, node, return = "child"){#split local copy o
 
 }
 
-connector_URL <- function(dfrow){ #work into generic URL generator; specific to DL4 PN for now
+
+
+connector_URL <- function(dfrow, skid, sid0, conn = FALSE){ #takes row of a data frame with columns for x, y, z, and (optionally) connector_id; skid set for neuron and sid0 for stack mirror
   base = getOption('catmaid.server')
 
   catmaid_url = paste0(base, "?pid=1")
@@ -79,13 +82,16 @@ connector_URL <- function(dfrow){ #work into generic URL generator; specific to 
   catmaid_url = paste0(catmaid_url, "&yp=", dfrow["y"])
   catmaid_url = paste0(catmaid_url, "&xp=", dfrow["x"])
   catmaid_url = paste0(catmaid_url, "&tool=tracingtool")
-  catmaid_url = paste0(catmaid_url, "&active_skeleton_id=23829")
-  catmaid_url = paste0(catmaid_url, "&active_node_id=", dfrow["connector_id"])
-  catmaid_url = paste0(catmaid_url, "&sid0=9&s0=0")
+  catmaid_url = paste0(catmaid_url, "&active_skeleton_id=", skid)
+  if(con == TRUE){ catmaid_url = paste0(catmaid_url, "&active_node_id=", dfrow["connector_id"]) }
+  catmaid_url = paste0(catmaid_url, "&sid0=", sid0, "&s0=0")
 
   invisible(catmaid_url)
-
 }
+
+
+
+
 
 
 #-----INTERNAL METHODS-----
