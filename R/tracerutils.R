@@ -12,8 +12,13 @@
 #' @export
 #'
 quick_nblast <- function(skid){
-  if(!require("doMC")) install.packages("doMC")#TODO - multi-platform; doMC only works on Mac
-  doMC::registerDoMC(4)
+  if(!requireNamespace("doMC", quietly = TRUE)){
+    warning("The NBLAST search will not be parallelised without the 'doMC' package installed.  This might take a long time to complete.")
+  }
+  else{
+    doMC::registerDoMC(4)
+  }
+
   dps <<- nat::read.neuronlistfh(getOption("flycircuit.datadir"))
 
   library(nat.nblast)# workaround to nat.nblast issue #31

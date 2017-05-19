@@ -12,5 +12,6 @@ Imports:
     elmr,
     catmaid
 Suggests:
-    testthat
+    testthat,
+    doMC
 RoxygenNote: 5.0.1
