@@ -124,7 +124,7 @@ simple_catmaid_url <- function(dfrow, skid, sid0, conn = FALSE){ #takes row of a
   catmaid_url = paste0(catmaid_url, "&xp=", dfrow["x"])
   catmaid_url = paste0(catmaid_url, "&tool=tracingtool")
   catmaid_url = paste0(catmaid_url, "&active_skeleton_id=", skid)
-  if(con == TRUE){ catmaid_url = paste0(catmaid_url, "&active_node_id=", dfrow["connector_id"]) }
+  if(conn == TRUE){ catmaid_url = paste0(catmaid_url, "&active_node_id=", dfrow["connector_id"]) }
   catmaid_url = paste0(catmaid_url, "&sid0=", sid0, "&s0=0")
 
   invisible(catmaid_url)
