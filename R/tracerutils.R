@@ -6,12 +6,16 @@
 #'
 #' Requires the \code{flycircuit.datadir} option to be set and the \code{nat.default.neuronlist} option to be set to "dps" in .Rprofile
 #'
+#' @rdname tracerutils-deprecated
+#'
 #' @param skid The skeleton ID of the neuron in CATMAID
 #' @return The full NBLAST results object
 #'
 #' @export
 #'
 quick_nblast <- function(skid){
+  .Deprecated("nblast_fafb", "elmr", "quick_nblast is deprecated, please use elmr::nblast_fafb instead")
+
   if(!requireNamespace("doMC", quietly = TRUE)){
     warning("The NBLAST search will not be parallelised without the 'doMC' package installed.  This might take a long time to complete.")
   }
