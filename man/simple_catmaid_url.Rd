@@ -4,14 +4,16 @@
 \alias{simple_catmaid_url}
 \title{Generate a CATMAID URL for a node or connector}
 \usage{
-simple_catmaid_url(dfrow, skid, sid0, conn = FALSE)
+simple_catmaid_url(dfrow, skid, sid0 = 5, zoom = 0, conn = FALSE)
 }
 \arguments{
 \item{dfrow}{Required; a single data frame row containing columns \code{x}, \code{y}, \code{z}, and (optionally) \code{connector_id} with CATMAID coordinates and the connector ID}
 
 \item{skid}{Required; the skid of the active skeleton}
 
-\item{sid0}{Required; the ID of the desired stack mirror on your CATMAID server.  Found by generating a URL within CATMAID and picking out the sid0 param.}
+\item{sid0}{The ID of the desired stack mirror on your CATMAID server.  Found by generating a URL within CATMAID and picking out the \code{sid0} param.  Defaults to 5.}
+
+\item{zoom}{The desired zoom level (\code{s0} parameter) of the URL.  Defaults to 0.}
 
 \item{conn}{Whether or not to specify an active connector ID in the URL.  Defaults to \code{FALSE}.}
 }
