@@ -133,6 +133,24 @@ simple_catmaid_url <- function(dfrow, skid, sid0 = 5, zoom = 0, conn = FALSE){ #
 
 
 
+#' Open a new 3D plot and plot a brain surface
+#'
+#' Opens a new 3D viewer window (with pan), plots a brain volume, and adjusts the view angle.
+#'
+#' @param volume The brain or other surface object to plot.  Defaults to \code{FAFB.surf} from the \code{elmr} package
+#' @param col The colour to use for plotting the surface.  Default is gray.
+#' @param alpha The alpha value of the plotted surface.  Defaults to 0.1.
+#'
+#' @export
+#'
+new_3d_plot <- function(volume = elmr::FAFB.surf, col = "gray", alpha = 0.1){
+  nat::nopen3d()
+  if(!is.null(volume)) plot3d(volume, col = col, alpha = alpha)
+  nat::nview3d("frontal")
+}
+
+
+
 
 
 
