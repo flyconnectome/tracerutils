@@ -99,3 +99,40 @@ simple_catmaid_url <- function(dfrow, skid, sid0 = 5, zoom = 0, conn = FALSE){ #
 
   invisible(catmaid_url)
 }
+
+
+#' Finds the glomerulus associated with a PN
+#'
+#' Given a vector of skeleton IDs, this will find the glomerului associated with PNs, based on annotations in CATMAID.
+#'
+#' Requires the PN to be annotated with \code{glomerulus X} or \code{unknown glomerulus N} in CATMAID.  Annotations of the form \code{glomerulus X}
+#' will be prioritised over \code{unknown glomerulus N}, and if there are multiples they will be joined together with a forward slash.  If there are
+#' no results with either of these annotations, the string \code{"unknown"} will be returned in place of a glomerulus.
+#' Note that annotations of the form \code{glomerulus X right|left} are not considered.
+#'
+#' @param skids Required; an \code{integer} or \code{character} vector of skeleton IDs
+#' @return A \code{character} vector of glomeruli names
+#'
+#' @export
+#'
+find_glomeruli <- function(skids){
+  annotations = catmaid::catmaid_get_annotations_for_skeletons(skids)
+  annotations.glom = annotations[grepl("^glomerulus [A-Za-z0-9]+$", annotations$annotation),]
+  annotations.glom$glom = sapply(annotations.glom$annotation, function(a){ sub("glomerulus ", "", a) })
+  annotations.unknown_glom = annotations[grepl("^unknown glomerulus \\d+$", annotations$annotation),]
+  glomeruli = sapply(skids, function(s){
+    s.glom = paste(annotations.glom[annotations.glom$skid == s, "glom"], sep = "", collapse = "/")
+    s.unknown_glom = paste(annotations.unknown_glom[annotations.unknown_glom$skid == s, "annotation"], sep = "", collapse = "/")
+    if(nchar(s.glom) > 0){
+      s.glom
+    }
+    else if(nchar(s.unknown_glom) > 0){
+      s.unknown_glom
+    }
+    else{
+      "unknown"
+    }
+  })
+
+  return(glomeruli)
+}
