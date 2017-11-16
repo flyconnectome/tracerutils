@@ -116,7 +116,7 @@ simple_catmaid_url <- function(dfrow, skid, sid0 = 5, zoom = 0, conn = FALSE){ #
 #' @export
 #'
 find_glomeruli <- function(skids){
-  annotations = catmaid::catmaid_get_annotations_for_skeletons(skids)
+  annotations = catmaid::catmaid_get_annotations_for_skeletons(unique(skids))
   annotations.glom = annotations[grepl("^glomerulus [A-Za-z0-9]+$", annotations$annotation),]
   annotations.glom$glom = sapply(annotations.glom$annotation, function(a){ sub("glomerulus ", "", a) })
   annotations.unknown_glom = annotations[grepl("^unknown glomerulus \\d+$", annotations$annotation),]
