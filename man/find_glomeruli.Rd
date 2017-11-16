@@ -16,9 +16,9 @@ A \code{character} vector of glomeruli names
 Given a vector of skeleton IDs, this will find the glomerului associated with PNs, based on annotations in CATMAID.
 }
 \details{
-Requires the PN to be annotated with \code{glomerulus X} or \code{unknown glomerulus N} in CATMAID.  Annotations of the form \code{glomerulus X}
-will be prioritised over \code{unknown glomerulus N}, and if there are multiples they will be joined together with a forward slash.  If there are
+Requires the PN to be annotated with \code{glomerulus \emph{X}} or \code{unknown glomerulus \emph{N}} in CATMAID.  Annotations of the form \code{glomerulus \emph{X}}
+will be prioritised over \code{unknown glomerulus \emph{N}}, and if there are multiples they will be joined together with a forward slash.  If there are
 no results with either of these annotations, the string \code{"unknown"} will be returned in place of a glomerulus.
-Note that annotations of the form \code{glomerulus X right|left} are not considered.
+Note that annotations of the form \code{glomerulus \emph{X} right|left} are not considered.
 }
 
