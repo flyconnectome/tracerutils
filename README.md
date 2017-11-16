@@ -9,4 +9,4 @@ Functions for use with [rcatmaid](https://github.com/jefferis/rcatmaid), [nat](h
 The package is currently only compatible with macOS.
 
 ## Development
-This package is very much a work in progress.  It is largely untested, has quite a few known issues, and is likely to change significantly over the short term.  I would recommend that you don't make anything dependent on **tracerutils** until it is in a more stable state.
+This package is very much a work in progress.  It is largely untested, has a few known issues, and is likely to change significantly over the short to medium term.  I would recommend that you don't make anything critical dependent on **tracerutils** until it is in a more stable state, but it might be useful in your day-to-day work.
