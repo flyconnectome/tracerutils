@@ -1,4 +1,4 @@
-sample_connections(neuron, number = NULL, type = c("downstream", "upstream", "connector"), fileout = NULL, node.id = NULL, node.direction = c("downstream", "upstream"), volume = NULL){
+sample_connections <- function(neuron, number = NULL, type = c("downstream", "upstream", "connector"), fileout = NULL, node.id = NULL, node.direction = c("downstream", "upstream"), volume = NULL){
   type = match.arg(type)
 
   if(!is.null(node.id)){
@@ -36,7 +36,7 @@ sample_connections(neuron, number = NULL, type = c("downstream", "upstream", "co
     switch(type,
            downstream = {simple_catmaid_url(conn[s,], skid = conn[s, "partner_skid"], conn = FALSE)}
            ,upstream = {simple_catmaid_url(conn[s,], skid = conn[s, "partner_skid"], conn = FALSE)}
-           ,connector = { simple_catmaid_url(conn[s,], skid = neuron$skid, conn = TRUE) }
+           ,connector = {simple_catmaid_url(conn[s,], skid = neuron$skid, conn = TRUE)}
     )
   })
 
