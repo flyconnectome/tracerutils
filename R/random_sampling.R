@@ -2,7 +2,8 @@ sample_connections(neuron, number = NULL, type = c("downstream", "upstream", "co
   type = match.arg(type)
 
   if(!is.null(node.id)){
-    neuro = subset(neuron, distal_to(neuron, node.idx = node.id))
+    node.direction = match.arg(node.direction)
+    neuro = subset(neuron, distal_to(neuron, node.idx = node.id), invert = (node.direction == "upstream"))
     catmaid::copy_tags_connectors(old = neuron, new = neuro)
   }
   else{
