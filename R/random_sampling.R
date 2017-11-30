@@ -15,12 +15,13 @@ sample_connections(neuron, number = NULL, type = c("downstream", "upstream", "co
     catmaid::copy_tags_connectors(old = neuron, new = neuro)
   }
 
-  conn = catmaid::connectors(neuro)
+  conn = catmaid::connectors(neuro)#check pruning
 
+  #clean up this section
   switch(type,
-         downstream = {conn = conn[conn$prepost == 0,]}#NEED T) GET POSTSYNAPTIC IDS
-         ,upstream = {conn = conn[conn$prepost == 1,]}
-         ,connector = {conn = conn}
+         downstream = {conn = catmaid::catmaid_get_connector_table(neuron$skid, direction = "outgoing")}
+         ,upstream = {conn = catmaid::catmaid_get_connector_table(neuron$skid, direction = "incoming")}
+         ,connector = {conn = conn[conn$prepost == 0,]}
          )
   if (!is.null(number)){
     n = number
@@ -31,7 +32,13 @@ sample_connections(neuron, number = NULL, type = c("downstream", "upstream", "co
 
   sample = conn[sample.int(nrow(conn), n),]
 
-  sample$URL = sapply(1:nrow(sample), function(s){ simple_catmaid_url(conn[s,], skid = neuron$skid, conn = TRUE) })#ONLY NEURON SKID IF SAMPLING CONNECTORS
+  sample$URL = sapply(1:nrow(sample), function(s){
+    switch(type,
+           downstream = {simple_catmaid_url(conn[s,], skid = conn[s, "partner_skid"], conn = FALSE)}
+           ,upstream = {simple_catmaid_url(conn[s,], skid = conn[s, "partner_skid"], conn = FALSE)}
+           ,connector = { simple_catmaid_url(conn[s,], skid = neuron$skid, conn = TRUE) }
+    )
+  })
 
   if(!is.null(fileout)){
     write.csv(sample, file = fileout)
