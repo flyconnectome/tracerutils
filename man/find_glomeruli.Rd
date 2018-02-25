@@ -21,4 +21,3 @@ will be prioritised over \code{unknown glomerulus \emph{N}}, and if there are mu
 no results with either of these annotations, the string \code{"unknown"} will be returned in place of a glomerulus.
 Note that annotations of the form \code{glomerulus \emph{X} right|left} are not considered.
 }
-

@@ -10,4 +10,3 @@
 \description{
 Functional valence of different antennal lobe glomeruli
 }
-

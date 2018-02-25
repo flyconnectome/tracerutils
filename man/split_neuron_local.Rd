@@ -20,4 +20,3 @@ Split a neuron at a particular node and return the 'downstream' section as a new
 \details{
 This does not actually split the neuron in CATMAID; split is only performed on the local neuron object.
 }
-
