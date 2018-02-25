@@ -7,18 +7,32 @@
 split_neuron_local(skid, node, return = "child")
 }
 \arguments{
-\item{skid}{Required; the skeleton ID of the neuron to split}
+\item{skid}{Required; the skeleton ID of the neuron to split (passed on to
+\code{\link{catmaid_skids}})}
 
-\item{node}{Required; the ID of the node where the neuron should be split}
+\item{node}{Required; the ID of the node where the neuron should be split (or
+a string naming a tag)}
 
 \item{return}{FIXME: currently ignored}
 }
 \value{
-A \code{neuron} object representing the 'downstream' portion of the split neuron
+A \code{neuron} object representing the 'downstream' portion of the
+  split neuron
 }
 \description{
-Split a neuron at a particular node and return the 'downstream' section as a new neuron object
+Split a neuron at a particular node and return the 'downstream' section as a
+new neuron object
 }
 \details{
-This does not actually split the neuron in CATMAID; split is only performed on the local neuron object.
+This does not actually split the neuron in CATMAID; split is only performed
+on the local neuron object. If a string is used to specify the split
+\code{node} (rather than the CATMAID node id), it is matched against named
+tags present in the input neuron. There will be an error if this does not
+resolve to a single unique node.
+}
+\examples{
+\donttest{
+DL4.LH=split_neuron_local("glomerulus DL4 right", "SCHLEGEL_LH")
+plot(DL4.LH)
+}
 }

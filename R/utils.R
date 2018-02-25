@@ -33,40 +33,51 @@ quick_nblast <- function(skid){
 
 #' Split a neuron and return 'downstream' section
 #'
-#' Split a neuron at a particular node and return the 'downstream' section as a new neuron object
+#' Split a neuron at a particular node and return the 'downstream' section as a
+#' new neuron object
 #'
-#' This does not actually split the neuron in CATMAID; split is only performed on the local neuron object.
+#' This does not actually split the neuron in CATMAID; split is only performed
+#' on the local neuron object. If a string is used to specify the split
+#' \code{node} (rather than the CATMAID node id), it is matched against named
+#' tags present in the input neuron. There will be an error if this does not
+#' resolve to a single unique node.
 #'
-#' @param skid Required; the skeleton ID of the neuron to split
-#' @param node Required; the ID of the node where the neuron should be split
+#' @param skid Required; the skeleton ID of the neuron to split (passed on to
+#'   \code{\link{catmaid_skids}})
+#' @param node Required; the ID of the node where the neuron should be split (or
+#'   a string naming a tag)
 #' @param return FIXME: currently ignored
-#' @return A \code{neuron} object representing the 'downstream' portion of the split neuron
+#' @return A \code{neuron} object representing the 'downstream' portion of the
+#'   split neuron
 #'
 #' @export
-#'
+#' @examples
+#' \donttest{
+#' DL4.LH=split_neuron_local("glomerulus DL4 right", "SCHLEGEL_LH")
+#' plot(DL4.LH)
+#' }
+#' @importFrom catmaid read.neuron.catmaid catmaid_skids
+#' @importFrom nat prune_vertices
+#' @importFrom elmr distal_to
 split_neuron_local <- function(skid, node, return = "child"){#split local copy of a neuron at a particular node, and return result ('child' by default) as a neuron object
-  neuron = catmaid::read.neuron.catmaid(skid)
-  index = match(node, neuron$d$PointNo)#add error handling
-  neuron.distal = elmr::distal_to(neuron, index)
-  neuron.distal.points = neuron$d[neuron.distal,]
+  skid=catmaid_skids(skid, several.ok = FALSE)
+  neuron = read.neuron.catmaid(skid)
+  if(is.character('node')) {
+    tag=node
+    node=neuron[['tags']][[tag]]
+    if(!isTRUE(length(node)==1L)) {
+      stop("Unable to find unique node with the tag: ", tag)
+    }
+  }
+  neuron.distal = distal_to(neuron, node.pointno=node)
+  new=prune_vertices(neuron, neuron.distal, invert = T)
 
-  #child neuron
-  segs = sapply(neuron$SegList, function(x) all(x %in% neuron.distal))#add truncated partial segments
-  segs.old = segs.old = neuron$SegList[segs]
-  segs.new = segs.new = sapply(segs.old, function(x) sapply(x, function(y) y = match(neuron$d$PointNo[y], neuron.distal.points$PointNo)))
-  #tags = sapply(neuron$tags, function(x) x %in% neuron.distal.points$PointNo)
-  new = nat::neuron(d = neuron.distal.points,
-               NumPoints = nrow(neuron.distal.points),
-               StartPoint = 1,#check this
-               BranchPoints = neuron$BranchPoints[neuron$BranchPoints %in% neuron.distal],
-               EndPoints = neuron$EndPoints[neuron$EndPoints %in% neuron.distal],
-               SegList = segs.new,
-               NeuronName = paste0("SKID ", skid, " downstream of node ", node),
-               #...
-               connectors = neuron$connectors[neuron$connectors$treenode_id %in% neuron.distal.points$PointNo,]
-               #tags =
-               )
-
+  # give it a nice name and handle connectors
+  new$NeuronName = paste0("SKID ", skid, " downstream of node ", node)
+  old_connectors = catmaid::connectors(neuron)
+  new$connectors = old_connectors[old_connectors$treenode_id %in%
+                                    neuron$d[neuron.distal, "PointNo"], ]
+  new
 }
 
 
