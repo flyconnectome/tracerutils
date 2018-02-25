@@ -39,6 +39,7 @@ quick_nblast <- function(skid){
 #'
 #' @param skid Required; the skeleton ID of the neuron to split
 #' @param node Required; the ID of the node where the neuron should be split
+#' @param return FIXME: currently ignored
 #' @return A \code{neuron} object representing the 'downstream' portion of the split neuron
 #'
 #' @export
@@ -105,10 +106,10 @@ simple_catmaid_url <- function(dfrow, skid, sid0 = 5, zoom = 0, conn = FALSE){ #
 #'
 #' Given a vector of skeleton IDs, this will find the glomerului associated with PNs, based on annotations in CATMAID.
 #'
-#' Requires the PN to be annotated with \code{glomerulus \emph{X}} or \code{unknown glomerulus \emph{N}} in CATMAID.  Annotations of the form \code{glomerulus \emph{X}}
-#' will be prioritised over \code{unknown glomerulus \emph{N}}, and if there are multiples they will be joined together with a forward slash.  If there are
+#' Requires the PN to be annotated with \bold{glomerulus \emph{X}} or \bold{unknown glomerulus \emph{N}} in CATMAID.  Annotations of the form \bold{glomerulus \emph{X}}
+#' will be prioritised over \bold{unknown glomerulus \emph{N}}, and if there are multiples they will be joined together with a forward slash.  If there are
 #' no results with either of these annotations, the string \code{"unknown"} will be returned in place of a glomerulus.
-#' Note that annotations of the form \code{glomerulus \emph{X} right|left} are not considered.
+#' Note that annotations of the form \bold{glomerulus \emph{X} right|left} are not considered.
 #'
 #' @param skids Required; an \code{integer} or \code{character} vector of skeleton IDs
 #' @return A \code{character} vector of glomeruli names

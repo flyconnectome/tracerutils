@@ -10,6 +10,8 @@ split_neuron_local(skid, node, return = "child")
 \item{skid}{Required; the skeleton ID of the neuron to split}
 
 \item{node}{Required; the ID of the node where the neuron should be split}
+
+\item{return}{FIXME: currently ignored}
 }
 \value{
 A \code{neuron} object representing the 'downstream' portion of the split neuron
