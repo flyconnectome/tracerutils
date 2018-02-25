@@ -8,6 +8,7 @@ Description: Helpful functions for handling neurons traced from EM volumes.
 License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Depends: R (>= 2.10)
 Imports:
     elmr,
     catmaid,
