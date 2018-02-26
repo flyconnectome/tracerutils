@@ -29,4 +29,3 @@ Returns the neuron(s) retrieved from CATMAID
 \description{
 Retrieve one or more neurons from CATMAID and plot them, along with one or more CATMAID volumes if desired
 }
-

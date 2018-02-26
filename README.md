@@ -1,3 +1,5 @@
+[![Travis build status](https://travis-ci.org/flyconnectome/tracerutils.svg?branch=master)](https://travis-ci.org/flyconnectome/tracerutils)
+
 # tracerutils
 Functions for use with [rcatmaid](https://github.com/jefferis/rcatmaid), [nat](https://github.com/jefferis/nat), and [elmr](https://github.com/jefferis/elmr).  Intended to provide some shortcuts for common tasks like plotting neurons from CATMAID, running NBLAST, etc.
 
