@@ -15,7 +15,7 @@ sample_connections <- function(neuron, number = NULL, type = c("downstream", "up
     catmaid::copy_tags_connectors(old = neuron, new = neuro)
   }
 
-  conn = catmaid::connectors(neuro)#check pruning
+  conn = neuro$connectors#check pruning
 
   #clean up this section
   switch(type,
@@ -34,8 +34,8 @@ sample_connections <- function(neuron, number = NULL, type = c("downstream", "up
 
   sample$URL = sapply(1:nrow(sample), function(s){
     switch(type,
-           downstream = {simple_catmaid_url(conn[s,], skid = conn[s, "partner_skid"], conn = FALSE)}
-           ,upstream = {simple_catmaid_url(conn[s,], skid = conn[s, "partner_skid"], conn = FALSE)}
+           downstream = {simple_catmaid_url(conn[s,], skid = conn$partner_skid[s], conn = FALSE)}
+           ,upstream = {simple_catmaid_url(conn[s,], skid = conn$partner_skid[s], conn = FALSE)}
            ,connector = {simple_catmaid_url(conn[s,], skid = neuron$skid, conn = TRUE)}
     )
   })

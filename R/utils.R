@@ -81,11 +81,12 @@ split_neuron_local <- function(skid, node, return = "child"){#split local copy o
 #' @param sid0 The ID of the desired stack mirror on your CATMAID server.  Found by generating a URL within CATMAID and picking out the \code{sid0} param.  Defaults to 5.
 #' @param zoom The desired zoom level (\code{s0} parameter) of the URL.  Defaults to 0.
 #' @param conn Whether or not to specify an active connector ID in the URL.  Defaults to \code{FALSE}.
+#' @param treenode_id A specific treenode ID to set as the active node.  Useful if you are generating URLs for nodes postsynaptic to a particular skeleton.  Will be ignored if \code{conn} is set to \code{TRUE}.
 #' @return A \code{character} string with the CATMAID URL.
 #'
 #' @export
 #'
-simple_catmaid_url <- function(dfrow, skid, sid0 = 5, zoom = 0, conn = FALSE){ #takes row of a data frame with columns for x, y, z, and (optionally) connector_id; skid set for neuron and sid0 for stack mirror
+simple_catmaid_url <- function(dfrow, skid, sid0 = 5, zoom = 0, conn = FALSE, treenode_id = NULL){ #takes row of a data frame with columns for x, y, z, and (optionally) connector_id; skid set for neuron and sid0 for stack mirror
   base = getOption('catmaid.server')
 
   catmaid_url = paste0(base, "?pid=1")
@@ -95,6 +96,7 @@ simple_catmaid_url <- function(dfrow, skid, sid0 = 5, zoom = 0, conn = FALSE){ #
   catmaid_url = paste0(catmaid_url, "&tool=tracingtool")
   catmaid_url = paste0(catmaid_url, "&active_skeleton_id=", skid)
   if(conn == TRUE){ catmaid_url = paste0(catmaid_url, "&active_node_id=", dfrow["connector_id"]) }
+  else if(!is.null(treenode_id)){ catmaid_url = paste0(catmaid_url, "&active_node_id=", treenode_id) }
   catmaid_url = paste0(catmaid_url, "&sid0=", sid0, "&s0=", zoom)
 
   invisible(catmaid_url)
