@@ -16,4 +16,3 @@ new_3d_plot(volume = elmr::FAFB.surf, col = "gray", alpha = 0.1)
 \description{
 Opens a new 3D viewer window (with pan), plots a brain volume, and adjusts the view angle.
 }
-

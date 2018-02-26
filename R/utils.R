@@ -33,39 +33,51 @@ quick_nblast <- function(skid){
 
 #' Split a neuron and return 'downstream' section
 #'
-#' Split a neuron at a particular node and return the 'downstream' section as a new neuron object
+#' Split a neuron at a particular node and return the 'downstream' section as a
+#' new neuron object
 #'
-#' This does not actually split the neuron in CATMAID; split is only performed on the local neuron object.
+#' This does not actually split the neuron in CATMAID; split is only performed
+#' on the local neuron object. If a string is used to specify the split
+#' \code{node} (rather than the CATMAID node id), it is matched against named
+#' tags present in the input neuron. There will be an error if this does not
+#' resolve to a single unique node.
 #'
-#' @param skid Required; the skeleton ID of the neuron to split
-#' @param node Required; the ID of the node where the neuron should be split
-#' @return A \code{neuron} object representing the 'downstream' portion of the split neuron
+#' @param skid Required; the skeleton ID of the neuron to split (passed on to
+#'   \code{\link{catmaid_skids}})
+#' @param node Required; the ID of the node where the neuron should be split (or
+#'   a string naming a tag)
+#' @param return FIXME: currently ignored
+#' @return A \code{neuron} object representing the 'downstream' portion of the
+#'   split neuron
 #'
 #' @export
-#'
+#' @examples
+#' \donttest{
+#' DL4.LH=split_neuron_local("glomerulus DL4 right", "SCHLEGEL_LH")
+#' plot(DL4.LH)
+#' }
+#' @importFrom catmaid read.neuron.catmaid catmaid_skids
+#' @importFrom nat prune_vertices
+#' @importFrom elmr distal_to
 split_neuron_local <- function(skid, node, return = "child"){#split local copy of a neuron at a particular node, and return result ('child' by default) as a neuron object
-  neuron = catmaid::read.neuron.catmaid(skid)
-  index = match(node, neuron$d$PointNo)#add error handling
-  neuron.distal = elmr::distal_to(neuron, index)
-  neuron.distal.points = neuron$d[neuron.distal,]
+  skid=catmaid_skids(skid, several.ok = FALSE)
+  neuron = read.neuron.catmaid(skid)
+  if(is.character('node')) {
+    tag=node
+    node=neuron[['tags']][[tag]]
+    if(!isTRUE(length(node)==1L)) {
+      stop("Unable to find unique node with the tag: ", tag)
+    }
+  }
+  neuron.distal = distal_to(neuron, node.pointno=node)
+  new=prune_vertices(neuron, neuron.distal, invert = T)
 
-  #child neuron
-  segs = sapply(neuron$SegList, function(x) all(x %in% neuron.distal))#add truncated partial segments
-  segs.old = segs.old = neuron$SegList[segs]
-  segs.new = segs.new = sapply(segs.old, function(x) sapply(x, function(y) y = match(neuron$d$PointNo[y], neuron.distal.points$PointNo)))
-  #tags = sapply(neuron$tags, function(x) x %in% neuron.distal.points$PointNo)
-  new = nat::neuron(d = neuron.distal.points,
-               NumPoints = nrow(neuron.distal.points),
-               StartPoint = 1,#check this
-               BranchPoints = neuron$BranchPoints[neuron$BranchPoints %in% neuron.distal],
-               EndPoints = neuron$EndPoints[neuron$EndPoints %in% neuron.distal],
-               SegList = segs.new,
-               NeuronName = paste0("SKID ", skid, " downstream of node ", node),
-               #...
-               connectors = neuron$connectors[neuron$connectors$treenode_id %in% neuron.distal.points$PointNo,]
-               #tags =
-               )
-
+  # give it a nice name and handle connectors
+  new$NeuronName = paste0("SKID ", skid, " downstream of node ", node)
+  old_connectors = catmaid::connectors(neuron)
+  new$connectors = old_connectors[old_connectors$treenode_id %in%
+                                    neuron$d[neuron.distal, "PointNo"], ]
+  new
 }
 
 
@@ -105,10 +117,10 @@ simple_catmaid_url <- function(dfrow, skid, sid0 = 5, zoom = 0, conn = FALSE){ #
 #'
 #' Given a vector of skeleton IDs, this will find the glomerului associated with PNs, based on annotations in CATMAID.
 #'
-#' Requires the PN to be annotated with \code{glomerulus \emph{X}} or \code{unknown glomerulus \emph{N}} in CATMAID.  Annotations of the form \code{glomerulus \emph{X}}
-#' will be prioritised over \code{unknown glomerulus \emph{N}}, and if there are multiples they will be joined together with a forward slash.  If there are
+#' Requires the PN to be annotated with \bold{glomerulus \emph{X}} or \bold{unknown glomerulus \emph{N}} in CATMAID.  Annotations of the form \bold{glomerulus \emph{X}}
+#' will be prioritised over \bold{unknown glomerulus \emph{N}}, and if there are multiples they will be joined together with a forward slash.  If there are
 #' no results with either of these annotations, the string \code{"unknown"} will be returned in place of a glomerulus.
-#' Note that annotations of the form \code{glomerulus \emph{X} right|left} are not considered.
+#' Note that annotations of the form \bold{glomerulus \emph{X} right|left} are not considered.
 #'
 #' @param skids Required; an \code{integer} or \code{character} vector of skeleton IDs
 #' @return A \code{character} vector of glomeruli names

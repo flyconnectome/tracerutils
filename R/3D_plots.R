@@ -15,7 +15,7 @@
 #' @return Returns the neuron(s) retrieved from CATMAID
 #'
 #' @export
-#'
+#' @importFrom rgl plot3d
 #TODO - connectors option?
 plot_catmaid <- function(skid, volumes = NULL, ncol = NULL, vcol = NULL, valpha = NULL){#single skid as numeric, multiples in character vector
   #packages()
@@ -39,7 +39,7 @@ plot_catmaid <- function(skid, volumes = NULL, ncol = NULL, vcol = NULL, valpha 
 #' @param alpha The alpha value of the plotted surface.  Defaults to 0.1.
 #'
 #' @export
-#'
+#' @importFrom nat nopen3d nview3d
 new_3d_plot <- function(volume = elmr::FAFB.surf, col = "gray", alpha = 0.1){
   nat::nopen3d()
   if(!is.null(volume)) plot3d(volume, col = col, alpha = alpha)
@@ -51,6 +51,7 @@ new_3d_plot <- function(volume = elmr::FAFB.surf, col = "gray", alpha = 0.1){
 
 
 #-----INTERNAL METHODS-----
+#' @importFrom rgl triangles3d
 plotVolumes <- function(volumes, vcol, valpha, pid = 1){#plot multiple neuropil volumes at once in same space as CATMAID neurons - get volumes from catmaid sever?
   vols.df = catmaidVolsAsDF()
   volumes.ids = vols.df[match(volumes, vols.df$name), 'id']#preserves order, c.f. vols.df$name %in% volumes
