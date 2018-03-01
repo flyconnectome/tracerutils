@@ -40,7 +40,7 @@ sample_connections <- function(neuron, number = NULL, type = c("downstream", "up
   }
 
   if(!is.null(volume)){
-    neuro = nat::subset(neuro, nat::pointsinside(xyzmatrix(neuro$d), subset(elmr::FAFBNP.surf, volume)))
+    neuro = subset(neuro, nat::pointsinside(xyzmatrix(neuro$d), subset(elmr::FAFBNP.surf, volume)))
     neuro$connectors = neuron$connectors[neuron$connectors$treenode_id %in% neuro$d$PointNo,]
   }
 

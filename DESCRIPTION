@@ -8,17 +8,17 @@ Description: Helpful functions for handling neurons traced from EM volumes.
 License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Depends: R (>= 2.10)
+Depends:
+    R (>= 2.10)
 Imports:
     elmr,
     catmaid,
     nat,
-    rgl
+    rgl,
+    utils
 Suggests:
-    testthat,
-    doMC,
-    flycircuit
-RoxygenNote: 6.0.1
+    testthat
+RoxygenNote: 5.0.1
 Remotes: jefferis/nat,
     jefferis/elmr,
     jefferis/rcatmaid,
