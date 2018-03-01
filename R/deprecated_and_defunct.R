@@ -1,5 +1,5 @@
 #-----REMOVED FUNCTIONS-----
-
+#' Removed functions
 #' @name tracerutils-defunct
 NULL
 

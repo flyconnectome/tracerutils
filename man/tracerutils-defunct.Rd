@@ -3,7 +3,7 @@
 \name{tracerutils-defunct}
 \alias{quick_nblast}
 \alias{tracerutils-defunct}
-\title{NBLAST a CATMAID neuron against the flycircuit data set}
+\title{Removed functions}
 \usage{
 quick_nblast(skid)
 }
@@ -14,6 +14,8 @@ quick_nblast(skid)
 The full NBLAST results object
 }
 \description{
+Removed functions
+
 DEFUNCT - use \code{\link{nblast_fafb}}
 }
 \details{
