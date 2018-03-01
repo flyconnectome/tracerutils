@@ -32,7 +32,7 @@ sample_connections <- function(neuron, number = NULL, type = c("downstream", "up
 
   if(!is.null(node.id)){
     node.direction = match.arg(node.direction)
-    neuro = nat::subset(neuron, distal_to(neuron, node.pointno = node.id), invert = (node.direction == "upstream"))
+    neuro = subset(neuron, distal_to(neuron, node.pointno = node.id), invert = (node.direction == "upstream"))
     neuro$connectors = neuron$connectors[neuron$connectors$treenode_id %in% neuro$d$PointNo,]
   }
   else{
@@ -40,15 +40,15 @@ sample_connections <- function(neuron, number = NULL, type = c("downstream", "up
   }
 
   if(!is.null(volume)){
-    neuro = nat::subset(neuro, nat::pointsinside(xyzmatrix(neuro$d), subset(FAFBNP.surf, volume)))
+    neuro = nat::subset(neuro, nat::pointsinside(xyzmatrix(neuro$d), subset(elmr::FAFBNP.surf, volume)))
     neuro$connectors = neuron$connectors[neuron$connectors$treenode_id %in% neuro$d$PointNo,]
   }
 
   conn = neuro$connectors#check pruning
   if(plot){
     nat::nopen3d()
-    nat::plot3d(neuron, col = "gray", soma = T)
-    nat::plot3d(neuro, col = "cyan", lwd = 3, WithNodes = F, WithConnectors = F)
+    plot3d(neuron, col = "gray", soma = T)
+    plot3d(neuro, col = "cyan", lwd = 3, WithNodes = F, WithConnectors = F)
     rgl::points3d(xyzmatrix(conn), col = "red")
   }
 
