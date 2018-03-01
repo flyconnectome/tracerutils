@@ -4,7 +4,8 @@
 \alias{simple_catmaid_url}
 \title{Generate a CATMAID URL for a node or connector}
 \usage{
-simple_catmaid_url(dfrow, skid, sid0 = 5, zoom = 0, conn = FALSE)
+simple_catmaid_url(dfrow, skid, sid0 = 5, zoom = 0, conn = FALSE,
+  treenode_id = NULL)
 }
 \arguments{
 \item{dfrow}{Required; a single data frame row containing columns \code{x}, \code{y}, \code{z}, and (optionally) \code{connector_id} with CATMAID coordinates and the connector ID}
@@ -16,6 +17,8 @@ simple_catmaid_url(dfrow, skid, sid0 = 5, zoom = 0, conn = FALSE)
 \item{zoom}{The desired zoom level (\code{s0} parameter) of the URL.  Defaults to 0.}
 
 \item{conn}{Whether or not to specify an active connector ID in the URL.  Defaults to \code{FALSE}.}
+
+\item{treenode_id}{A specific treenode ID to set as the active node.  Useful if you are generating URLs for nodes postsynaptic to a particular skeleton.  Will be ignored if \code{conn} is set to \code{TRUE}.}
 }
 \value{
 A \code{character} string with the CATMAID URL.
@@ -26,3 +29,4 @@ Simple method for generating a CATMAID URL pointing to a particular skeleton nod
 \details{
 Requires the \code{catmaid.server} option to be set in .Rprofile
 }
+
