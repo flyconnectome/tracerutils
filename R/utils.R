@@ -31,7 +31,7 @@
 split_neuron_local <- function(skid, node, return = "child"){#split local copy of a neuron at a particular node, and return result ('child' by default) as a neuron object
   skid=catmaid_skids(skid, several.ok = FALSE)
   neuron = read.neuron.catmaid(skid)
-  if(is.character('node')) {
+  if(is.character(node)) {
     tag=node
     node=neuron[['tags']][[tag]]
     if(!isTRUE(length(node)==1L)) {
