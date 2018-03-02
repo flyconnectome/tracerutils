@@ -71,9 +71,9 @@ sample_connections <- function(neuron, number = NULL, type = c("downstream", "up
 
   sample$URL = sapply(1:nrow(sample), function(s){
     switch(type,
-           downstream = {simple_catmaid_url(conn[s,], skid = conn$post_skid[s], conn = FALSE, treenode_id = conn$post_node_id[s], xyz_columns = c("post_node_x", "post_node_y", "post_node_z"))}
-           ,upstream = {simple_catmaid_url(conn[s,], skid = conn$pre_skid[s], conn = FALSE, treenode_id = conn$pre_node_id[s], xyz_columns = c("pre_node_x", "pre_node_y", "pre_node_z"))}
-           ,connector = {simple_catmaid_url(conn[s,], skid = neuron$skid, conn = TRUE)}
+           downstream = {simple_catmaid_url(sample[s,], skid = sample$post_skid[s], conn = FALSE, treenode_id = sample$post_node_id[s], xyz_columns = c("post_node_x", "post_node_y", "post_node_z"))}
+           ,upstream = {simple_catmaid_url(sample[s,], skid = sample$pre_skid[s], conn = FALSE, treenode_id = sample$pre_node_id[s], xyz_columns = c("pre_node_x", "pre_node_y", "pre_node_z"))}
+           ,connector = {simple_catmaid_url(sample[s,], skid = neuron$skid, conn = TRUE)}
     )
   })
 
