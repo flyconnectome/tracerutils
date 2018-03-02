@@ -1,36 +1,5 @@
 #-----UTILITIES-----
 
-#' NBLAST a CATMAID neuron against the flycircuit data set
-#'
-#' NBLAST a neuron in CATMAID (FAFB) against the full flycircuit neuron list
-#'
-#' Requires the \code{flycircuit.datadir} option to be set and the \code{nat.default.neuronlist} option to be set to "dps" in .Rprofile
-#'
-#' @rdname tracerutils-deprecated
-#'
-#' @param skid The skeleton ID of the neuron in CATMAID
-#' @return The full NBLAST results object
-#'
-#' @export
-#'
-quick_nblast <- function(skid){
-  .Deprecated("nblast_fafb", "elmr", "quick_nblast is deprecated, please use elmr::nblast_fafb instead")
-
-  if(!requireNamespace("doMC", quietly = TRUE)){
-    warning("The NBLAST search will not be parallelised without the 'doMC' package installed.  This might take a long time to complete.")
-  }
-  else{
-    doMC::registerDoMC(4)
-  }
-
-  dps <<- nat::read.neuronlistfh(getOption("flycircuit.datadir"))
-
-  library(nat.nblast)# workaround to nat.nblast issue #31
-  results = elmr::nblast_fafb(skid)
-}
-
-
-
 #' Split a neuron and return 'downstream' section
 #'
 #' Split a neuron at a particular node and return the 'downstream' section as a
@@ -62,7 +31,7 @@ quick_nblast <- function(skid){
 split_neuron_local <- function(skid, node, return = "child"){#split local copy of a neuron at a particular node, and return result ('child' by default) as a neuron object
   skid=catmaid_skids(skid, several.ok = FALSE)
   neuron = read.neuron.catmaid(skid)
-  if(is.character('node')) {
+  if(is.character(node)) {
     tag=node
     node=neuron[['tags']][[tag]]
     if(!isTRUE(length(node)==1L)) {
@@ -88,25 +57,28 @@ split_neuron_local <- function(skid, node, return = "child"){#split local copy o
 #'
 #' Requires the \code{catmaid.server} option to be set in .Rprofile
 #'
-#' @param dfrow Required; a single data frame row containing columns \code{x}, \code{y}, \code{z}, and (optionally) \code{connector_id} with CATMAID coordinates and the connector ID
+#' @param dfrow Required; a single data frame row containing columns of xyz coordinates and (optionally) \code{connector_id} with CATMAID coordinates and the connector ID
 #' @param skid Required; the skid of the active skeleton
 #' @param sid0 The ID of the desired stack mirror on your CATMAID server.  Found by generating a URL within CATMAID and picking out the \code{sid0} param.  Defaults to 5.
 #' @param zoom The desired zoom level (\code{s0} parameter) of the URL.  Defaults to 0.
 #' @param conn Whether or not to specify an active connector ID in the URL.  Defaults to \code{FALSE}.
+#' @param treenode_id A specific treenode ID to set as the active node.  Useful if you are generating URLs for nodes postsynaptic to a particular skeleton.  Will be ignored if \code{conn} is set to \code{TRUE}.
+#' @param xyz_columns A character vector specifying the names of the columns containing x, y, and z coordinates.  Defaults to \code{c("x", "y", "z")}.
 #' @return A \code{character} string with the CATMAID URL.
 #'
 #' @export
 #'
-simple_catmaid_url <- function(dfrow, skid, sid0 = 5, zoom = 0, conn = FALSE){ #takes row of a data frame with columns for x, y, z, and (optionally) connector_id; skid set for neuron and sid0 for stack mirror
+simple_catmaid_url <- function(dfrow, skid, sid0 = 5, zoom = 0, conn = FALSE, treenode_id = NULL, xyz_columns = c("x", "y", "z")){ #takes row of a data frame with columns for x, y, z, and (optionally) connector_id; skid set for neuron and sid0 for stack mirror
   base = getOption('catmaid.server')
 
   catmaid_url = paste0(base, "?pid=1")
-  catmaid_url = paste0(catmaid_url, "&zp=", dfrow["z"])
-  catmaid_url = paste0(catmaid_url, "&yp=", dfrow["y"])
-  catmaid_url = paste0(catmaid_url, "&xp=", dfrow["x"])
+  catmaid_url = paste0(catmaid_url, "&xp=", dfrow[xyz_columns[1]])
+  catmaid_url = paste0(catmaid_url, "&yp=", dfrow[xyz_columns[2]])
+  catmaid_url = paste0(catmaid_url, "&zp=", dfrow[xyz_columns[3]])
   catmaid_url = paste0(catmaid_url, "&tool=tracingtool")
   catmaid_url = paste0(catmaid_url, "&active_skeleton_id=", skid)
   if(conn == TRUE){ catmaid_url = paste0(catmaid_url, "&active_node_id=", dfrow["connector_id"]) }
+  else if(!is.null(treenode_id)){ catmaid_url = paste0(catmaid_url, "&active_node_id=", treenode_id) }
   catmaid_url = paste0(catmaid_url, "&sid0=", sid0, "&s0=", zoom)
 
   invisible(catmaid_url)
