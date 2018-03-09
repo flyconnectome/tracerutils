@@ -44,20 +44,31 @@ sample_connections <- function(neuron, number = NULL, type = c("downstream", "up
     neuro$connectors = neuron$connectors[neuron$connectors$treenode_id %in% neuro$d$PointNo,]
   }
 
-  conn = neuro$connectors#check pruning
+  #conn = neuro$connectors#check pruning
   if(plot){
     nat::nopen3d()
     plot3d(neuron, col = "gray", soma = T)
     plot3d(neuro, col = "cyan", lwd = 3, WithNodes = F, WithConnectors = F)
-    rgl::points3d(xyzmatrix(conn), col = "red")
+    #rgl::points3d(xyzmatrix(conn), col = "red")
   }
 
 
-  #catmaid API is actually returning treenode_id on query skeleton rather than partner; use of catmaid_get_connectors_between is a workaround
+  conn = NULL
   switch(type,
-         downstream = {conn = catmaid::catmaid_get_connectors_between(pre_skids = neuron$skid)}
-         ,upstream = {conn = catmaid::catmaid_get_connectors_between(post_skids = neuron$skid)}
-         ,connector = {conn = conn[conn$prepost == 0,]}
+         downstream = {
+            conn = catmaid::catmaid_get_connectors_between(pre_skids = neuron$skid)
+            conn = conn[conn$connector_id %in% neuro$connectors$connector_id,]
+            rgl::points3d(conn[, c("connector_x", "connector_y", "connector_z")], col = "red")
+           }
+         ,upstream = {
+            conn = catmaid::catmaid_get_connectors_between(post_skids = neuron$skid)
+            conn = conn[conn$connector_id %in% neuro$connectors$connector_id,]
+            rgl::points3d(conn[, c("connector_x", "connector_y", "connector_z")], col = "red")
+           }
+         ,connector = {
+            conn = neuro$connectors[neuro$connectors$prepost == 0,]
+            rgl::points3d(xyzmatrix(conn), col = "red")
+           }
          )
   if (!is.null(number)){
     n = number
@@ -65,6 +76,9 @@ sample_connections <- function(neuron, number = NULL, type = c("downstream", "up
   else{
     n = nrow(conn)
   }
+
+
+
 
   sample = conn[sample.int(nrow(conn), n),]
 
