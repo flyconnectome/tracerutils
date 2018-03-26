@@ -44,12 +44,11 @@ sample_connections <- function(neuron, number = NULL, type = c("downstream", "up
     neuro$connectors = neuron$connectors[neuron$connectors$treenode_id %in% neuro$d$PointNo,]
   }
 
-  #conn = neuro$connectors#check pruning
+
   if(plot){
     nat::nopen3d()
     plot3d(neuron, col = "gray", soma = T)
     plot3d(neuro, col = "cyan", lwd = 3, WithNodes = F, WithConnectors = F)
-    #rgl::points3d(xyzmatrix(conn), col = "red")
   }
 
 
