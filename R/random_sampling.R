@@ -58,16 +58,16 @@ sample_connections <- function(neuron, number = NULL, type = c("downstream", "up
          downstream = {
             conn = catmaid::catmaid_get_connectors_between(pre_skids = neuron$skid)
             conn = conn[conn$connector_id %in% neuro$connectors$connector_id,]
-            rgl::points3d(conn[, c("connector_x", "connector_y", "connector_z")], col = "red")
+            if(plot) rgl::points3d(conn[, c("connector_x", "connector_y", "connector_z")], col = "red")
            }
          ,upstream = {
             conn = catmaid::catmaid_get_connectors_between(post_skids = neuron$skid)
             conn = conn[conn$connector_id %in% neuro$connectors$connector_id,]
-            rgl::points3d(conn[, c("connector_x", "connector_y", "connector_z")], col = "red")
+            if(plot) rgl::points3d(conn[, c("connector_x", "connector_y", "connector_z")], col = "red")
            }
          ,connector = {
             conn = neuro$connectors[neuro$connectors$prepost == 0,]
-            rgl::points3d(xyzmatrix(conn), col = "red")
+            if(plot) rgl::points3d(xyzmatrix(conn), col = "red")
            }
          )
   if (!is.null(number)){
