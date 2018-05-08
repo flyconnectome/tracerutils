@@ -9,16 +9,16 @@
 #'
 #' @export
 #'
-#' @importFrom elmr FCWBNP.surf FAFB.surf fetchn_fafb
+#' @importFrom elmr fetchn_fafb
 #' @importFrom catmaid read.neurons.catmaid
-#' @importFrom nat pointsinside subset
+#' @importFrom nat pointsinside
 synapses_per_neuropil <- function(skids = NULL, neurons = NULL, reference = c("FAFB", "FCWB")){#TODO - automatic skid/neuron detection, expand to any template brain with neuropil segmentation
 
   if(missing(skids) & missing(neurons)){ stop("At least one skeleton ID or neuron must be provided.") }
   reference = match.arg(reference)
 
-  if(reference == "FCWB"){ neuropils = FCWBNP.surf$RegionList }
-  else{ neuropils = FAFBNP.surf$RegionList }
+  if(reference == "FCWB"){ neuropils = elmr::FCWBNP.surf$RegionList }
+  else{ neuropils = elmr::FAFBNP.surf$RegionList }
 
   if (missing(neurons)){
     if(reference == "FCWB"){ neurons = fetchn_fafb(skids, mirror = FALSE, reference = FCWB) }
@@ -47,8 +47,8 @@ synapses_per_neuropil <- function(skids = NULL, neurons = NULL, reference = c("F
 }
 
 INTERNAL_count_synapses_in_mesh <- function(connectors, neuropil, reference){
-  if(reference == "FCWB"){ ref.brain = FCWBNP.surf }#doesn't work as an ifelse?
-  else{ ref.brain = FAFBNP.surf }
+  if(reference == "FCWB"){ ref.brain = elmr::FCWBNP.surf }#doesn't work as an ifelse?
+  else{ ref.brain = elmr::FAFBNP.surf }
   tf = pointsinside(connectors[,c("x", "y", "z")], subset(ref.brain, neuropil))
   n = sum(tf, na.rm = TRUE)
   invisible(n)
