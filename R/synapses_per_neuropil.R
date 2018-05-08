@@ -2,7 +2,7 @@
 #'
 #' @param skids A list of skeleton IDs; required if \code{neurons} is not provided.  Will only be used if \code{neurons} is not provided.
 #' @param neurons A neuron list; required if \code{skids} is not provided.
-#' @reference The name of a reference brain to use.  Currently accepts \code{"FAFB"}, or \code{"FCWB"}; defaults to \code{"FAFB"}.
+#' @param reference The name of a reference brain to use.  Currently accepts \code{"FAFB"}, or \code{"FCWB"}; defaults to \code{"FAFB"}.
 #'
 #' @return Returns a list containing one data frame for each neuron/skeleton ID provided.
 #' Each data frame will contain a row for each neuropil, with two columns indicating the number of outgoing and incoming synapses that the neuron has in that region.
@@ -21,7 +21,7 @@ synapses_per_neuropil <- function(skids = NULL, neurons = NULL, reference = c("F
   else{ neuropils = elmr::FAFBNP.surf$RegionList }
 
   if (missing(neurons)){
-    if(reference == "FCWB"){ neurons = fetchn_fafb(skids, mirror = FALSE, reference = FCWB) }
+    if(reference == "FCWB"){ neurons = fetchn_fafb(skids, mirror = FALSE, reference = elmr::FCWB) }
     else{ neurons = read.neurons.catmaid(skids) }
   }
 

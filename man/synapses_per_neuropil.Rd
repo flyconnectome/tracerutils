@@ -11,6 +11,8 @@ synapses_per_neuropil(skids = NULL, neurons = NULL, reference = c("FAFB",
 \item{skids}{A list of skeleton IDs; required if \code{neurons} is not provided.  Will only be used if \code{neurons} is not provided.}
 
 \item{neurons}{A neuron list; required if \code{skids} is not provided.}
+
+\item{reference}{The name of a reference brain to use.  Currently accepts \code{"FAFB"}, or \code{"FCWB"}; defaults to \code{"FAFB"}.}
 }
 \value{
 Returns a list containing one data frame for each neuron/skeleton ID provided.
