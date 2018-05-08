@@ -8,6 +8,10 @@
 #' Each data frame will contain a row for each neuropil, with two columns indicating the number of outgoing and incoming synapses that the neuron has in that region.
 #'
 #' @export
+#'
+#' @importFrom elmr FCWBNP.surf FAFBNP.surf fetchn_fafb
+#' @importFrom catmaid read.neurons.catmaid
+#' @importFrom nat pointsinside subset
 synapses_per_neuropil <- function(skids = NULL, neurons = NULL, reference = c("FAFB", "FCWB")){#TODO - automatic skid/neuron detection, expand to any template brain with neuropil segmentation
 
   if(missing(skids) & missing(neurons)){ stop("At least one skeleton ID or neuron must be provided.") }
