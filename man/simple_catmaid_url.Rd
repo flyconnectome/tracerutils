@@ -31,4 +31,3 @@ Simple method for generating a CATMAID URL pointing to a particular skeleton nod
 \details{
 Requires the \code{catmaid.server} option to be set in .Rprofile
 }
-

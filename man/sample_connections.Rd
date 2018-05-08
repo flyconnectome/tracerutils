@@ -40,4 +40,3 @@ The units sampled can be outgoing connections ("downstream), incoming connection
 Optionally, the sample can be limited to a certain number of connections or synapses, or constrained to the section of a neuron either within a
 neuropil or up-/downstream of a particular node.
 }
-
