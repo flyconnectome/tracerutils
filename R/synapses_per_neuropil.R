@@ -17,11 +17,11 @@ synapses_per_neuropil <- function(skids = NULL, neurons = NULL, reference = c("F
   if(missing(skids) & missing(neurons)){ stop("At least one skeleton ID or neuron must be provided.") }
   reference = match.arg(reference)
 
-  if(reference == "FCWB"){ neuropils = elmr::FCWBNP.surf$RegionList }
+  if(reference == "FCWB"){ neuropils = nat.flybrains::FCWBNP.surf$RegionList }
   else{ neuropils = elmr::FAFBNP.surf$RegionList }
 
   if (missing(neurons)){
-    if(reference == "FCWB"){ neurons = fetchn_fafb(skids, mirror = FALSE, reference = elmr::FCWB) }
+    if(reference == "FCWB"){ neurons = fetchn_fafb(skids, mirror = FALSE, reference = nat.flybrains::FCWB) }
     else{ neurons = read.neurons.catmaid(skids) }
   }
 
@@ -47,7 +47,7 @@ synapses_per_neuropil <- function(skids = NULL, neurons = NULL, reference = c("F
 }
 
 INTERNAL_count_synapses_in_mesh <- function(connectors, neuropil, reference){
-  if(reference == "FCWB"){ ref.brain = elmr::FCWBNP.surf }#doesn't work as an ifelse?
+  if(reference == "FCWB"){ ref.brain = nat.flybrains::FCWBNP.surf }
   else{ ref.brain = elmr::FAFBNP.surf }
   tf = pointsinside(connectors[,c("x", "y", "z")], subset(ref.brain, neuropil))
   n = sum(tf, na.rm = TRUE)
