@@ -10,30 +10,38 @@
 #' @export
 #'
 #' @importFrom elmr fetchn_fafb
-#' @importFrom catmaid read.neurons.catmaid
+#' @importFrom catmaid connectors
 #' @importFrom nat pointsinside
 synapses_per_neuropil <- function(skids = NULL, neurons = NULL, reference = c("FAFB", "FCWB")){#TODO - automatic skid/neuron detection, expand to any template brain with neuropil segmentation
 
   if(missing(skids) & missing(neurons)){ stop("At least one skeleton ID or neuron must be provided.") }
+
   reference = match.arg(reference)
 
-  tb = if(reference == "FCWB"){ nat.flybrains::FCWB } else{ elmr::FAFB }
+  if(missing(neurons)){
+    tb = if(reference == "FCWB"){ nat.flybrains::FCWB } else{ elmr::FAFB }
+    neurons = fetchn_fafb(skids, mirror = FALSE, reference = tb)
+  }
+
   surf = if(reference == "FCWB"){ nat.flybrains::FCWBNP.surf } else{ elmr::FAFBNP.surf }
   neuropils = surf$RegionList
+  neurons.connectors = connectors(neurons)
 
-  if (missing(neurons))
-    neurons = fetchn_fafb(skids, mirror = FALSE, reference = tb)
+  summaries = sapply(names(neurons),
+                     function(s){
+                        neuron.outgoing = subset(neurons.connectors, skid == s & prepost == 0)
+                        neuron.incoming = subset(neurons.connectors, skid == s & prepost == 1)
 
-  sapply(neurons, function(neuron){
-    neuron.outgoing = neuron$connectors[neuron$connectors$prepost == 0,]
-    neuron.incoming = neuron$connectors[neuron$connectors$prepost == 1,]
+                        outgoing = sapply(neuropils, function(x){ if(!is.null(neuron.outgoing)){ INTERNAL_count_synapses_in_mesh(neuron.outgoing, x, surf)} else{ 0 } })
+                        incoming = sapply(neuropils, function(x){ if(!is.null(neuron.incoming)){ INTERNAL_count_synapses_in_mesh(neuron.incoming, x, surf)} else{ 0 } })
 
-    outgoing = sapply(neuropils, function(x){ if(!is.null(neuron.outgoing)){ INTERNAL_count_synapses_in_mesh(neuron.outgoing, x, surf)} else{ 0 } })
-    incoming = sapply(neuropils, function(x){ if(!is.null(neuron.incoming)){ INTERNAL_count_synapses_in_mesh(neuron.incoming, x, surf)} else{ 0 } })
+                        summary = data.frame(outgoing = outgoing, incoming = incoming)#neuropils given as row names from sapply
+                      },
+                      simplify = F
+                    )
 
-    summary = data.frame(outgoing = outgoing, incoming = incoming)#neuropils given as row names from sapply
-   }, simplify = F)
-  }
+  return(summaries)
+}
 
 INTERNAL_count_synapses_in_mesh <- function(connectors, neuropil, surf){
   tf = pointsinside(connectors[,c("x", "y", "z")], subset(surf, neuropil))
