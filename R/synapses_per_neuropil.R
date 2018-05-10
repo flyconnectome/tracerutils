@@ -1,6 +1,6 @@
 #' Count the number of synapses one or more neurons make in each neuropil volume
 #'
-#' @param skids A list of skeleton IDs; required if \code{neurons} is not provided.  Will only be used if \code{neurons} is not provided.
+#' @param skids A vector of skeleton IDs or an annotation query; required if \code{neurons} is not provided.  Will only be used if \code{neurons} is not provided.
 #' @param neurons A neuron list; required if \code{skids} is not provided.
 #' @param reference The name of a reference brain to use.  Currently accepts \code{"FAFB"}, or \code{"FCWB"}; defaults to \code{"FAFB"}.
 #'
