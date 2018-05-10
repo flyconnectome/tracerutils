@@ -17,8 +17,8 @@ synapses_per_neuropil <- function(skids = NULL, neurons = NULL, reference = c("F
   if(missing(skids) & missing(neurons)){ stop("At least one skeleton ID or neuron must be provided.") }
   reference = match.arg(reference)
 
-  tb <- if(reference == "FCWB") nat.flybrains::FCWB else elmr::FAFB
-  surf <- if(reference == "FCWB") nat.flybrains::FCWBNP.surf else elmr::FAFBNP.surf
+  tb = if(reference == "FCWB"){ nat.flybrains::FCWB } else{ elmr::FAFB }
+  surf = if(reference == "FCWB"){ nat.flybrains::FCWBNP.surf } else{ elmr::FAFBNP.surf }
   neuropils = surf$RegionList
 
   if (missing(neurons))
@@ -28,15 +28,15 @@ synapses_per_neuropil <- function(skids = NULL, neurons = NULL, reference = c("F
     neuron.outgoing = neuron$connectors[neuron$connectors$prepost == 0,]
     neuron.incoming = neuron$connectors[neuron$connectors$prepost == 1,]
 
-    outgoing = sapply(neuropils, function(x){if(!is.null(neuron.outgoing)){ INTERNAL_count_synapses_in_mesh(neuron.outgoing, x, surf)} else{ 0 }})
-    incoming = sapply(neuropils, function(x){if(!is.null(neuron.incoming)){ INTERNAL_count_synapses_in_mesh(neuron.incoming, x, surf)} else{ 0 }})
+    outgoing = sapply(neuropils, function(x){ if(!is.null(neuron.outgoing)){ INTERNAL_count_synapses_in_mesh(neuron.outgoing, x, surf)} else{ 0 } })
+    incoming = sapply(neuropils, function(x){ if(!is.null(neuron.incoming)){ INTERNAL_count_synapses_in_mesh(neuron.incoming, x, surf)} else{ 0 } })
 
     summary = data.frame(outgoing = outgoing, incoming = incoming)#neuropils given as row names from sapply
-  }, simplify = F)
-}
+   }, simplify = F)
+  }
 
 INTERNAL_count_synapses_in_mesh <- function(connectors, neuropil, surf){
   tf = pointsinside(connectors[,c("x", "y", "z")], subset(surf, neuropil))
   n = sum(tf, na.rm = TRUE)
-  invisible(n)
+  return(n)
 }
