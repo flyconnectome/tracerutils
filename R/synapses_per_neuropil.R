@@ -44,6 +44,7 @@ synapses_per_neuropil <- function(skids = NULL, neurons = NULL, reference = c("F
 }
 
 INTERNAL_count_synapses_in_mesh <- function(connectors, neuropil, surf){
+  if(is.null(connectors) | nrow(connectors) == 0){ return(0) }
   tf = pointsinside(connectors[,c("x", "y", "z")], subset(surf, neuropil))
   n = sum(tf, na.rm = TRUE)
   return(n)
