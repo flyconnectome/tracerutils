@@ -10,7 +10,7 @@
 #' @export
 #'
 #' @importFrom elmr fetchn_fafb
-#' @importFrom catmaid read.neurons.catmaid connectors
+#' @importFrom catmaid read.neurons.catmaid
 #' @importFrom nat pointsinside
 synapses_per_neuropil <- function(skids = NULL, neurons = NULL, reference = c("FAFB", "FCWB")){#TODO - automatic skid/neuron detection, expand to any template brain with neuropil segmentation
 
@@ -25,19 +25,18 @@ synapses_per_neuropil <- function(skids = NULL, neurons = NULL, reference = c("F
     neurons = fetchn_fafb(skids, mirror = FALSE, reference = tb)
 
   sapply(neurons, function(neuron){
-    outgoing = sapply(neuropils, function(x) INTERNAL_count_synapses_in_mesh(connectors(neuron), x, surf, prepost=0))
-    incoming = sapply(neuropils, function(x) INTERNAL_count_synapses_in_mesh(connectors(neuron), x, surf, prepost=1))
-    #neuropils given as row names from sapply
-    data.frame(outgoing = outgoing, incoming = incoming)
+    neuron.outgoing = neuron$connectors[neuron$connectors$prepost == 0,]
+    neuron.incoming = neuron$connectors[neuron$connectors$prepost == 1,]
+
+    outgoing = sapply(neuropils, function(x){if(!is.null(neuron.outgoing)){ INTERNAL_count_synapses_in_mesh(neuron.outgoing, x, surf)} else{ 0 }})
+    incoming = sapply(neuropils, function(x){if(!is.null(neuron.incoming)){ INTERNAL_count_synapses_in_mesh(neuron.incoming, x, surf)} else{ 0 }})
+
+    summary = data.frame(outgoing = outgoing, incoming = incoming)#neuropils given as row names from sapply
   }, simplify = F)
 }
 
-INTERNAL_count_synapses_in_mesh <- function(connectors, neuropil, surf, prepost){
-  if(is.null(connectors)) return(0)
-  prepost=match.arg(prepost, choices = 0:1)
-  connectors=connectors[connectors$prepost==prepost,]
-  if(nrow(connectors)==0) return(0)
+INTERNAL_count_synapses_in_mesh <- function(connectors, neuropil, surf){
   tf = pointsinside(connectors[,c("x", "y", "z")], subset(surf, neuropil))
   n = sum(tf, na.rm = TRUE)
-  n
+  invisible(n)
 }
