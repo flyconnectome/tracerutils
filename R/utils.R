@@ -11,12 +11,13 @@
 #' tags present in the input neuron. There will be an error if this does not
 #' resolve to a single unique node.
 #'
-#' @param skid Required; the skeleton ID of the neuron to split (passed on to
+#' @param skid Required unless \code{neuron} is provided; the skeleton ID of the neuron to split (passed on to
 #'   \code{\link{catmaid_skids}})
+#' @param neuron Required unless \code{skid} is provided; a \code{neuron} object to split
 #' @param node Required; the ID of the node where the neuron should be split (or
 #'   a string naming a tag)
-#' @param return FIXME: currently ignored
-#' @return A \code{neuron} object representing the 'downstream' portion of the
+#' @param return Which part of the split neuron to return (\code{downstream} or \code{upstream}). Defaults to \code{downstream}.
+#' @return A \code{neuron} object representing the specified portion of the
 #'   split neuron
 #'
 #' @export
@@ -28,9 +29,15 @@
 #' @importFrom catmaid read.neuron.catmaid catmaid_skids
 #' @importFrom nat prune_vertices
 #' @importFrom elmr distal_to
-split_neuron_local <- function(skid, node, return = "child"){#split local copy of a neuron at a particular node, and return result ('child' by default) as a neuron object
-  skid=catmaid_skids(skid, several.ok = FALSE)
-  neuron = read.neuron.catmaid(skid)
+split_neuron_local <- function(skid = NULL, neuron = NULL, node, return = c("downstream", "upstream")){#consider possibility of returning both as neuron list?
+  if(missing(skid) & missing(neuron)){ stop("A skeleton ID or neuron must be provided.") }
+  return = match.arg(return)
+
+  if(!missing(skid)){ skid=catmaid_skids(skid, several.ok = FALSE) }
+  if(missing(neuron)){ neuron = read.neuron.catmaid(skid) }
+  if(missing(skid)){ skid = neuron$skid }
+  #TODO - handle case if both skid and neuron are provided, whether or not they match
+
   if(is.character(node)) {
     tag=node
     node=neuron[['tags']][[tag]]
@@ -39,14 +46,30 @@ split_neuron_local <- function(skid, node, return = "child"){#split local copy o
     }
   }
   neuron.distal = distal_to(neuron, node.pointno=node)
-  new=prune_vertices(neuron, neuron.distal, invert = T)
 
-  # give it a nice name and handle connectors
-  new$NeuronName = paste0("SKID ", skid, " downstream of node ", node)
+  invert = if(return == "downstream"){ TRUE } else{ FALSE }
+  new=prune_vertices(neuron, neuron.distal, invert = invert)
+
+
+  # give it a nice name and handle connectors and tags
+  new$NeuronName = paste0("SKID ", skid, " ", return, " of node ", node)
   old_connectors = catmaid::connectors(neuron)
   new$connectors = old_connectors[old_connectors$treenode_id %in%
                                     neuron$d[neuron.distal, "PointNo"], ]
-  new
+  new$tags = lapply(neuron$tags, function(tag){
+                                    nodes = unlist(sapply(tag, function(node){
+                                                                  if(node %in% new$d$PointNo){ node }
+                                                                  else{ NULL }
+                                                                }
+                                                   ))
+                                    nodes = nodes[!is.null(nodes)]
+                                    if(length(nodes) > 0){ nodes }
+                                    else{ NULL }
+                                  }
+                    )
+  new$tags = new$tags[sapply(new$tags, function(t){ length(t) > 0 })]
+  class(new) = c('catmaidneuron', class(new))
+  invisible(new)
 }
 
 
