@@ -4,19 +4,22 @@
 \alias{split_neuron_local}
 \title{Split a neuron and return 'downstream' section}
 \usage{
-split_neuron_local(skid, node, return = "child")
+split_neuron_local(skid = NULL, neuron = NULL, node,
+  return = c("downstream", "upstream"))
 }
 \arguments{
-\item{skid}{Required; the skeleton ID of the neuron to split (passed on to
+\item{skid}{Required unless \code{neuron} is provided; the skeleton ID of the neuron to split (passed on to
 \code{\link{catmaid_skids}})}
+
+\item{neuron}{Required unless \code{skid} is provided; a \code{neuron} object to split}
 
 \item{node}{Required; the ID of the node where the neuron should be split (or
 a string naming a tag)}
 
-\item{return}{FIXME: currently ignored}
+\item{return}{Which part of the split neuron to return (\code{downstream} or \code{upstream}). Defaults to \code{downstream}.}
 }
 \value{
-A \code{neuron} object representing the 'downstream' portion of the
+A \code{neuron} object representing the specified portion of the
   split neuron
 }
 \description{
