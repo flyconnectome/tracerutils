@@ -68,7 +68,7 @@ split_neuron_local <- function(skid = NULL, neuron = NULL, node, return = c("dow
                                   }
                     )
   new$tags = new$tags[sapply(new$tags, function(t){ length(t) > 0 })]
-  class(new) = c('catmaidneuron', class(new))
+  class(new) = class(neuron)
   invisible(new)
 }
 
