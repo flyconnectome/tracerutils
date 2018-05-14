@@ -1,6 +1,6 @@
 #' Count the number of synapses one or more neurons make in each neuropil volume
 #'
-#' @param skids A list of skeleton IDs; required if \code{neurons} is not provided.  Will only be used if \code{neurons} is not provided.
+#' @param skids A vector of skeleton IDs or an annotation query; required if \code{neurons} is not provided.  Will only be used if \code{neurons} is not provided.
 #' @param neurons A neuron list; required if \code{skids} is not provided.
 #' @param reference The name of a reference brain to use.  Currently accepts \code{"FAFB"}, or \code{"FCWB"}; defaults to \code{"FAFB"}.
 #'
@@ -10,46 +10,42 @@
 #' @export
 #'
 #' @importFrom elmr fetchn_fafb
-#' @importFrom catmaid read.neurons.catmaid
+#' @importFrom catmaid connectors
 #' @importFrom nat pointsinside
 synapses_per_neuropil <- function(skids = NULL, neurons = NULL, reference = c("FAFB", "FCWB")){#TODO - automatic skid/neuron detection, expand to any template brain with neuropil segmentation
 
   if(missing(skids) & missing(neurons)){ stop("At least one skeleton ID or neuron must be provided.") }
+
   reference = match.arg(reference)
 
-  if(reference == "FCWB"){ neuropils = nat.flybrains::FCWBNP.surf$RegionList }
-  else{ neuropils = elmr::FAFBNP.surf$RegionList }
-
-  if (missing(neurons)){
-    if(reference == "FCWB"){ neurons = fetchn_fafb(skids, mirror = FALSE, reference = nat.flybrains::FCWB) }
-    else{ neurons = read.neurons.catmaid(skids) }
+  if(missing(neurons)){
+    tb = if(reference == "FCWB"){ nat.flybrains::FCWB } else{ elmr::FAFB }
+    neurons = fetchn_fafb(skids, mirror = FALSE, reference = tb)
   }
 
-  summaries = list()
+  surf = if(reference == "FCWB"){ nat.flybrains::FCWBNP.surf } else{ elmr::FAFBNP.surf }
+  neuropils = surf$RegionList
+  neurons.connectors = connectors(neurons)
 
-  for (n in 1:length(neurons)){
-    neuron = neurons[[n]]
+  summaries = sapply(names(neurons),
+                     function(s){
+                        neuron.outgoing = subset(neurons.connectors, skid == s & prepost == 0)
+                        neuron.incoming = subset(neurons.connectors, skid == s & prepost == 1)
 
-    neuron.outgoing = neuron$connectors[neuron$connectors$prepost == 0,]
-    neuron.incoming = neuron$connectors[neuron$connectors$prepost == 1,]
+                        outgoing = sapply(neuropils, function(x){ if(!is.null(neuron.outgoing)){ INTERNAL_count_synapses_in_mesh(neuron.outgoing, x, surf)} else{ 0 } })
+                        incoming = sapply(neuropils, function(x){ if(!is.null(neuron.incoming)){ INTERNAL_count_synapses_in_mesh(neuron.incoming, x, surf)} else{ 0 } })
 
+                        summary = data.frame(outgoing = outgoing, incoming = incoming)#neuropils given as row names from sapply
+                      },
+                      simplify = F
+                    )
 
-    outgoing = sapply(neuropils, function(x){if(!is.null(neuron.outgoing)){ INTERNAL_count_synapses_in_mesh(neuron.outgoing, x, reference)} else{ 0 }})
-    incoming = sapply(neuropils, function(x){if(!is.null(neuron.incoming)){ INTERNAL_count_synapses_in_mesh(neuron.incoming, x, reference)} else{ 0 }})
-
-    summary = data.frame(outgoing = outgoing, incoming = incoming)#neuropils given as row names from sapply
-    summaries[[n]] = summary
-  }
-
-  names(summaries) = names(neurons)
   return(summaries)
-
 }
 
-INTERNAL_count_synapses_in_mesh <- function(connectors, neuropil, reference){
-  if(reference == "FCWB"){ ref.brain = nat.flybrains::FCWBNP.surf }
-  else{ ref.brain = elmr::FAFBNP.surf }
-  tf = pointsinside(connectors[,c("x", "y", "z")], subset(ref.brain, neuropil))
+INTERNAL_count_synapses_in_mesh <- function(connectors, neuropil, surf){
+  if(is.null(connectors) | nrow(connectors) == 0){ return(0) }
+  tf = pointsinside(connectors[,c("x", "y", "z")], subset(surf, neuropil))
   n = sum(tf, na.rm = TRUE)
-  invisible(n)
+  return(n)
 }

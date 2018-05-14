@@ -8,7 +8,7 @@ synapses_per_neuropil(skids = NULL, neurons = NULL, reference = c("FAFB",
   "FCWB"))
 }
 \arguments{
-\item{skids}{A list of skeleton IDs; required if \code{neurons} is not provided.  Will only be used if \code{neurons} is not provided.}
+\item{skids}{A vector of skeleton IDs or an annotation query; required if \code{neurons} is not provided.  Will only be used if \code{neurons} is not provided.}
 
 \item{neurons}{A neuron list; required if \code{skids} is not provided.}
 
