@@ -1,6 +1,6 @@
 #' Count the number of synapses one or more neurons make in each neuropil volume
 #'
-#' @param skids A list of skeleton IDs; required if \code{neurons} is not provided.  Will only be used if \code{neurons} is not provided.
+#' @param skids A vector of skeleton IDs or an annotation query; required if \code{neurons} is not provided.  Will only be used if \code{neurons} is not provided.
 #' @param neurons A neuron list; required if \code{skids} is not provided.
 #' @param reference The name of a reference brain to use.  Currently accepts \code{"FAFB"}, or \code{"FCWB"}; defaults to \code{"FAFB"}.
 #'
@@ -10,34 +10,42 @@
 #' @export
 #'
 #' @importFrom elmr fetchn_fafb
-#' @importFrom catmaid read.neurons.catmaid connectors
+#' @importFrom catmaid connectors
 #' @importFrom nat pointsinside
 synapses_per_neuropil <- function(skids = NULL, neurons = NULL, reference = c("FAFB", "FCWB")){#TODO - automatic skid/neuron detection, expand to any template brain with neuropil segmentation
 
   if(missing(skids) & missing(neurons)){ stop("At least one skeleton ID or neuron must be provided.") }
+
   reference = match.arg(reference)
 
-  tb <- if(reference == "FCWB") nat.flybrains::FCWB else elmr::FAFB
-  surf <- if(reference == "FCWB") nat.flybrains::FCWBNP.surf else elmr::FAFBNP.surf
-  neuropils = surf$RegionList
-
-  if (missing(neurons))
+  if(missing(neurons)){
+    tb = if(reference == "FCWB"){ nat.flybrains::FCWB } else{ elmr::FAFB }
     neurons = fetchn_fafb(skids, mirror = FALSE, reference = tb)
+  }
 
-  sapply(neurons, function(neuron){
-    outgoing = sapply(neuropils, function(x) INTERNAL_count_synapses_in_mesh(connectors(neuron), x, surf, prepost=0))
-    incoming = sapply(neuropils, function(x) INTERNAL_count_synapses_in_mesh(connectors(neuron), x, surf, prepost=1))
-    #neuropils given as row names from sapply
-    data.frame(outgoing = outgoing, incoming = incoming)
-  }, simplify = F)
+  surf = if(reference == "FCWB"){ nat.flybrains::FCWBNP.surf } else{ elmr::FAFBNP.surf }
+  neuropils = surf$RegionList
+  neurons.connectors = connectors(neurons)
+
+  summaries = sapply(names(neurons),
+                     function(s){
+                        neuron.outgoing = subset(neurons.connectors, skid == s & prepost == 0)
+                        neuron.incoming = subset(neurons.connectors, skid == s & prepost == 1)
+
+                        outgoing = sapply(neuropils, function(x){ if(!is.null(neuron.outgoing)){ INTERNAL_count_synapses_in_mesh(neuron.outgoing, x, surf)} else{ 0 } })
+                        incoming = sapply(neuropils, function(x){ if(!is.null(neuron.incoming)){ INTERNAL_count_synapses_in_mesh(neuron.incoming, x, surf)} else{ 0 } })
+
+                        summary = data.frame(outgoing = outgoing, incoming = incoming)#neuropils given as row names from sapply
+                      },
+                      simplify = F
+                    )
+
+  return(summaries)
 }
 
-INTERNAL_count_synapses_in_mesh <- function(connectors, neuropil, surf, prepost){
-  if(is.null(connectors)) return(0)
-  prepost=match.arg(prepost, choices = 0:1)
-  connectors=connectors[connectors$prepost==prepost,]
-  if(nrow(connectors)==0) return(0)
+INTERNAL_count_synapses_in_mesh <- function(connectors, neuropil, surf){
+  if(is.null(connectors) | nrow(connectors) == 0){ return(0) }
   tf = pointsinside(connectors[,c("x", "y", "z")], subset(surf, neuropil))
   n = sum(tf, na.rm = TRUE)
-  n
+  return(n)
 }
