@@ -1,7 +1,7 @@
 Package: tracerutils
 Type: Package
 Title: Utilities for EM Neuron Tracers
-Version: 0.4.1
+Version: 0.4.2
 Authors@R: person("Fiona", "Love", email = "fl299@cam.ac.uk", role = c("aut", "cre"))
 Description: Helpful functions for handling neurons traced from EM volumes.
     Interacts with CATMAID and NBLAST.
