@@ -162,6 +162,8 @@ find_glomeruli <- function(skids){
 #' @param z_threshold The maximum Z distance (in the same units as your neuron) between two connectors for them to be considered potential duplicates.  Defaults to 200.
 #' @param fileout Optional; the path to a CSV file where the result should be written.
 #'
+#' @return A data frame containing the connector ID of each connector in a pair, a CATMAID URL for each, the X-Y and Z distances between the connectors, and the skeleton ID of the neuron.
+#'
 #' @export
 #'
 #' @importFrom catmaid read.neuron.catmaid
@@ -170,14 +172,16 @@ check_duplicate_synapses <- function(neuron = NULL, skid = NULL, xy_threshold = 
   if(missing(skid) & missing(neuron)){ stop("A skeleton ID or neuron must be provided.") }
   if(missing(neuron)){ neuron = read.neuron.catmaid(skid) }
 
+
   conn = neuron$connectors[neuron$connectors$prepost == 0,]
   synapse_distances = dist(conn[, c("x", "y")], method = "euclidean")
   synapse.distances.df = as.data.frame(as.matrix(synapse_distances))
 
   potential_duplicates = as.data.frame(which(synapse.distances.df <= xy_threshold, arr.ind = TRUE))
-  potential_duplicates$diagonal = sapply(1:nrow(potential_duplicates), function(r){ potential_duplicates$row[r] == potential_duplicates$col[r] })
+  potential_duplicates$diagonal = sapply(seq_len(nrow(potential_duplicates)), function(r){ potential_duplicates$row[r] == potential_duplicates$col[r] })
   potential_duplicates = potential_duplicates[potential_duplicates$diagonal == FALSE, c("row", "col")]
-  potential_duplicates$within_z_threshold = sapply(1:nrow(potential_duplicates), function(r){ abs(conn[potential_duplicates$row[r], "z"] - conn[potential_duplicates$col[r], "z"]) <= z_threshold })
+
+  potential_duplicates$within_z_threshold = sapply(seq_len(nrow(potential_duplicates)), function(r){ abs(conn[potential_duplicates$row[r], "z"] - conn[potential_duplicates$col[r], "z"]) <= z_threshold })
   potential_duplicates = potential_duplicates[potential_duplicates$within_z_threshold == TRUE, c("row", "col")]
 
   potential_duplicates = potential_duplicates[!duplicated(t(apply(potential_duplicates, 1, sort))), ] #deduplicates
@@ -188,10 +192,13 @@ check_duplicate_synapses <- function(neuron = NULL, skid = NULL, xy_threshold = 
   potential_duplicates$conn_1 = sapply(potential_duplicates$row, function(r){conn[r, "connector_id"]})
   potential_duplicates$conn_2 = sapply(potential_duplicates$col, function(c){conn[c, "connector_id"]})
 
-  potential_duplicates$xy_distance = sapply(1:nrow(potential_duplicates), function(r){ synapse.distances.df[potential_duplicates$row[r], potential_duplicates$col[r]] })
-  potential_duplicates$z_distance = sapply(1:nrow(potential_duplicates), function(r){ abs(conn[potential_duplicates$row[r], "z"] - conn[potential_duplicates$col[r], "z"]) })
+  potential_duplicates$xy_distance = sapply(seq_len(nrow(potential_duplicates)), function(r){ synapse.distances.df[potential_duplicates$row[r], potential_duplicates$col[r]] })
+  potential_duplicates$z_distance = sapply(seq_len(nrow(potential_duplicates)), function(r){ abs(conn[potential_duplicates$row[r], "z"] - conn[potential_duplicates$col[r], "z"]) })
 
   potential_duplicates$skid = rep(neuron$skid, nrow(potential_duplicates))
+  potential_duplicates = potential_duplicates[,c("conn_1", "URL_1", "conn_2", "URL_2", "xy_distance", "z_distance", "skid")]
+
+  if(!missing(fileout)){ write.csv(potential_duplicates, file = fileout) }
 
   return(potential_duplicates)
 }
