@@ -11,7 +11,7 @@ LazyData: true
 Depends:
     R (>= 2.10)
 Imports:
-    elmr,
+    elmr (>= 0.5.3),
     catmaid,
     nat,
     nat.flybrains,
