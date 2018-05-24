@@ -169,15 +169,17 @@ find_glomeruli <- function(skids){
 #' @importFrom catmaid read.neuron.catmaid
 check_duplicate_synapses <- function(neuron = NULL, skid = NULL, xy_threshold = 200, z_threshold = 200, fileout = NULL){
 
-  if(missing(skid) & missing(neuron)){ stop("A skeleton ID or neuron must be provided.") }
-  if(missing(neuron)){ neuron = read.neuron.catmaid(skid) }
-
+  if(is.null(skid) & is.null(neuron)){ stop("A skeleton ID or neuron must be provided.") }
+  if(is.numeric(neuron)){ skid = neuron; neuron = NULL }#skid provided as first argument
+  if(is.null(neuron)){ neuron = read.neuron.catmaid(skid) }
 
   conn = neuron$connectors[neuron$connectors$prepost == 0,]
   synapse_distances = dist(conn[, c("x", "y")], method = "euclidean")
   synapse.distances.df = as.data.frame(as.matrix(synapse_distances))
 
-  potential_duplicates = as.data.frame(which(synapse.distances.df <= xy_threshold, arr.ind = TRUE))
+  if(nrow(synapse.distances.df) == 0 & ncol(synapse.distances.df) == 0){ potential_duplicates = data.frame(row = 0,col = 0) }
+  else{ potential_duplicates = as.data.frame(which(synapse.distances.df <= xy_threshold, arr.ind = TRUE)) }
+
   potential_duplicates$diagonal = sapply(seq_len(nrow(potential_duplicates)), function(r){ potential_duplicates$row[r] == potential_duplicates$col[r] })
   potential_duplicates = potential_duplicates[potential_duplicates$diagonal == FALSE, c("row", "col")]
 
