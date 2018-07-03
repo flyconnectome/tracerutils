@@ -227,7 +227,7 @@ check_duplicate_synapses <- function(neuron = NULL, skid = NULL, xy_threshold = 
 #' @export
 #'
 #' @importFrom catmaid read.neuron.catmaid
-#' @importFrom nat pointsinside
+#' @importFrom nat pointsinside xyzmatrix
 #' @importFrom utils write.csv
 tagged_nodes <- function(neuron = NULL, tag, node.id = NULL, node.direction = c("downstream", "upstream"), volume = NULL, fileout = NULL){
 
@@ -237,20 +237,21 @@ tagged_nodes <- function(neuron = NULL, tag, node.id = NULL, node.direction = c(
   #filter by cut node
   if(!is.null(node.id)){
     node.direction = match.arg(node.direction)
-    neuron = split_neuron_local(neuron = neuron, return = node.direction)
+    neuron = split_neuron_local(neuron = neuron, node = node.id, return = node.direction)
   }
 
   tag.i = neuron$tags[[tag]]
-  tag.nodes = neuron$d[tag.i,]
+  tag.nodes = neuron$d[neuron$d$PointNo %in% tag.i,]
 
   #filter by volume
   if(!is.null(volume)){
-    tag.nodes = tag.nodes[pointsinside(tag.nodes[,c("x", "y", "z")], subset(elmr::FAFBNP.surf, volume)),]
+    tag.nodes = tag.nodes[pointsinside(xyzmatrix(tag.nodes), subset(elmr::FAFBNP.surf, volume)),]
   }
 
-  tag.nodes$URL = sapply(1:nrow(tag.nodes), function(i){ simple_catmaid_url(dfrow = tag.nodes[i,], treenode_id = tag.nodes[i,"treenode_id"]) })
+  tag.nodes$URL = sapply(seq_len(nrow(tag.nodes)), function(i){ simple_catmaid_url(dfrow = tag.nodes[i,], skid = neuron$skid, xyz_columns = c("X", "Y", "Z"), treenode_id = tag.nodes[i,"PointNo"]) })
 
   if(!missing(fileout)){ write.csv(tag.nodes, file = fileout) }
+  if(nrow(tag.nodes) == 0){ message("There are no nodes matching your criteria.") }
 
   return(tag.nodes)
 }
