@@ -232,7 +232,7 @@ check_duplicate_synapses <- function(neuron = NULL, skid = NULL, xy_threshold = 
 tagged_nodes <- function(neuron = NULL, tag, node.id = NULL, node.direction = c("downstream", "upstream"), volume = NULL, fileout = NULL){
 
   if(missing(neuron)){ stop("A skeleton ID or neuron must be provided.") }
-  if(is.numeric(neuron)){ neuron = read.neuron.catmaid(neuron()) }#skid provided instead of neuron object
+  if(is.numeric(neuron)){ neuron = read.neuron.catmaid(neuron) }#skid provided instead of neuron object
 
   #filter by cut node
   if(!is.null(node.id)){
