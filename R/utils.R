@@ -204,3 +204,53 @@ check_duplicate_synapses <- function(neuron = NULL, skid = NULL, xy_threshold = 
 
   return(potential_duplicates)
 }
+
+
+
+
+
+#' Generate URLs for specifically tagged nodes on a neuron
+#'
+#' Given a neuron and a particular tag, this will return a data frame (optionally written to a CSV) with the node IDs, coordinates, and CATMAID URLs.
+#'
+#' Requires the \code{catmaid.server} option to be set in .Rprofile
+#'
+#' @param neuron Required; a A CATMAID \code{neuron} object or skeleton ID.
+#' @param tag Required; a string specifying a tag.
+#' @param node.id Optional; the ID of a node at which to cut the neuron, if only a portion of the neuron should be considered.
+#' @param node.direction If a cut node is provided, which portion of the cut neuron to retain.  Options are \code{downstream} (default) or \code{upstream}.
+#' @param volume Optional; a string specifying a FAFB neuropil to filter the tagged nodes.
+#' @param fileout Optional; the path to a CSV file where the result should be written.
+#'
+#' @return A subset of the neuron's treenode data frame (\code{d}) including only tagges nodes, with a CATMAID URL for each.
+#'
+#' @export
+#'
+#' @importFrom catmaid read.neuron.catmaid
+#' @importFrom nat pointsinside
+#' @importFrom utils write.csv
+tagged_nodes <- function(neuron = NULL, tag, node.id = NULL, node.direction = c("downstream", "upstream"), volume = NULL, fileout = NULL){
+
+  if(missing(neuron)){ stop("A skeleton ID or neuron must be provided.") }
+  if(is.numeric(neuron)){ neuron = read.neuron.catmaid(neuron()) }#skid provided instead of neuron object
+
+  #filter by cut node
+  if(!is.null(node.id)){
+    node.direction = match.arg(node.direction)
+    neuron = split_neuron_local(neuron = neuron, return = node.direction)
+  }
+
+  tag.i = neuron$tags[[tag]]
+  tag.nodes = neuron$d[tag.i,]
+
+  #filter by volume
+  if(!is.null(volume)){
+    tag.nodes = tag.nodes[pointsinside(tag.nodes[,c("x", "y", "z")], subset(elmr::FAFBNP.surf, volume)),]
+  }
+
+  tag.nodes$URL = sapply(1:nrow(tag.nodes), function(i){ simple_catmaid_url(dfrow = tag.nodes[i,], treenode_id = tag.nodes[i,"treenode_id"]) })
+
+  if(!missing(fileout)){ write.csv(tag.nodes, file = fileout) }
+
+  return(tag.nodes)
+}
