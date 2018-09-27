@@ -55,7 +55,7 @@ split_neuron_local <- function(skid = NULL, neuron = NULL, node, return = c("dow
   new$NeuronName = paste0("SKID ", skid, " ", return, " of node ", node)
   old_connectors = catmaid::connectors(neuron)
   new$connectors = old_connectors[old_connectors$treenode_id %in%
-                                    neuron$d[neuron.distal, "PointNo"], ]
+                                    new$d$PointNo, ]
   new$tags = lapply(neuron$tags, function(tag){
                                     nodes = unlist(sapply(tag, function(node){
                                                                   if(node %in% new$d$PointNo){ node }
