@@ -127,9 +127,10 @@ find_glomeruli <- function(skids){
   annotations.glom = annotations[grepl("^glomerulus [A-Za-z0-9]+$", annotations$annotation),]
   annotations.glom$glom = sapply(annotations.glom$annotation, function(a){ sub("glomerulus ", "", a) })
   annotations.unknown_glom = annotations[grepl("^unknown glomerulus \\d+$", annotations$annotation),]
+
   glomeruli = sapply(skids, function(s){
-    s.glom = paste(sort(annotations.glom[annotations.glom$skid == s, "glom"]), sep = "", collapse = "/")
-    s.unknown_glom = paste(sort(annotations.unknown_glom[annotations.unknown_glom$skid == s, "annotation"]), sep = "", collapse = "/")
+    s.glom = paste(sort(unlist(annotations.glom[annotations.glom$skid == s, "glom"])), sep = "", collapse = "/")
+    s.unknown_glom = paste(sort(unlist(annotations.unknown_glom[annotations.unknown_glom$skid == s, "annotation"])), sep = "", collapse = "/")
     if(nchar(s.glom) > 0){
       s.glom
     }
