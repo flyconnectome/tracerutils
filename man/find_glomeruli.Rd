@@ -4,10 +4,12 @@
 \alias{find_glomeruli}
 \title{Finds the glomerulus associated with a PN}
 \usage{
-find_glomeruli(skids)
+find_glomeruli(skids, exclude = NULL)
 }
 \arguments{
 \item{skids}{Required; an \code{integer} or \code{character} vector of skeleton IDs}
+
+\item{exclude}{Optional; a vector of glomeruli to exclude (in the format \bold{\emph{X}} for \bold{glomerulus \emph{X}}, or the full annotation for \bold{unknown glomerulus \emph{N}})}
 }
 \value{
 A \code{character} vector of glomeruli names

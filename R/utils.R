@@ -118,15 +118,19 @@ simple_catmaid_url <- function(dfrow, skid, sid0 = 5, zoom = 0, conn = FALSE, tr
 #' Note that annotations of the form \bold{glomerulus \emph{X} right|left} are not considered.
 #'
 #' @param skids Required; an \code{integer} or \code{character} vector of skeleton IDs
+#' @param exclude Optional; a vector of glomeruli to exclude (in the format \bold{\emph{X}} for \bold{glomerulus \emph{X}}, or the full annotation for \bold{unknown glomerulus \emph{N}})
 #' @return A \code{character} vector of glomeruli names
 #'
 #' @export
 #'
-find_glomeruli <- function(skids){
+find_glomeruli <- function(skids, exclude = NULL){
   annotations = catmaid::catmaid_get_annotations_for_skeletons(unique(skids))
   annotations.glom = annotations[grepl("^glomerulus [A-Za-z0-9]+$", annotations$annotation),]
   annotations.glom$glom = sapply(annotations.glom$annotation, function(a){ sub("glomerulus ", "", a) })
   annotations.unknown_glom = annotations[grepl("^unknown glomerulus \\d+$", annotations$annotation),]
+
+  annotations.glom = annotations.glom[!annotations.glom$glom %in% exclude,]
+  annotations.unknown_glom = annotations.unknown_glom[!annotations.unknown_glom$annotation %in% exclude,]
 
   glomeruli = sapply(skids, function(s){
     s.glom = paste(sort(unlist(annotations.glom[annotations.glom$skid == s, "glom"])), sep = "", collapse = "/")
