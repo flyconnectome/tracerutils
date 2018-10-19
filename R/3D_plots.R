@@ -24,7 +24,6 @@ plot_catmaid <- function(skid, volumes = NULL, ncol = NULL, vcol = NULL, valpha 
   if (!is.null(volumes)){
     plotVolumes(volumes, vcol, valpha)
   }
-
   invisible(neurons)#returned in case you want to do anything else with them, but not printed to console
 }
 
@@ -68,7 +67,7 @@ plotVolumes <- function(volumes, vcol, valpha, pid = 1){#plot multiple neuropil 
     if (length(valpha) < length(volumes)) valpha = rep(valpha, length.out = length(volumes))
   }
   else{
-    valpha = rep(0.5, length(volumes))
+    valpha = rep(0.1, length(volumes))
   }
 
 
