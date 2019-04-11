@@ -2,7 +2,10 @@ Package: tracerutils
 Type: Package
 Title: Utilities for EM Neuron Tracers
 Version: 0.7.0
-Authors@R: person("Fiona", "Love", email = "fl299@cam.ac.uk", role = c("aut", "cre"))
+Authors@R: c(person("Fiona", "Love", email = "fl299@cam.ac.uk", 
+    role = c("aut", "cre"), comment = c(ORCID = "0000-0002-7805-5234")),
+    person("Gregory","Jefferis", email="jefferis@gmail.com", 
+    role = c("aut"), comment = c(ORCID = "0000-0002-0587-9355")))
 Description: Helpful functions for handling neurons traced from EM volumes.
     Interacts with CATMAID and NBLAST.
 License: GPL-3 + file LICENSE
@@ -16,11 +19,14 @@ Imports:
     nat,
     nat.flybrains,
     rgl,
-    utils
+    utils,
+    googledrive,
+    googlesheets
 Suggests:
     testthat
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 Remotes: jefferis/nat,
     jefferis/elmr,
     jefferis/rcatmaid,
-    jefferis/flycircuit
+    jefferis/flycircuit,
+    jefferislab/nat.flybrains

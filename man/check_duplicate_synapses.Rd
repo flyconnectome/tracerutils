@@ -4,8 +4,8 @@
 \alias{check_duplicate_synapses}
 \title{Check a neuron for potential duplicate synapses}
 \usage{
-check_duplicate_synapses(neuron = NULL, skid = NULL, xy_threshold = 200,
-  z_threshold = 200, fileout = NULL)
+check_duplicate_synapses(neuron = NULL, skid = NULL,
+  xy_threshold = 200, z_threshold = 200, fileout = NULL)
 }
 \arguments{
 \item{neuron}{A CATMAID \code{neuron} object; required if \code{skid} is not provided.}

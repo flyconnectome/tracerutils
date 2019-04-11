@@ -172,6 +172,7 @@ find_glomeruli <- function(skids, exclude = NULL){
 #' @export
 #'
 #' @importFrom catmaid read.neuron.catmaid
+#' @importFrom stats dist
 check_duplicate_synapses <- function(neuron = NULL, skid = NULL, xy_threshold = 200, z_threshold = 200, fileout = NULL){
 
   if(is.null(skid) & is.null(neuron)){ stop("A skeleton ID or neuron must be provided.") }

@@ -4,8 +4,8 @@
 \alias{synapses_per_neuropil}
 \title{Count the number of synapses one or more neurons make in each neuropil volume}
 \usage{
-synapses_per_neuropil(skids = NULL, neurons = NULL, reference = c("FAFB",
-  "FCWB"))
+synapses_per_neuropil(skids = NULL, neurons = NULL,
+  reference = c("FAFB", "FCWB"))
 }
 \arguments{
 \item{skids}{A vector of skeleton IDs or an annotation query; required if \code{neurons} is not provided.  Will only be used if \code{neurons} is not provided.}

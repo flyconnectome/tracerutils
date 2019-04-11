@@ -1,0 +1,16 @@
+reference:
+- title: All functions
+  desc: ~
+  contents:
+  - '`check_duplicate_synapses`'
+  - '`find_glomeruli`'
+  - '`glomerular.valence`'
+  - '`new_3d_plot`'
+  - '`plot_catmaid`'
+  - '`read_team_sheet`'
+  - '`sample_connections`'
+  - '`simple_catmaid_url`'
+  - '`split_neuron_local`'
+  - '`synapses_per_neuropil`'
+  - '`tagged_nodes`'
+  - '`tracerutils-defunct`'

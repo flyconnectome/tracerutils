@@ -3,13 +3,10 @@
 \docType{data}
 \name{glomerular.valence}
 \alias{glomerular.valence}
-\alias{glomerular.valence}
 \title{Valence information for olfactory glomeruli}
 \format{A named character vector containing the functional valence of each antennal lobe glomerulus
  (as described in Paavo Huoviala's thesis).  Possible valences are "Attractive", "Aversive, "Pheromonal",
  "Egg_laying", "Food", and "Unknown".  Element names correspond to the names of glomeruli.}
 \description{
 FIXME - where did this come from?
-
-Functional valence of different antennal lobe glomeruli
 }
