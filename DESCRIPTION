@@ -30,3 +30,5 @@ Remotes: jefferis/nat,
     jefferis/rcatmaid,
     jefferis/flycircuit,
     jefferislab/nat.flybrains
+URL: https://github.com/flyconnectome/tracerutils, https://flyconnectome.github.io/tracerutils
+BugReports: https://github.com/flyconnectome/tracerutils/issues
