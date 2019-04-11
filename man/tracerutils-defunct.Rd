@@ -14,8 +14,6 @@ quick_nblast(skid)
 The full NBLAST results object
 }
 \description{
-Removed functions
-
 DEFUNCT - use \code{\link{nblast_fafb}}
 }
 \details{
