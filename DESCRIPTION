@@ -16,7 +16,9 @@ Imports:
     nat,
     nat.flybrains,
     rgl,
-    utils
+    utils,
+    googledrive,
+    googlesheets
 Suggests:
     testthat
 RoxygenNote: 6.1.1
