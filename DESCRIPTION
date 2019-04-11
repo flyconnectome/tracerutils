@@ -19,7 +19,7 @@ Imports:
     utils
 Suggests:
     testthat
-RoxygenNote: 6.0.1
+RoxygenNote: 6.1.1
 Remotes: jefferis/nat,
     jefferis/elmr,
     jefferis/rcatmaid,

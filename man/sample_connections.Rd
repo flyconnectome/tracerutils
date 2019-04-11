@@ -4,8 +4,8 @@
 \alias{sample_connections}
 \title{Randomly sample synapses or connections of a neuron}
 \usage{
-sample_connections(neuron, number = NULL, type = c("downstream", "upstream",
-  "connector"), fileout = NULL, node.id = NULL,
+sample_connections(neuron, number = NULL, type = c("downstream",
+  "upstream", "connector"), fileout = NULL, node.id = NULL,
   node.direction = c("downstream", "upstream"), volume = NULL,
   plot = FALSE)
 }
