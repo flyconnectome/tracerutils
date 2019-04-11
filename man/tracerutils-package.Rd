@@ -2,8 +2,9 @@
 % Please edit documentation in R/tracerutils-package.R
 \docType{package}
 \name{tracerutils-package}
-\alias{tracerutils}
 \alias{tracerutils-package}
+\alias{_PACKAGE}
+\alias{tracerutils}
 \title{tracerutils: Utilities for EM Neuron Tracers}
 \description{
 Helpful functions for handling neurons traced from EM volumes.
@@ -13,7 +14,7 @@ Helpful functions for handling neurons traced from EM volumes.
 Useful links:
 \itemize{
   \item \url{https://github.com/flyconnectome/tracerutils}
-  \item \url{https://flyconnectome/github.io/tracerutils}
+  \item \url{https://flyconnectome.github.io/tracerutils}
   \item Report bugs at \url{https://github.com/flyconnectome/tracerutils/issues}
 }
 
