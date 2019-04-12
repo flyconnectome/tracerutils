@@ -31,7 +31,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">tracerutils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
       </span>
     </div>
 
@@ -46,8 +46,18 @@
 <li>
   <a href="reference/index.html">Reference</a>
 </li>
+<li>
+  <a href="news/index.html">Changelog</a>
+</li>
       </ul>
-<ul class="nav navbar-nav navbar-right"></ul>
+<ul class="nav navbar-nav navbar-right">
+<li>
+  <a href="https://github.com/flyconnectome/tracerutils">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
+      </ul>
 </div>
 <!--/.nav-collapse -->
   </div>
@@ -67,8 +77,8 @@
 <div id="installation" class="section level2">
 <h2 class="hasAnchor">
 <a href="#installation" class="anchor"></a>Installation</h2>
-<div class="sourceCode"><pre class="sourceCode R"><code class="sourceCode r"><span class="cf">if</span> (<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(<span class="st">"devtools"</span>)) <span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"devtools"</span>)
-devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/devtools/topics/reexports">install_github</a></span>(<span class="st">"fmlove/tracerutils"</span>)
+<div class="sourceCode"><pre class="sourceCode R"><code class="sourceCode r"><span class="cf">if</span> (<span class="op">!</span><span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">require</a></span>(<span class="st">"remotes"</span>)) <span class="kw"><a href="https://www.rdocumentation.org/packages/utils/topics/install.packages">install.packages</a></span>(<span class="st">"remotes"</span>)
+remotes<span class="op">::</span><span class="kw"><a href="https://www.rdocumentation.org/packages/remotes/topics/install_github">install_github</a></span>(<span class="st">"flyconnectome/tracerutils"</span>)
 <span class="kw"><a href="https://www.rdocumentation.org/packages/base/topics/library">library</a></span>(tracerutils)</code></pre></div>
 <p>The package has only been tested on macOS.</p>
 </div>
@@ -76,14 +86,23 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <h2 class="hasAnchor">
 <a href="#development" class="anchor"></a>Development</h2>
 <p>This package is very much a work in progress. I will do my best to keep all changes backwards-compatible, but I would recommend that you don’t make anything critical dependent on <strong>tracerutils</strong> until it is in a more stable state.</p>
-<p>If there are any features you would like to see in <strong>tracerutils</strong>, please let me know! Planned improvements will be listed on the <a href="https://github.com/fmlove/tracerutils/issues">issues</a> page, and you can submit your suggestions there.</p>
+<p>If there are any features you would like to see in <strong>tracerutils</strong>, please let me know! Planned improvements will be listed on the <a href="https://github.com/flyconnectome/tracerutils/issues">issues</a> page, and you can submit your suggestions there.</p>
 </div>
 </div>
 
   </div>
 
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
-    <div class="license">
+    <div class="links">
+<h2>Links</h2>
+<ul class="list-unstyled">
+<li>Browse source code at <br><a href="https://github.com/flyconnectome/tracerutils">https://​github.com/​flyconnectome/​tracerutils</a>
+</li>
+<li>Report a bug at <br><a href="https://github.com/flyconnectome/tracerutils/issues">https://​github.com/​flyconnectome/​tracerutils/​issues</a>
+</li>
+</ul>
+</div>
+<div class="license">
 <h2>License</h2>
 <ul class="list-unstyled">
 <li>
@@ -94,7 +113,7 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
 <div class="developers">
 <h2>Developers</h2>
 <ul class="list-unstyled">
-<li>Fiona Love <br><small class="roles"> Author, maintainer </small>  </li>
+<li>Fiona Love <br><small class="roles"> Author, maintainer </small> <a href="https://orcid.org/0000-0002-7805-5234" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
 <li>Gregory Jefferis <br><small class="roles"> Author </small> <a href="https://orcid.org/0000-0002-0587-9355" target="orcid.widget"><img src="https://members.orcid.org/sites/default/files/vector_iD_icon.svg" class="orcid" alt="ORCID" height="16"></a> </li>
 </ul>
 </div>
@@ -102,7 +121,7 @@ devtools<span class="op">::</span><span class="kw"><a href="https://www.rdocumen
   <div class="dev-status">
 <h2>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://travis-ci.org/fmlove/tracerutils"><img src="https://travis-ci.org/fmlove/tracerutils.svg?branch=master" alt="Travis build status"></a></li>
+<li><a href="https://travis-ci.org/flyconnectome/tracerutils"><img src="https://travis-ci.org/flyconnectome/tracerutils.svg?branch=master" alt="Travis build status"></a></li>
 </ul>
 </div>
 </div>

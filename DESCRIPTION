@@ -1,7 +1,7 @@
 Package: tracerutils
 Type: Package
 Title: Utilities for EM Neuron Tracers
-Version: 0.7.0
+Version: 0.8.0
 Authors@R: c(person("Fiona", "Love", email = "fl299@cam.ac.uk", 
     role = c("aut", "cre"), comment = c(ORCID = "0000-0002-7805-5234")),
     person("Gregory","Jefferis", email="jefferis@gmail.com", 
@@ -30,3 +30,5 @@ Remotes: jefferis/nat,
     jefferis/rcatmaid,
     jefferis/flycircuit,
     jefferislab/nat.flybrains
+URL: https://github.com/flyconnectome/tracerutils, https://flyconnectome.github.io/tracerutils
+BugReports: https://github.com/flyconnectome/tracerutils/issues

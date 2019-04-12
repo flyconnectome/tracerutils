@@ -1,16 +1,29 @@
 reference:
-- title: All functions
+- title: Package Overview
+  desc: ~
+  contents:
+  - '`tracerutils`'
+- title: Synapses
   desc: ~
   contents:
   - '`check_duplicate_synapses`'
-  - '`find_glomeruli`'
-  - '`glomerular.valence`'
+  - '`sample_connections`'
+  - '`synapses_per_neuropil`'
+- title: Neurons
+  desc: ~
+  contents:
+  - '`split_neuron_local`'
+  - '`tagged_nodes`'
   - '`new_3d_plot`'
   - '`plot_catmaid`'
+- title: Antennal Lobe
+  desc: ~
+  contents:
+  - '`find_glomeruli`'
+  - '`glomerular.valence`'
+- title: Support
+  desc: ~
+  contents:
   - '`read_team_sheet`'
-  - '`sample_connections`'
   - '`simple_catmaid_url`'
-  - '`split_neuron_local`'
-  - '`synapses_per_neuropil`'
-  - '`tagged_nodes`'
   - '`tracerutils-defunct`'

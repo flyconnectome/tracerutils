@@ -60,7 +60,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tracerutils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.7.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
       </span>
     </div>
 
@@ -75,10 +75,18 @@
 <li>
   <a href="../reference/index.html">Reference</a>
 </li>
+<li>
+  <a href="../news/index.html">Changelog</a>
+</li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        
+        <li>
+  <a href="https://github.com/flyconnectome/tracerutils">
+    <span class="fa fa-github fa-lg"></span>
+     
+  </a>
+</li>
       </ul>
       
     </div><!--/.nav-collapse -->
@@ -105,7 +113,21 @@
     <tbody>
       <tr>
         <th colspan="2">
-          <h2 id="section-all-functions" class="hasAnchor"><a href="#section-all-functions" class="anchor"></a>All functions</h2>
+          <h2 id="section-package-overview" class="hasAnchor"><a href="#section-package-overview" class="anchor"></a>Package Overview</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="tracerutils-package.html">tracerutils-package</a></code> </p>
+        </td>
+        <td><p>tracerutils: Utilities for EM Neuron Tracers</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-synapses" class="hasAnchor"><a href="#section-synapses" class="anchor"></a>Synapses</h2>
           <p class="section-desc"></p>
         </th>
       </tr>
@@ -118,15 +140,35 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="find_glomeruli.html">find_glomeruli()</a></code> </p>
+          <p><code><a href="sample_connections.html">sample_connections()</a></code> </p>
         </td>
-        <td><p>Finds the glomerulus associated with a PN</p></td>
+        <td><p>Randomly sample synapses or connections of a neuron</p></td>
       </tr><tr>
         
         <td>
-          <p><code><a href="glomerular.valence.html">glomerular.valence</a></code> </p>
+          <p><code><a href="synapses_per_neuropil.html">synapses_per_neuropil()</a></code> </p>
         </td>
-        <td><p>Valence information for olfactory glomeruli</p></td>
+        <td><p>Count the number of synapses one or more neurons make in each neuropil volume</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-neurons" class="hasAnchor"><a href="#section-neurons" class="anchor"></a>Neurons</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="split_neuron_local.html">split_neuron_local()</a></code> </p>
+        </td>
+        <td><p>Split a neuron and return 'downstream' section</p></td>
+      </tr><tr>
+        
+        <td>
+          <p><code><a href="tagged_nodes.html">tagged_nodes()</a></code> </p>
+        </td>
+        <td><p>Generate URLs for specifically tagged nodes on a neuron</p></td>
       </tr><tr>
         
         <td>
@@ -139,7 +181,35 @@
           <p><code><a href="plot_catmaid.html">plot_catmaid()</a></code> </p>
         </td>
         <td><p>Quickly plot neurons from CATMAID</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-antennal-lobe" class="hasAnchor"><a href="#section-antennal-lobe" class="anchor"></a>Antennal Lobe</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
+        
+        <td>
+          <p><code><a href="find_glomeruli.html">find_glomeruli()</a></code> </p>
+        </td>
+        <td><p>Finds the glomerulus associated with a PN</p></td>
       </tr><tr>
+        
+        <td>
+          <p><code><a href="glomerular.valence.html">glomerular.valence</a></code> </p>
+        </td>
+        <td><p>Valence information for olfactory glomeruli</p></td>
+      </tr>
+    </tbody><tbody>
+      <tr>
+        <th colspan="2">
+          <h2 id="section-support" class="hasAnchor"><a href="#section-support" class="anchor"></a>Support</h2>
+          <p class="section-desc"></p>
+        </th>
+      </tr>
+      <tr>
         
         <td>
           <p><code><a href="read_team_sheet.html">read_team_sheet()</a></code> <code><a href="read_team_sheet.html">get_team_sheet()</a></code> </p>
@@ -148,33 +218,9 @@
       </tr><tr>
         
         <td>
-          <p><code><a href="sample_connections.html">sample_connections()</a></code> </p>
-        </td>
-        <td><p>Randomly sample synapses or connections of a neuron</p></td>
-      </tr><tr>
-        
-        <td>
           <p><code><a href="simple_catmaid_url.html">simple_catmaid_url()</a></code> </p>
         </td>
         <td><p>Generate a CATMAID URL for a node or connector</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="split_neuron_local.html">split_neuron_local()</a></code> </p>
-        </td>
-        <td><p>Split a neuron and return 'downstream' section</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="synapses_per_neuropil.html">synapses_per_neuropil()</a></code> </p>
-        </td>
-        <td><p>Count the number of synapses one or more neurons make in each neuropil volume</p></td>
-      </tr><tr>
-        
-        <td>
-          <p><code><a href="tagged_nodes.html">tagged_nodes()</a></code> </p>
-        </td>
-        <td><p>Generate URLs for specifically tagged nodes on a neuron</p></td>
       </tr><tr>
         
         <td>
@@ -189,7 +235,11 @@
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
-      <li><a href="#section-all-functions">All functions</a></li>
+      <li><a href="#section-package-overview">Package Overview</a></li>
+      <li><a href="#section-synapses">Synapses</a></li>
+      <li><a href="#section-neurons">Neurons</a></li>
+      <li><a href="#section-antennal-lobe">Antennal Lobe</a></li>
+      <li><a href="#section-support">Support</a></li>
     </ul>
   </div>
 </div>
