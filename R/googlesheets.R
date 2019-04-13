@@ -38,6 +38,7 @@ read_team_sheet <- function(path=NULL, id=NULL, team_drive = NULL, ws=1, ...) {
 #' @rdname read_team_sheet
 #' @description \code{get_team_sheet} finds a google sheet on a team drive. You
 #'   can use the returned
+#' @export
 get_team_sheet <- function(path=NULL, id=NULL, team_drive = NULL) {
   if(is.null(id)) {
     f <- googledrive::drive_get(path = path, id=id, team_drive = team_drive)

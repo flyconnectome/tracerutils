@@ -2,6 +2,7 @@
 
 export(check_duplicate_synapses)
 export(find_glomeruli)
+export(get_team_sheet)
 export(new_3d_plot)
 export(plot_catmaid)
 export(quick_nblast)
