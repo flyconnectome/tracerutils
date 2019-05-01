@@ -118,13 +118,33 @@ simple_catmaid_url <- function(dfrow, skid, sid0 = 5, zoom = 0, conn = FALSE, tr
 #' Note that annotations of the form \bold{glomerulus \emph{X} right|left} are not considered.
 #'
 #' @param skids Required; an \code{integer} or \code{character} vector of skeleton IDs
+#' @param method Optional; indicating whether to use 'name' or 'annotation'
 #' @param exclude Optional; a vector of glomeruli to exclude (in the format \bold{\emph{X}} for \bold{glomerulus \emph{X}}, or the full annotation for \bold{unknown glomerulus \emph{N}})
+#' @param ... Additional arguments passed to catmaid_* functions. Use this to specify \code{conn}, \code{pid} or similar low level arguments for the catmaid_query.
+
 #' @return A \code{character} vector of glomeruli names
 #'
 #' @export
 #'
-find_glomeruli <- function(skids, exclude = NULL){
-  annotations = catmaid::catmaid_get_annotations_for_skeletons(unique(skids))
+#' @examples
+#' \dontrun{
+#'conn = catmaid::catmaid_login(server=Sys.getenv("catmaid_server"),
+#'       authname=Sys.getenv("catmaid_authname"),authpassword=Sys.getenv("catmaid_authpassword"),
+#'       token=Sys.getenv("catmaid_token"))
+#' find_glomeruli('WTPN2017_uPN_right')
+#' find_glomeruli('WTPN2017_uPN_right', method = 'annotation')
+#' }
+#'
+find_glomeruli <- function(skids, exclude = NULL, method=c("name", "annotation"), ...){
+  skids=catmaid::catmaid_skids(skids, ...)
+  method=match.arg(method)
+
+  if(method=="name") {
+    glomeruli=stringr::str_match(catmaid::catmaid_get_neuronnames(skids, ...),'glomerulus (\\S+)')[,2]
+    return(glomeruli)
+  }
+
+  annotations = catmaid::catmaid_get_annotations_for_skeletons(unique(skids), ...)
   annotations.glom = annotations[grepl("^glomerulus [A-Za-z0-9]+$", annotations$annotation),]
   annotations.glom$glom = sapply(annotations.glom$annotation, function(a){ sub("glomerulus ", "", a) })
   annotations.unknown_glom = annotations[grepl("^unknown glomerulus \\d+$", annotations$annotation),]

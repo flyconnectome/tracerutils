@@ -4,12 +4,17 @@
 \alias{find_glomeruli}
 \title{Finds the glomerulus associated with a PN}
 \usage{
-find_glomeruli(skids, exclude = NULL)
+find_glomeruli(skids, exclude = NULL, method = c("name", "annotation"),
+  ...)
 }
 \arguments{
 \item{skids}{Required; an \code{integer} or \code{character} vector of skeleton IDs}
 
 \item{exclude}{Optional; a vector of glomeruli to exclude (in the format \bold{\emph{X}} for \bold{glomerulus \emph{X}}, or the full annotation for \bold{unknown glomerulus \emph{N}})}
+
+\item{method}{Optional; indicating whether to use 'name' or 'annotation'}
+
+\item{...}{Additional arguments passed to catmaid_* functions. Use this to specify \code{conn}, \code{pid} or similar low level arguments for the catmaid_query.}
 }
 \value{
 A \code{character} vector of glomeruli names
@@ -22,4 +27,14 @@ Requires the PN to be annotated with \bold{glomerulus \emph{X}} or \bold{unknown
 will be prioritised over \bold{unknown glomerulus \emph{N}}, and if there are multiples they will be joined together with a forward slash.  If there are
 no results with either of these annotations, the string \code{"unknown"} will be returned in place of a glomerulus.
 Note that annotations of the form \bold{glomerulus \emph{X} right|left} are not considered.
+}
+\examples{
+\dontrun{
+conn = catmaid::catmaid_login(server=Sys.getenv("catmaid_server"),
+      authname=Sys.getenv("catmaid_authname"),authpassword=Sys.getenv("catmaid_authpassword"),
+      token=Sys.getenv("catmaid_token"))
+find_glomeruli('WTPN2017_uPN_right')
+find_glomeruli('WTPN2017_uPN_right', method = 'annotation')
+}
+
 }

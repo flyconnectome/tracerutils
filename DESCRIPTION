@@ -21,7 +21,8 @@ Imports:
     rgl,
     utils,
     googledrive,
-    googlesheets
+    googlesheets,
+    stringr
 Suggests:
     testthat
 RoxygenNote: 6.1.1
