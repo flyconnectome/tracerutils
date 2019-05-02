@@ -127,12 +127,10 @@ simple_catmaid_url <- function(dfrow, skid, sid0 = 5, zoom = 0, conn = FALSE, tr
 #' @export
 #'
 #' @examples
-#' \dontrun{
-#'conn = catmaid::catmaid_login(server=Sys.getenv("catmaid_server"),
-#'       authname=Sys.getenv("catmaid_authname"),authpassword=Sys.getenv("catmaid_authpassword"),
-#'       token=Sys.getenv("catmaid_token"))
+#' \donttest{
 #' find_glomeruli('WTPN2017_uPN_right')
-#' find_glomeruli('WTPN2017_uPN_right', method = 'annotation')
+#' find_glomeruli('WTPN2017_uPN_right', exclude=c('VCx','VCy', 'VP1l'))
+#' find_glomeruli('WTPN2017_uPN_right', method = 'name')
 #' }
 #'
 find_glomeruli <- function(skids, exclude = NULL, method=c("annotation", "name"), ...){
