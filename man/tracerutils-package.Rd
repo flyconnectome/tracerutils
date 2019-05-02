@@ -27,5 +27,10 @@ Authors:
   \item Gregory Jefferis \email{jefferis@gmail.com} (0000-0002-0587-9355)
 }
 
+Other contributors:
+\itemize{
+  \item Sridhar Jagannathan \email{j.sridharrajan@gmail.com} (0000-0002-2078-1145) [contributor]
+}
+
 }
 \keyword{internal}

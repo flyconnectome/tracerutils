@@ -63,7 +63,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">tracerutils</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.0</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="Released version">0.8.1</span>
       </span>
     </div>
 
@@ -113,7 +113,7 @@
     
     </div>
 
-    <pre class="usage"><span class='fu'>find_glomeruli</span>(<span class='no'>skids</span>, <span class='kw'>exclude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"name"</span>, <span class='st'>"annotation"</span>),
+    <pre class="usage"><span class='fu'>find_glomeruli</span>(<span class='no'>skids</span>, <span class='kw'>exclude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"annotation"</span>, <span class='st'>"name"</span>),
   <span class='no'>...</span>)</pre>
     
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
@@ -129,7 +129,7 @@
     </tr>
     <tr>
       <th>method</th>
-      <td><p>Optional; indicating whether to use 'name' or 'annotation'</p></td>
+      <td><p>Optional; indicating whether to use the neuron 'name' or glomerulus 'annotation's.</p></td>
     </tr>
     <tr>
       <th>...</th>
@@ -150,20 +150,7 @@ Note that annotations of the form <b>glomerulus <em>X</em> right|left</b> are no
     
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>find_glomeruli</span>(<span class='st'>'WTPN2017_uPN_right'</span>)</div><div class='output co'>#&gt;   [1] "VA6"   "VL2a"  "VC1"   "VC3m"  "DL2v"  "DM5"   "VC3m"  "VA5"   "VL2p" 
-#&gt;  [10] "VC3l"  "VA2"   "VM5v"  "VA4"   "VM4"   "DL4"   "VM7v"  "D"     "VM1"  
-#&gt;  [19] "DP1l"  "VM3"   "DA1"   "DM5"   "V"     "DM3"   "VM5v"  "DL2d"  "DM1"  
-#&gt;  [28] "VA7m"  "DC3"   "DL3"   "D"     "VM5d"  "VA7m"  "VA1d"  "DA4m"  "VC4"  
-#&gt;  [37] "DA2"   "VM5d"  "VC5"   "DL5"   "DM4"   "VM7d"  "D"     "DA4l"  "VM3"  
-#&gt;  [46] "VC3l"  "VA1d"  "VC4"   "VM7v"  "VC2"   "DC4"   "VC3l"  "VM5d"  "VA1v" 
-#&gt;  [55] "VM2"   "VA1v"  "DA2"   "VM5v"  "VM2"   "VC4"   "VA1v"  "DM2"   "DL2v" 
-#&gt;  [64] "lvVM4" "lvVC5" "lvVM4" "lvVC5" "DC3"   "VA1v"  "DM6"   "DA1"   "VA3"  
-#&gt;  [73] "DA1"   "DL2d"  "DL2d"  "DL2d"  "DA3"   "DA1"   "VA5"   "VA5"   "DA1"  
-#&gt;  [82] "DM5"   "DC2"   "VA7l"  "DC3"   "DA2"   "DA2"   "DL3"   "VL1"   "DP1m" 
-#&gt;  [91] "DM6"   "DA1"   "DL2v"  "VM5d"  "DA3"   "DC2"   "DM2"   "DL2v"  "DM6"  
-#&gt; [100] "VL1"   "DL3"   "VA3"   "DL3"   "VA7m"  "V"     "VC3m"  "vVA1d" "DL3"  
-#&gt; [109] "DL2d"  "DA1"   "DC1"   "VM1"   "vDP1m" "vVL2p" "vVA1v" "DL1"   "DA2"  
-#&gt; [118] "vDA1"  "vVL2a" "vDC3"  "vVA1v" "vVL1"  "DA1"   "vVL2a" "vDP1m"</div><div class='input'><span class='fu'>find_glomeruli</span>(<span class='st'>'WTPN2017_uPN_right'</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>'annotation'</span>)</div><div class='output co'>#&gt;   [1] "VA6"      "VL2a"     "VC1"      "VC3m"     "DL2v"     "DM5"     
+    <pre class="examples"><div class='input'><span class='fu'>find_glomeruli</span>(<span class='st'>'WTPN2017_uPN_right'</span>)</div><div class='output co'>#&gt;   [1] "VA6"      "VL2a"     "VC1"      "VC3m"     "DL2v"     "DM5"     
 #&gt;   [7] "VC3m"     "VA5"      "VL2p"     "VC3l/VCy" "VA2"      "VM5v"    
 #&gt;  [13] "VA4"      "VM4"      "DL4"      "VM7v"     "D"        "VM1"     
 #&gt;  [19] "DP1l"     "VM3"      "DA1"      "DM5"      "V"        "DM3"     
@@ -183,7 +170,31 @@ Note that annotations of the form <b>glomerulus <em>X</em> right|left</b> are no
 #&gt; [103] "DL3"      "VA7m"     "V"        "VC3m"     "VA1d"     "DL3"     
 #&gt; [109] "DL2d"     "DA1"      "DC1"      "VM1"      "DP1m"     "VL2p"    
 #&gt; [115] "VA1v"     "DL1"      "DA2"      "DA1"      "VL2a"     "DC3"     
-#&gt; [121] "VA1v"     "VL1"      "DA1"      "VL2a"     "DP1m"    </div><div class='input'>
+#&gt; [121] "VA1v"     "VL1"      "DA1"      "VL2a"     "DP1m"    </div><div class='input'><span class='fu'>find_glomeruli</span>(<span class='st'>'WTPN2017_uPN_right'</span>, <span class='kw'>exclude</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'VCx'</span>,<span class='st'>'VCy'</span>, <span class='st'>'VP1l'</span>))</div><div class='output co'>#&gt;   [1] "VA6"  "VL2a" "VC1"  "VC3m" "DL2v" "DM5"  "VC3m" "VA5"  "VL2p" "VC3l"
+#&gt;  [11] "VA2"  "VM5v" "VA4"  "VM4"  "DL4"  "VM7v" "D"    "VM1"  "DP1l" "VM3" 
+#&gt;  [21] "DA1"  "DM5"  "V"    "DM3"  "VM5v" "DL2d" "DM1"  "VA7m" "DC3"  "DL3" 
+#&gt;  [31] "D"    "VM5d" "VA7m" "VA1d" "DA4m" "VC4"  "DA2"  "VM5d" "VC5"  "DL5" 
+#&gt;  [41] "DM4"  "VM7d" "D"    "DA4l" "VM3"  "VC3l" "VA1d" "VC4"  "VM7v" "VC2" 
+#&gt;  [51] "DC4"  "VC3l" "VM5d" "VA1v" "VM2"  "VA1v" "DA2"  "VM5v" "VM2"  "VC4" 
+#&gt;  [61] "VA1v" "DM2"  "DL2v" "VM4"  "VC5"  "VM4"  "VC5"  "DC3"  "VA1v" "DM6" 
+#&gt;  [71] "DA1"  "VA3"  "DA1"  "DL2d" "DL2d" "DL2d" "DA3"  "DA1"  "VA5"  "VA5" 
+#&gt;  [81] "DA1"  "DM5"  "DC2"  "VA7l" "DC3"  "DA2"  "DA2"  "DL3"  "VL1"  "DP1m"
+#&gt;  [91] "DM6"  "DA1"  "DL2v" "VM5d" "DA3"  "DC2"  "DM2"  "DL2v" "DM6"  "VL1" 
+#&gt; [101] "DL3"  "VA3"  "DL3"  "VA7m" "V"    "VC3m" "VA1d" "DL3"  "DL2d" "DA1" 
+#&gt; [111] "DC1"  "VM1"  "DP1m" "VL2p" "VA1v" "DL1"  "DA2"  "DA1"  "VL2a" "DC3" 
+#&gt; [121] "VA1v" "VL1"  "DA1"  "VL2a" "DP1m"</div><div class='input'><span class='fu'>find_glomeruli</span>(<span class='st'>'WTPN2017_uPN_right'</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>'name'</span>)</div><div class='output co'>#&gt;   [1] "VA6"  "VL2a" "VC1"  "VC3m" "DL2v" "DM5"  "VC3m" "VA5"  "VL2p" "VC3l"
+#&gt;  [11] "VA2"  "VM5v" "VA4"  "VM4"  "DL4"  "VM7v" "D"    "VM1"  "DP1l" "VM3" 
+#&gt;  [21] "DA1"  "DM5"  "V"    "DM3"  "VM5v" "DL2d" "DM1"  "VA7m" "DC3"  "DL3" 
+#&gt;  [31] "D"    "VM5d" "VA7m" "VA1d" "DA4m" "VC4"  "DA2"  "VM5d" "VC5"  "DL5" 
+#&gt;  [41] "DM4"  "VM7d" "D"    "DA4l" "VM3"  "VC3l" "VA1d" "VC4"  "VM7v" "VC2" 
+#&gt;  [51] "DC4"  "VC3l" "VM5d" "VA1v" "VM2"  "VA1v" "DA2"  "VM5v" "VM2"  "VC4" 
+#&gt;  [61] "VA1v" "DM2"  "DL2v" "VM4"  "VC5"  "VM4"  "VC5"  "DC3"  "VA1v" "DM6" 
+#&gt;  [71] "DA1"  "VA3"  "DA1"  "DL2d" "DL2d" "DL2d" "DA3"  "DA1"  "VA5"  "VA5" 
+#&gt;  [81] "DA1"  "DM5"  "DC2"  "VA7l" "DC3"  "DA2"  "DA2"  "DL3"  "VL1"  "DP1m"
+#&gt;  [91] "DM6"  "DA1"  "DL2v" "VM5d" "DA3"  "DC2"  "DM2"  "DL2v" "DM6"  "VL1" 
+#&gt; [101] "DL3"  "VA3"  "DL3"  "VA7m" "V"    "VC3m" "VA1d" "DL3"  "DL2d" "DA1" 
+#&gt; [111] "DC1"  "VM1"  "DP1m" "VL2p" "VA1v" "DL1"  "DA2"  "DA1"  "VL2a" "DC3" 
+#&gt; [121] "VA1v" "VL1"  "DA1"  "VL2a" "DP1m"</div><div class='input'>
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
