@@ -1,3 +1,7 @@
+# tracerutils 0.8.1
+
+* New option to use neuron names in find_glomeruli
+
 # tracerutils 0.8.0
 
 * Added new functions `read_team_sheet()` and `get_team_sheet()` to access
