@@ -118,7 +118,7 @@ simple_catmaid_url <- function(dfrow, skid, sid0 = 5, zoom = 0, conn = FALSE, tr
 #' Note that annotations of the form \bold{glomerulus \emph{X} right|left} are not considered.
 #'
 #' @param skids Required; an \code{integer} or \code{character} vector of skeleton IDs
-#' @param method Optional; indicating whether to use 'name' or 'annotation'
+#' @param method Optional; indicating whether to use the neuron 'name' or glomerulus 'annotation's.
 #' @param exclude Optional; a vector of glomeruli to exclude (in the format \bold{\emph{X}} for \bold{glomerulus \emph{X}}, or the full annotation for \bold{unknown glomerulus \emph{N}})
 #' @param ... Additional arguments passed to catmaid_* functions. Use this to specify \code{conn}, \code{pid} or similar low level arguments for the catmaid_query.
 
@@ -135,7 +135,7 @@ simple_catmaid_url <- function(dfrow, skid, sid0 = 5, zoom = 0, conn = FALSE, tr
 #' find_glomeruli('WTPN2017_uPN_right', method = 'annotation')
 #' }
 #'
-find_glomeruli <- function(skids, exclude = NULL, method=c("name", "annotation"), ...){
+find_glomeruli <- function(skids, exclude = NULL, method=c("annotation", "name"), ...){
   skids=catmaid::catmaid_skids(skids, ...)
   method=match.arg(method)
 

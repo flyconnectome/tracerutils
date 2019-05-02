@@ -4,7 +4,7 @@
 \alias{find_glomeruli}
 \title{Finds the glomerulus associated with a PN}
 \usage{
-find_glomeruli(skids, exclude = NULL, method = c("name", "annotation"),
+find_glomeruli(skids, exclude = NULL, method = c("annotation", "name"),
   ...)
 }
 \arguments{
@@ -12,7 +12,7 @@ find_glomeruli(skids, exclude = NULL, method = c("name", "annotation"),
 
 \item{exclude}{Optional; a vector of glomeruli to exclude (in the format \bold{\emph{X}} for \bold{glomerulus \emph{X}}, or the full annotation for \bold{unknown glomerulus \emph{N}})}
 
-\item{method}{Optional; indicating whether to use 'name' or 'annotation'}
+\item{method}{Optional; indicating whether to use the neuron 'name' or glomerulus 'annotation's.}
 
 \item{...}{Additional arguments passed to catmaid_* functions. Use this to specify \code{conn}, \code{pid} or similar low level arguments for the catmaid_query.}
 }
