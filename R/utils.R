@@ -140,7 +140,7 @@ find_glomeruli <- function(skids, exclude = NULL, method=c("annotation", "name")
   method=match.arg(method)
 
   if(method=="name") {
-    glomeruli=stringr::str_match(catmaid::catmaid_get_neuronnames(skids, ...),'glomerulus (\\S+)')[,2]
+    glomeruli=stringr::str_match(catmaid::catmaid_get_neuronnames(skids, ...),'glomerulus [lv]{0,2}(\\S+)')[,2]
     return(glomeruli)
   }
 
