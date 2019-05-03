@@ -1,6 +1,6 @@
 # tracerutils 0.8.1
 
-* New option to use neuron names in find_glomeruli
+* New option to use neuron names in `find_glomeruli()`
 
 # tracerutils 0.8.0
 
