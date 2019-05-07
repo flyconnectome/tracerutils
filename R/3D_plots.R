@@ -2,7 +2,8 @@
 #'
 #' Retrieve one or more neurons from CATMAID and plot them, along with one or more CATMAID volumes if desired
 #'
-#' @param skid Required; the skeleton ID of the neuron in CATMAID. Can accept a vector with multiple SKIDs.
+#' @param skid Required; the skeleton ID(s) of the neuron(s) in CATMAID.  
+#'     Any format accepted by \code{read.neurons.catmaid()} from the \code{catmaid} package can be used.
 #' @param volumes The names of the volumes in CATMAID to be plotted.  Defaults to NULL.
 #' @param ncol The colour(s) to use when plotting the specified neuron(s).
 #'     If a vector of colour names is provided, the colours will be applied to the neurons in the order specified,
@@ -11,11 +12,15 @@
 #' @param vcol The colour(s) to use when plotting the specified volume(s).
 #'     Behaves the same way as ncol.  Defaults to gray.
 #' @param valpha The alpha value(s) to use when plotting volume(s).
-#'     Behaves the same way as ncol and vcol.  Defaults to 0.5.
+#'     Behaves the same way as ncol and vcol.  Defaults to 0.1.
 #' @return Returns the neuron(s) retrieved from CATMAID
 #'
 #' @export
 #' @importFrom rgl plot3d
+#' @examples
+#' \dontrun{
+#' plot_catmaid(skid = 'WTPN2017_uPN_right', volumes = 'v14.neuropil')
+#' }
 #TODO - connectors option?
 plot_catmaid <- function(skid, volumes = NULL, ncol = NULL, vcol = NULL, valpha = NULL){#single skid as numeric, multiples in character vector
   #packages()
@@ -52,8 +57,8 @@ new_3d_plot <- function(volume = elmr::FAFB.surf, col = "gray", alpha = 0.1){
 #-----INTERNAL METHODS-----
 #' @importFrom rgl triangles3d
 plotVolumes <- function(volumes, vcol, valpha, pid = 1){#plot multiple neuropil volumes at once in same space as CATMAID neurons - get volumes from catmaid sever?
-  vols.df = catmaidVolsAsDF()
-  volumes.ids = vols.df[match(volumes, vols.df$name), 'id']#preserves order, c.f. vols.df$name %in% volumes
+  df_vols = catmaidVolsAsDF()
+  volumes.ids = df_vols[match(volumes, df_vols$name), 'id']#preserves order, c.f. df_vols$name %in% volumes
 
   #fill out colour and alpha specifications
   if (!is.null(vcol)){
@@ -109,29 +114,10 @@ plotVolumes <- function(volumes, vcol, valpha, pid = 1){#plot multiple neuropil 
 catmaidVolsAsDF <- function(pid = 1){
 
   vols = catmaid::catmaid_fetch(paste0(pid, URL.volumes))
-  l = length(vols)
+  #convert the vols$data (that contains data fields) into a column list, and then transpose to get nObs x nVariables
+  vols_df <- data.frame(t(sapply(vols$data,c)))
+  #now name the dataframe with the fields from header vols$columns
+  names(vols_df) <- vols$columns
 
-  comment = character(l)
-  name = character(l)
-  creation_time = character(l)
-  edition_time = character(l)
-  project = integer(l)
-  user = integer(l)
-  id = integer(l)
-  editor = integer(l)
-
-  for (i in 1:l){#there has got to be a better way of doing this...
-    row = vols[[i]]
-    comment[i] = if (!is.null(row$comment)) row$comment else ""
-    name[i] = if (!is.null(row$name)) row$name else ""
-    creation_time[i] = if (!is.null(row$creation_time)) row$creation_time else ""
-    edition_time[i] = if (!is.null(row$edition_time)) row$edition_time else ""
-    project[i] = row$project
-    user[i] = row$user
-    id[i] = row$id
-    editor[i] = row$editor
-  }
-
-  vols.df = data.frame(comment, name, creation_time, edition_time, project, user, id, editor, stringsAsFactors = FALSE)
-
+  return(vols_df)
 }

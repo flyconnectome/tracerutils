@@ -29,3 +29,8 @@ Returns the neuron(s) retrieved from CATMAID
 \description{
 Retrieve one or more neurons from CATMAID and plot them, along with one or more CATMAID volumes if desired
 }
+\examples{
+\dontrun{
+plot_catmaid(skid = 'WTPN2017_uPN_right', volumes = 'v14.neuropil')
+}
+}
