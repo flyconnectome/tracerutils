@@ -17,7 +17,9 @@
 #' @export
 #' @importFrom rgl plot3d
 #' @examples
+#' \dontrun{
 #' plot_catmaid(skid = 'WTPN2017_uPN_right', volumes = 'v14.neuropil')
+#' }
 #TODO - connectors option?
 plot_catmaid <- function(skid, volumes = NULL, ncol = NULL, vcol = NULL, valpha = NULL){#single skid as numeric, multiples in character vector
   #packages()
