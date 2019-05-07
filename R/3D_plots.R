@@ -2,7 +2,8 @@
 #'
 #' Retrieve one or more neurons from CATMAID and plot them, along with one or more CATMAID volumes if desired
 #'
-#' @param skid Required; the skeleton ID of the neuron in CATMAID. Can accept a vector with multiple SKIDs.
+#' @param skid Required; the skeleton ID(s) of the neuron(s) in CATMAID.  
+#'     Any format accepted by \code{read.neurons.catmaid()} from the \code{catmaid} package can be used.
 #' @param volumes The names of the volumes in CATMAID to be plotted.  Defaults to NULL.
 #' @param ncol The colour(s) to use when plotting the specified neuron(s).
 #'     If a vector of colour names is provided, the colours will be applied to the neurons in the order specified,
@@ -11,7 +12,7 @@
 #' @param vcol The colour(s) to use when plotting the specified volume(s).
 #'     Behaves the same way as ncol.  Defaults to gray.
 #' @param valpha The alpha value(s) to use when plotting volume(s).
-#'     Behaves the same way as ncol and vcol.  Defaults to 0.5.
+#'     Behaves the same way as ncol and vcol.  Defaults to 0.1.
 #' @return Returns the neuron(s) retrieved from CATMAID
 #'
 #' @export
