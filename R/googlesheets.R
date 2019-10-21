@@ -42,7 +42,19 @@ read_team_sheet <- function(path=NULL, id=NULL, team_drive = NULL, ws=1, ...) {
 get_team_sheet <- function(path=NULL, id=NULL, team_drive = NULL) {
   if(is.null(id)) {
     f <- googledrive::drive_get(path = path, id=id, team_drive = team_drive)
-    stopifnot(isTRUE(nrow(f)==1))
+    if(nrow(f)==0) {
+      if(is.null(id))
+        stop("I'm sorry, but I cannot find a sheet matching that path: ",
+             path,"\nYou may have more luck using the sheet id!")
+      else
+        stop("I'm sorry, but I cannot find a sheet matching that id!")
+    } else if (nrow(f)>1) {
+      stop(
+        "I'm sorry, but there are multiple matching sheets:\n",
+        format(f),
+        "\nYou may have more luck using the sheet id!"
+      )
+    }
     id=f[['id']]
   }
   gs <- googlesheets::gs_key(id, lookup = FALSE, visibility = "private")
