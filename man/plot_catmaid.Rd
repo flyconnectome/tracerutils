@@ -8,7 +8,8 @@ plot_catmaid(skid, volumes = NULL, ncol = NULL, vcol = NULL,
   valpha = NULL)
 }
 \arguments{
-\item{skid}{Required; the skeleton ID of the neuron in CATMAID. Can accept a vector with multiple SKIDs.}
+\item{skid}{Required; the skeleton ID(s) of the neuron(s) in CATMAID.
+Any format accepted by \code{read.neurons.catmaid()} from the \code{catmaid} package can be used.}
 
 \item{volumes}{The names of the volumes in CATMAID to be plotted.  Defaults to NULL.}
 
@@ -21,7 +22,7 @@ Uses default from NAT package if unspecified.}
 Behaves the same way as ncol.  Defaults to gray.}
 
 \item{valpha}{The alpha value(s) to use when plotting volume(s).
-Behaves the same way as ncol and vcol.  Defaults to 0.5.}
+Behaves the same way as ncol and vcol.  Defaults to 0.1.}
 }
 \value{
 Returns the neuron(s) retrieved from CATMAID
