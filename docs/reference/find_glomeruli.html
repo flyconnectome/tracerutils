@@ -8,21 +8,25 @@
 
 <title>Finds the glomerulus associated with a PN — find_glomeruli • tracerutils</title>
 
+
 <!-- jquery -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js" integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8=" crossorigin="anonymous"></script>
 <!-- Bootstrap -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha256-916EbMg70RQy9LHiGkXzG8hSg9EdNy97GazNG/aiY1w=" crossorigin="anonymous" />
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha256-U5ZEeKfGNOja007MMD3YBI0A3OSZOQbeG6z2f2Y0hu8=" crossorigin="anonymous"></script>
 
 <!-- Font Awesome icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" integrity="sha256-eZrrJcwDc/3uDhsdt61sL2oOBY362qM3lon1gyExkL0=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/all.min.css" integrity="sha256-nAmazAk6vS34Xqo0BSrTb+abbtFlgsFK7NKSi6o7Y78=" crossorigin="anonymous" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.7.1/css/v4-shims.min.css" integrity="sha256-6qHlizsOWFskGlwVOKuns+D1nB6ssZrHQrNj1wGplHc=" crossorigin="anonymous" />
 
 <!-- clipboard.js -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/clipboard.js/2.0.4/clipboard.min.js" integrity="sha256-FiZwavyI2V6+EXO1U+xzLG3IKldpiTFf3153ea9zikQ=" crossorigin="anonymous"></script>
 
-<!-- sticky kit -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sticky-kit/1.1.3/sticky-kit.min.js" integrity="sha256-c4Rlo1ZozqTPE2RLuvbusY3+SU1pQaJC0TjuhygMipw=" crossorigin="anonymous"></script>
+<!-- headroom.js -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/headroom.min.js" integrity="sha256-DJFC1kqIhelURkuza0AvYal5RxMtpzLjFhsnVIeuk+U=" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/headroom/0.9.4/jQuery.headroom.min.js" integrity="sha256-ZX/yNShbjqsohH1k95liqY9Gd8uOiE1S4vZc+9KQ1K4=" crossorigin="anonymous"></script>
 
 <!-- pkgdown -->
 <link href="../pkgdown.css" rel="stylesheet">
@@ -30,10 +34,11 @@
 
 
 
-<meta property="og:title" content="Finds the glomerulus associated with a PN — find_glomeruli" />
 
+<meta property="og:title" content="Finds the glomerulus associated with a PN — find_glomeruli" />
 <meta property="og:description" content="Given a vector of skeleton IDs, this will find the glomerului associated with PNs, based on annotations in CATMAID." />
 <meta name="twitter:card" content="summary" />
+
 
 
 
@@ -45,6 +50,7 @@
 <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
 <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
 <![endif]-->
+
 
 
   </head>
@@ -71,7 +77,7 @@
       <ul class="nav navbar-nav">
         <li>
   <a href="../index.html">
-    <span class="fa fa-home fa-lg"></span>
+    <span class="fas fa fas fa-home fa-lg"></span>
      
   </a>
 </li>
@@ -82,11 +88,10 @@
   <a href="../news/index.html">Changelog</a>
 </li>
       </ul>
-      
       <ul class="nav navbar-nav navbar-right">
         <li>
   <a href="https://github.com/flyconnectome/tracerutils">
-    <span class="fa fa-github fa-lg"></span>
+    <span class="fab fa fab fa-github fa-lg"></span>
      
   </a>
 </li>
@@ -97,6 +102,7 @@
 </div><!--/.navbar -->
 
       
+
       </header>
 
 <div class="row">
@@ -108,14 +114,12 @@
     </div>
 
     <div class="ref-description">
-    
     <p>Given a vector of skeleton IDs, this will find the glomerului associated with PNs, based on annotations in CATMAID.</p>
-    
     </div>
 
-    <pre class="usage"><span class='fu'>find_glomeruli</span>(<span class='no'>skids</span>, <span class='kw'>exclude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>"annotation"</span>, <span class='st'>"name"</span>),
+    <pre class="usage"><span class='fu'>find_glomeruli</span>(<span class='no'>skids</span>, <span class='kw'>exclude</span> <span class='kw'>=</span> <span class='kw'>NULL</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>"annotation"</span>, <span class='st'>"name"</span>),
   <span class='no'>...</span>)</pre>
-    
+
     <h2 class="hasAnchor" id="arguments"><a class="anchor" href="#arguments"></a>Arguments</h2>
     <table class="ref-arguments">
     <colgroup><col class="name" /><col class="desc" /></colgroup>
@@ -136,27 +140,26 @@
       <td><p>Additional arguments passed to catmaid_* functions. Use this to specify <code>conn</code>, <code>pid</code> or similar low level arguments for the catmaid_query.</p></td>
     </tr>
     </table>
-    
+
     <h2 class="hasAnchor" id="value"><a class="anchor" href="#value"></a>Value</h2>
 
     <p>A <code>character</code> vector of glomeruli names</p>
-    
     <h2 class="hasAnchor" id="details"><a class="anchor" href="#details"></a>Details</h2>
 
     <p>Requires the PN to be annotated with <b>glomerulus <em>X</em></b> or <b>unknown glomerulus <em>N</em></b> in CATMAID.  Annotations of the form <b>glomerulus <em>X</em></b>
 will be prioritised over <b>unknown glomerulus <em>N</em></b>, and if there are multiples they will be joined together with a forward slash.  If there are
 no results with either of these annotations, the string <code>"unknown"</code> will be returned in place of a glomerulus.
 Note that annotations of the form <b>glomerulus <em>X</em> right|left</b> are not considered.</p>
-    
 
     <h2 class="hasAnchor" id="examples"><a class="anchor" href="#examples"></a>Examples</h2>
-    <pre class="examples"><div class='input'><span class='fu'>find_glomeruli</span>(<span class='st'>'WTPN2017_uPN_right'</span>)</div><div class='output co'>#&gt;   [1] "VA6"      "VL2a"     "VC1"      "VC3m"     "DL2v"     "DM5"     
+    <pre class="examples"><div class='input'><span class='co'># \donttest{</span>
+<span class='fu'>find_glomeruli</span>(<span class='st'>'WTPN2017_uPN_right'</span>)</div><div class='output co'>#&gt;   [1] "VA6"      "VL2a"     "VC1"      "VC3m"     "DL2v"     "DM5"     
 #&gt;   [7] "VC3m"     "VA5"      "VL2p"     "VC3l/VCy" "VA2"      "VM5v"    
 #&gt;  [13] "VA4"      "VM4"      "DL4"      "VM7v"     "D"        "VM1"     
 #&gt;  [19] "DP1l"     "VM3"      "DA1"      "DM5"      "V"        "DM3"     
 #&gt;  [25] "VM5v"     "DL2d"     "DM1"      "VA7m"     "DC3"      "DL3"     
 #&gt;  [31] "D"        "VM5d"     "VA7m"     "VA1d"     "DA4m"     "VC4"     
-#&gt;  [37] "DA2"      "VM5d"     "VC5"      "DL5"      "DM4"      "VM7d"    
+#&gt;  [37] "DA2"      "VM5d"     "VC5/VM4"  "DL5"      "DM4"      "VM7d"    
 #&gt;  [43] "D"        "DA4l"     "VM3"      "VC3l"     "VA1d"     "VC4"     
 #&gt;  [49] "VM7v"     "VC2"      "DC4"      "VC3l"     "VM5d"     "VA1v"    
 #&gt;  [55] "VM2"      "VA1v"     "DA2"      "VM5v"     "VM2"      "VC4"     
@@ -169,8 +172,25 @@ Note that annotations of the form <b>glomerulus <em>X</em> right|left</b> are no
 #&gt;  [97] "DM2"      "DL2v"     "DM6"      "VL1"      "DL3"      "VA3"     
 #&gt; [103] "DL3"      "VA7m"     "V"        "VC3m"     "VA1d"     "DL3"     
 #&gt; [109] "DL2d"     "DA1"      "DC1"      "VM1"      "DP1m"     "VL2p"    
-#&gt; [115] "VA1v"     "DL1"      "DA2"      "DA1"      "VL2a"     "DC3"     
-#&gt; [121] "VA1v"     "VL1"      "DA1"      "VL2a"     "DP1m"    </div><div class='input'><span class='fu'>find_glomeruli</span>(<span class='st'>'WTPN2017_uPN_right'</span>, <span class='kw'>exclude</span><span class='kw'>=</span><span class='fu'><a href='https://www.rdocumentation.org/packages/base/topics/c'>c</a></span>(<span class='st'>'VCx'</span>,<span class='st'>'VCy'</span>, <span class='st'>'VP1l'</span>))</div><div class='output co'>#&gt;   [1] "VA6"  "VL2a" "VC1"  "VC3m" "DL2v" "DM5"  "VC3m" "VA5"  "VL2p" "VC3l"
+#&gt; [115] "VA1v"     "DL1"      "DA2"      "DA1"      "VL2a"     "VA1v"    
+#&gt; [121] "VL1"      "DA1"      "VL2a"     "DP1m"     "DL1"      "VM7d"    </div><div class='input'><span class='fu'>find_glomeruli</span>(<span class='st'>'WTPN2017_uPN_right'</span>, <span class='kw'>exclude</span><span class='kw'>=</span><span class='fu'><a href='https://rdrr.io/r/base/c.html'>c</a></span>(<span class='st'>'VCx'</span>,<span class='st'>'VCy'</span>, <span class='st'>'VP1l'</span>))</div><div class='output co'>#&gt;   [1] "VA6"     "VL2a"    "VC1"     "VC3m"    "DL2v"    "DM5"     "VC3m"   
+#&gt;   [8] "VA5"     "VL2p"    "VC3l"    "VA2"     "VM5v"    "VA4"     "VM4"    
+#&gt;  [15] "DL4"     "VM7v"    "D"       "VM1"     "DP1l"    "VM3"     "DA1"    
+#&gt;  [22] "DM5"     "V"       "DM3"     "VM5v"    "DL2d"    "DM1"     "VA7m"   
+#&gt;  [29] "DC3"     "DL3"     "D"       "VM5d"    "VA7m"    "VA1d"    "DA4m"   
+#&gt;  [36] "VC4"     "DA2"     "VM5d"    "VC5/VM4" "DL5"     "DM4"     "VM7d"   
+#&gt;  [43] "D"       "DA4l"    "VM3"     "VC3l"    "VA1d"    "VC4"     "VM7v"   
+#&gt;  [50] "VC2"     "DC4"     "VC3l"    "VM5d"    "VA1v"    "VM2"     "VA1v"   
+#&gt;  [57] "DA2"     "VM5v"    "VM2"     "VC4"     "VA1v"    "DM2"     "DL2v"   
+#&gt;  [64] "VM4"     "VC5"     "VM4"     "VC5"     "DC3"     "VA1v"    "DM6"    
+#&gt;  [71] "DA1"     "VA3"     "DA1"     "DL2d"    "DL2d"    "DL2d"    "DA3"    
+#&gt;  [78] "DA1"     "VA5"     "VA5"     "DA1"     "DM5"     "DC2"     "VA7l"   
+#&gt;  [85] "DC3"     "DA2"     "DA2"     "DL3"     "VL1"     "DP1m"    "DM6"    
+#&gt;  [92] "DA1"     "DL2v"    "VM5d"    "DA3"     "DC2"     "DM2"     "DL2v"   
+#&gt;  [99] "DM6"     "VL1"     "DL3"     "VA3"     "DL3"     "VA7m"    "V"      
+#&gt; [106] "VC3m"    "VA1d"    "DL3"     "DL2d"    "DA1"     "DC1"     "VM1"    
+#&gt; [113] "DP1m"    "VL2p"    "VA1v"    "DL1"     "DA2"     "DA1"     "VL2a"   
+#&gt; [120] "VA1v"    "VL1"     "DA1"     "VL2a"    "DP1m"    "DL1"     "VM7d"   </div><div class='input'><span class='fu'>find_glomeruli</span>(<span class='st'>'WTPN2017_uPN_right'</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>'name'</span>)</div><div class='output co'>#&gt;   [1] "VA6"  "VL2a" "VC1"  "VC3m" "DL2v" "DM5"  "VC3m" "VA5"  "VL2p" "VC3l"
 #&gt;  [11] "VA2"  "VM5v" "VA4"  "VM4"  "DL4"  "VM7v" "D"    "VM1"  "DP1l" "VM3" 
 #&gt;  [21] "DA1"  "DM5"  "V"    "DM3"  "VM5v" "DL2d" "DM1"  "VA7m" "DC3"  "DL3" 
 #&gt;  [31] "D"    "VM5d" "VA7m" "VA1d" "DA4m" "VC4"  "DA2"  "VM5d" "VC5"  "DL5" 
@@ -181,36 +201,23 @@ Note that annotations of the form <b>glomerulus <em>X</em> right|left</b> are no
 #&gt;  [81] "DA1"  "DM5"  "DC2"  "VA7l" "DC3"  "DA2"  "DA2"  "DL3"  "VL1"  "DP1m"
 #&gt;  [91] "DM6"  "DA1"  "DL2v" "VM5d" "DA3"  "DC2"  "DM2"  "DL2v" "DM6"  "VL1" 
 #&gt; [101] "DL3"  "VA3"  "DL3"  "VA7m" "V"    "VC3m" "VA1d" "DL3"  "DL2d" "DA1" 
-#&gt; [111] "DC1"  "VM1"  "DP1m" "VL2p" "VA1v" "DL1"  "DA2"  "DA1"  "VL2a" "DC3" 
-#&gt; [121] "VA1v" "VL1"  "DA1"  "VL2a" "DP1m"</div><div class='input'><span class='fu'>find_glomeruli</span>(<span class='st'>'WTPN2017_uPN_right'</span>, <span class='kw'>method</span> <span class='kw'>=</span> <span class='st'>'name'</span>)</div><div class='output co'>#&gt;   [1] "VA6"  "VL2a" "VC1"  "VC3m" "DL2v" "DM5"  "VC3m" "VA5"  "VL2p" "VC3l"
-#&gt;  [11] "VA2"  "VM5v" "VA4"  "VM4"  "DL4"  "VM7v" "D"    "VM1"  "DP1l" "VM3" 
-#&gt;  [21] "DA1"  "DM5"  "V"    "DM3"  "VM5v" "DL2d" "DM1"  "VA7m" "DC3"  "DL3" 
-#&gt;  [31] "D"    "VM5d" "VA7m" "VA1d" "DA4m" "VC4"  "DA2"  "VM5d" "VC5"  "DL5" 
-#&gt;  [41] "DM4"  "VM7d" "D"    "DA4l" "VM3"  "VC3l" "VA1d" "VC4"  "VM7v" "VC2" 
-#&gt;  [51] "DC4"  "VC3l" "VM5d" "VA1v" "VM2"  "VA1v" "DA2"  "VM5v" "VM2"  "VC4" 
-#&gt;  [61] "VA1v" "DM2"  "DL2v" "VM4"  "VC5"  "VM4"  "VC5"  "DC3"  "VA1v" "DM6" 
-#&gt;  [71] "DA1"  "VA3"  "DA1"  "DL2d" "DL2d" "DL2d" "DA3"  "DA1"  "VA5"  "VA5" 
-#&gt;  [81] "DA1"  "DM5"  "DC2"  "VA7l" "DC3"  "DA2"  "DA2"  "DL3"  "VL1"  "DP1m"
-#&gt;  [91] "DM6"  "DA1"  "DL2v" "VM5d" "DA3"  "DC2"  "DM2"  "DL2v" "DM6"  "VL1" 
-#&gt; [101] "DL3"  "VA3"  "DL3"  "VA7m" "V"    "VC3m" "VA1d" "DL3"  "DL2d" "DA1" 
-#&gt; [111] "DC1"  "VM1"  "DP1m" "VL2p" "VA1v" "DL1"  "DA2"  "DA1"  "VL2a" "DC3" 
-#&gt; [121] "VA1v" "VL1"  "DA1"  "VL2a" "DP1m"</div><div class='input'>
+#&gt; [111] "DC1"  "VM1"  "DP1m" "VL2p" "VA1v" "DL1"  "DA2"  "DA1"  "VL2a" "VA1v"
+#&gt; [121] "VL1"  "DA1"  "VL2a" "DP1m" "DL1"  "VM7d"</div><div class='input'># }
+
 </div></pre>
   </div>
   <div class="col-md-3 hidden-xs hidden-sm" id="sidebar">
     <h2>Contents</h2>
     <ul class="nav nav-pills nav-stacked">
       <li><a href="#arguments">Arguments</a></li>
-      
       <li><a href="#value">Value</a></li>
-
       <li><a href="#details">Details</a></li>
-      
       <li><a href="#examples">Examples</a></li>
     </ul>
 
   </div>
 </div>
+
 
       <footer>
       <div class="copyright">
@@ -218,13 +225,16 @@ Note that annotations of the form <b>glomerulus <em>X</em> right|left</b> are no
 </div>
 
 <div class="pkgdown">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.3.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/">pkgdown</a> 1.4.0.</p>
 </div>
+
       </footer>
    </div>
 
   
 
+
   </body>
 </html>
+
 
