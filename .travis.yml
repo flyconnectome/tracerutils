@@ -10,12 +10,30 @@ addons:
 env:
   global:
     - RGL_USE_NULL=TRUE
+
+warnings_are_errors: true
+
+stages:
+  - name: pre-cache1
+  - name: pre-cache2
+  - name: test
+
 jobs:
   include:
-    - stage: prepare cache
+    - stage: pre-cache1
+      before_install:
+         - echo 'options(Ncpus = 2)' >> ~/.Rprofile
+      install:
+         - R -e 'install.packages(c("remotes", "rgl"))'
+      script: true
+    - stage: pre-cache2
+      before_install:
+         - echo 'options(Ncpus = 2)' >> ~/.Rprofile
+      install:
+         - R -e 'remotes::install_github("natverse/nat",dependencies = TRUE)'
       script: true
     - stage: test
-before_install:
-  - echo 'options(Ncpus = 2)' >> ~/.Rprofile
+      before_install:
+         - echo 'options(Ncpus = 2)' >> ~/.Rprofile
 after_success:
   - Rscript -e 'covr::coveralls()'
