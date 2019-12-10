@@ -40,6 +40,10 @@ read_team_sheet <- function(path=NULL, id=NULL, team_drive = NULL, ws=1, ...) {
 #' @export
 get_team_sheet <- function(path=NULL, id=NULL, team_drive = NULL) {
   if(is.null(id)) {
+    if(interactive()){
+      message("It is recommended to use Spreadsheet id  instead of the path, which is unstable and can fail
+               if any duplicates are present in the path")
+    }
     f <- googledrive::drive_get(path = path, id=id, team_drive = team_drive)
     if(nrow(f)==0) {
       if(is.null(id))
