@@ -22,27 +22,27 @@ respectively, of the worksheet. The special value of \code{Inf} means all
 sheets.}
 
 \item{...}{Additional arguments passed to
-\code{\link[googlesheets]{gs_read_csv}}}
+\code{\link[googlesheets4]{read_sheet}}}
 }
 \value{
 A \code{tibble} or, when \code{ws} specifies more that one sheet, a
-  list of tibbles nammed by the sheet name. For \code{get_team_sheet} a
-  \code{\link[googlesheets]{googlesheet}} object.
+  list of tibbles nammed by the sheet name.
+
+object of class `sheets_Spreadsheet` returned by \link[googlesheets4]{sheets_get}.
 }
 \description{
 \code{read_team_sheet} reads (and finds) a google sheet on a
   team drive
 
-\code{get_team_sheet} finds a google sheet on a team drive. You
-  can use the returned
+\code{get_team_sheet} finds a google sheet on a team drive.
 }
 \details{
-Google sheet objects on team drives are not simply accessible by the
-  googlesheets package.
+Spreadsheet objects on team drives are not simply accessible by the
+  googlesheets4 package.
 }
 \examples{
 \dontrun{
-pns<-read_team_sheet('AL_fragments_spreadsheet', team_drive='flyconnectome',ws=1:2)
-gs <- get_team_sheet(id='1QMCbGXmJqxIm2K-IvNivN3od9QKzZCb5kA_Dqn9xjNs')
+fib_pns<-read_team_sheet(path = 'AL_fragments_PN_search', team_drive='flyconnectome',ws=1:2)
+ss <- get_team_sheet(id='1P-ITJs9JdexIahOaU5teKaQ7fi0t5G0QOtTrAfRGwGM')
 }
 }

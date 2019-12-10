@@ -23,7 +23,7 @@ Imports:
     rgl,
     utils,
     googledrive,
-    googlesheets,
+    googlesheets4,
     stringr
 Suggests:
     testthat

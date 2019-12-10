@@ -14,11 +14,11 @@
 #' @importFrom nat pointsinside
 synapses_per_neuropil <- function(skids = NULL, neurons = NULL, reference = c("FAFB", "FCWB")){#TODO - automatic skid/neuron detection, expand to any template brain with neuropil segmentation
 
-  if(missing(skids) & missing(neurons)){ stop("At least one skeleton ID or neuron must be provided.") }
+  if(is.null(skids) & is.null(neurons)){ stop("At least one skeleton ID or neuron must be provided.") }
 
   reference = match.arg(reference)
 
-  if(missing(neurons)){
+  if(is.null(neurons)){
     tb = if(reference == "FCWB"){ nat.flybrains::FCWB } else{ elmr::FAFB }
     neurons = fetchn_fafb(skids, mirror = FALSE, reference = tb)
   }
@@ -29,8 +29,10 @@ synapses_per_neuropil <- function(skids = NULL, neurons = NULL, reference = c("F
 
   summaries = sapply(names(neurons),
                      function(s){
-                        neuron.outgoing = subset(neurons.connectors, skid == s & prepost == 0)
-                        neuron.incoming = subset(neurons.connectors, skid == s & prepost == 1)
+                        neuron.outgoing = subset(neurons.connectors, neurons.connectors$skid == s &
+                                                   neurons.connectors$prepost == 0)
+                        neuron.incoming = subset(neurons.connectors, neurons.connectors$skid == s &
+                                                   neurons.connectors$prepost == 1)
 
                         outgoing = sapply(neuropils, function(x){ if(!is.null(neuron.outgoing)){ INTERNAL_count_synapses_in_mesh(neuron.outgoing, x, surf)} else{ 0 } })
                         incoming = sapply(neuropils, function(x){ if(!is.null(neuron.incoming)){ INTERNAL_count_synapses_in_mesh(neuron.incoming, x, surf)} else{ 0 } })
