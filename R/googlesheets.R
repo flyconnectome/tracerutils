@@ -27,11 +27,11 @@ read_team_sheet <- function(path=NULL, id=NULL, team_drive = NULL, ws=1, ...) {
   allsheets <- is.numeric(ws) && !is.finite(ws)
   if(length(ws)>1 || allsheets) {
     if(is.numeric(ws)) {
-      nn=googlesheets4::sheets_sheets(ss)
+      nn=googlesheets4::sheets_sheets(ss$spreadsheet_id)
       ws <- if(allsheets) nn else nn[ws]
     }
-    sapply(ws, function(y, ...) googlesheets4::read_sheet(ss, sheet=y, ...), ..., simplify = FALSE)
-  } else googlesheets4::read_sheet(ss, sheet=ws, ...)
+    sapply(ws, function(y, ...) googlesheets4::read_sheet(ss$spreadsheet_id, sheet=y, ...), ..., simplify = FALSE)
+  } else googlesheets4::read_sheet(ss$spreadsheet_id, sheet=ws, ...)
 }
 
 #' @rdname read_team_sheet
