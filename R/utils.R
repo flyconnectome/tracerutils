@@ -28,7 +28,7 @@
 #' }
 #' @importFrom catmaid read.neuron.catmaid catmaid_skids
 #' @importFrom nat prune_vertices
-#' @importFrom elmr distal_to
+#' @importFrom nat distal_to
 split_neuron_local <- function(skid = NULL, neuron = NULL, node, return = c("downstream", "upstream")){#consider possibility of returning both as neuron list?
   if(missing(skid) & missing(neuron)){ stop("A skeleton ID or neuron must be provided.") }
   return = match.arg(return)
